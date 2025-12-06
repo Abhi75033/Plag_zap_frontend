@@ -32,7 +32,14 @@ const ChatWidget = () => {
       setMessages(prev => [...prev, botMsg]);
     } catch (error) {
       console.error('Chat failed:', error);
-      setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, I'm having trouble connecting right now. Please try again later." }]);
+      console.error('Chat error response:', error.response?.data);
+      
+      // Get error message from response or use default
+      const errorMessage = error.response?.data?.reply 
+        || error.response?.data?.error 
+        || "Sorry, I'm having trouble connecting right now. Please try again later.";
+      
+      setMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
     } finally {
       setLoading(false);
     }

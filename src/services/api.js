@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://plagzap-backend-2.onrender.com/api',
+    baseURL: 'http://localhost:5001/api',
 });
 
 // Add auth token to requests
