@@ -7,7 +7,7 @@ const NavLink = ({ to, children, onClick }) => (
   <Link
     to={to}
     onClick={onClick}
-    className="text-gray-300 hover:text-white transition-colors font-medium"
+    className="text-neutral-600 dark:text-gray-300 hover:text-neutral-900 dark:hover:text-white transition-colors font-medium"
   >
     {children}
   </Link>
@@ -17,9 +17,9 @@ const MobileNavLink = ({ to, children, icon: Icon, onClick }) => (
   <Link
     to={to}
     onClick={onClick}
-    className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+    className="flex items-center gap-3 px-4 py-3 text-neutral-600 dark:text-gray-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5 rounded-lg transition-all"
   >
-    {Icon && <Icon className="h-5 w-5 text-gray-400" />}
+    {Icon && <Icon className="h-5 w-5 text-neutral-500 dark:text-gray-400" />}
     <span className="font-medium">{children}</span>
   </Link>
 );
@@ -50,7 +50,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/10">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-background/80 backdrop-blur-md border-b border-neutral-200 dark:border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center gap-2 group">
@@ -74,13 +74,13 @@ const Navbar = () => {
               <div className="flex items-center gap-4">
                 {user ? (
                   <>
-                    <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-background/50 border border-white/10 rounded-lg">
-                      <User className="h-4 w-4 text-gray-400" />
-                      <span className="text-sm">{user.name}</span>
+                    <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-neutral-100 dark:bg-background/50 border border-neutral-200 dark:border-white/10 rounded-lg">
+                      <User className="h-4 w-4 text-neutral-500 dark:text-gray-400" />
+                      <span className="text-sm text-neutral-700 dark:text-white">{user.name}</span>
                     </div>
                     <button
                       onClick={logout}
-                      className="hidden md:flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg hover:bg-red-500/20 transition-colors"
+                      className="hidden md:flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-500 dark:text-red-400 rounded-lg hover:bg-red-500/20 transition-colors"
                     >
                       <LogOut className="h-4 w-4" />
                       <span className="hidden sm:inline">Logout</span>
@@ -90,7 +90,7 @@ const Navbar = () => {
                   <>
                     <Link
                       to="/login"
-                      className="hidden md:block px-4 py-2 text-gray-300 hover:text-white transition-colors"
+                      className="hidden md:block px-4 py-2 text-neutral-600 dark:text-gray-300 hover:text-neutral-900 dark:hover:text-white transition-colors"
                     >
                       Login
                     </Link>
@@ -106,22 +106,23 @@ const Navbar = () => {
                 {/* Theme Toggle - Always visible */}
                 <button
                   onClick={toggleTheme}
-                  className="p-2 rounded-lg bg-background/50 border border-white/10 hover:bg-background transition-colors"
+                  className="p-2 rounded-lg bg-neutral-100 dark:bg-background/50 border border-neutral-200 dark:border-white/10 hover:bg-neutral-200 dark:hover:bg-background transition-colors"
+                  aria-label="Toggle theme"
                 >
                   {theme === 'dark' ? (
-                    <Sun className="h-5 w-5" />
+                    <Sun className="h-5 w-5 text-yellow-500" />
                   ) : (
-                    <Moon className="h-5 w-5" />
+                    <Moon className="h-5 w-5 text-neutral-600" />
                   )}
                 </button>
 
                 {/* Mobile Menu Button */}
                 <button
                   onClick={() => setIsMobileMenuOpen(true)}
-                  className="md:hidden p-2 rounded-lg bg-background/50 border border-white/10 hover:bg-background transition-colors"
+                  className="md:hidden p-2 rounded-lg bg-neutral-100 dark:bg-background/50 border border-neutral-200 dark:border-white/10 hover:bg-neutral-200 dark:hover:bg-background transition-colors"
                   aria-label="Open menu"
                 >
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-5 w-5 text-neutral-600 dark:text-white" />
                 </button>
               </div>
             </div>
@@ -139,34 +140,34 @@ const Navbar = () => {
 
       {/* Mobile Slide-out Menu */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-80 max-w-[85vw] bg-background border-l border-white/10 shadow-2xl transform transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed top-0 right-0 z-50 h-full w-80 max-w-[85vw] bg-white dark:bg-background border-l border-neutral-200 dark:border-white/10 shadow-2xl transform transition-transform duration-300 ease-out md:hidden ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
+        <div className="flex items-center justify-between p-4 border-b border-neutral-200 dark:border-white/10">
           <span className="text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             ⚡ PlagZap
           </span>
           <button
             onClick={closeMobileMenu}
-            className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+            className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
             aria-label="Close menu"
           >
-            <X className="h-5 w-5 text-gray-400" />
+            <X className="h-5 w-5 text-neutral-500 dark:text-gray-400" />
           </button>
         </div>
 
         {/* User Info (if logged in) */}
         {user && (
-          <div className="px-4 py-4 border-b border-white/10">
+          <div className="px-4 py-4 border-b border-neutral-200 dark:border-white/10">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
                 <User className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="font-medium text-white">{user.name}</p>
-                <p className="text-sm text-gray-400">{user.email}</p>
+                <p className="font-medium text-neutral-900 dark:text-white">{user.name}</p>
+                <p className="text-sm text-neutral-500 dark:text-gray-400">{user.email}</p>
               </div>
             </div>
           </div>
@@ -208,23 +209,23 @@ const Navbar = () => {
           </div>
 
           {/* Divider */}
-          <div className="my-4 border-t border-white/10" />
+          <div className="my-4 border-t border-neutral-200 dark:border-white/10" />
 
           {/* Theme Toggle in Mobile Menu */}
           <button
             onClick={() => {
               toggleTheme();
             }}
-            className="flex items-center gap-3 w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+            className="flex items-center gap-3 w-full px-4 py-3 text-neutral-600 dark:text-gray-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5 rounded-lg transition-all"
           >
             {theme === 'dark' ? (
               <>
-                <Sun className="h-5 w-5 text-gray-400" />
+                <Sun className="h-5 w-5 text-yellow-500" />
                 <span className="font-medium">Light Mode</span>
               </>
             ) : (
               <>
-                <Moon className="h-5 w-5 text-gray-400" />
+                <Moon className="h-5 w-5 text-neutral-500" />
                 <span className="font-medium">Dark Mode</span>
               </>
             )}
@@ -232,14 +233,14 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Footer */}
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-neutral-200 dark:border-white/10">
           {user ? (
             <button
               onClick={() => {
                 logout();
                 closeMobileMenu();
               }}
-              className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg hover:bg-red-500/20 transition-colors"
+              className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-red-500/10 border border-red-500/20 text-red-500 dark:text-red-400 rounded-lg hover:bg-red-500/20 transition-colors"
             >
               <LogOut className="h-5 w-5" />
               <span className="font-medium">Logout</span>
@@ -249,7 +250,7 @@ const Navbar = () => {
               <Link
                 to="/login"
                 onClick={closeMobileMenu}
-                className="block w-full px-4 py-3 text-center text-gray-300 hover:text-white border border-white/10 rounded-lg hover:bg-white/5 transition-all"
+                className="block w-full px-4 py-3 text-center text-neutral-600 dark:text-gray-300 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-white/10 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-all"
               >
                 Login
               </Link>
