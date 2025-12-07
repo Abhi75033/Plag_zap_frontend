@@ -30,9 +30,36 @@ const Analyzer = () => {
   const [usage, setUsage] = useState(null);
   const [citationSource, setCitationSource] = useState(null); // State for citation modal
 
-  // Check if user is a paid subscriber
-  const isPaidUser = user?.subscriptionTier && user.subscriptionTier !== 'free';
+  // Check if user has an active subscription (considers paused/suspended status)
+  const isPaidUser = user?.hasActiveSubscription === true;
+  const hasPaidTier = user?.subscriptionTier && user.subscriptionTier !== 'free';
+  const subscriptionStatus = user?.canPerformAnalysis?.reason;
   const FREE_WORD_LIMIT = 500;
+
+  // Helper to show proper message for premium features
+  const showPremiumBlockedMessage = (featureName) => {
+    // Check if user has a paid tier but subscription is not active
+    if (hasPaidTier && !isPaidUser) {
+      // Check the specific reason
+      if (subscriptionStatus === 'SUBSCRIPTION_PAUSED') {
+        toast.error('⏸️ Your subscription is paused. Check your dashboard for details.');
+        return;
+      } else if (subscriptionStatus === 'SUBSCRIPTION_SUSPENDED') {
+        toast.error('🚫 Your subscription is suspended. Check your dashboard for details.');
+        return;
+      } else if (subscriptionStatus === 'SUBSCRIPTION_EXPIRED') {
+        toast.error('Your subscription has expired. Please renew!');
+        navigate('/pricing');
+        return;
+      }
+      // Default for any paused/stopped state
+      toast.error('Your subscription is on hold. Check your dashboard for details.');
+      return;
+    }
+    // Free user trying to access premium feature
+    toast.error(`${featureName} is a premium feature. Upgrade to access!`);
+    navigate('/pricing');
+  };
 
 // ... inside render, before "Analysis Result" header
 
@@ -188,6 +215,30 @@ const Analyzer = () => {
             </div>
           ), { duration: 6000 });
           
+        } else if (reason === 'SUBSCRIPTION_PAUSED') {
+          toast((t) => (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-yellow-500" />
+                <span className="font-bold">Subscription Paused</span>
+              </div>
+              <p className="text-sm text-gray-300">Your membership is currently on hold.</p>
+              <p className="text-xs text-gray-400">Contact support to resume your subscription.</p>
+            </div>
+          ), { duration: 6000, icon: '⏸️' });
+          
+        } else if (reason === 'SUBSCRIPTION_SUSPENDED') {
+          toast((t) => (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-red-500" />
+                <span className="font-bold">Subscription Suspended</span>
+              </div>
+              <p className="text-sm text-gray-300">Your membership has been suspended.</p>
+              <p className="text-xs text-gray-400">Please contact support for assistance.</p>
+            </div>
+          ), { duration: 6000, icon: '🚫' });
+          
         } else {
           toast.error(message || 'Analysis failed. Please try again.');
         }
@@ -281,8 +332,7 @@ const Analyzer = () => {
               <button
                 onClick={() => {
                   if (!isPaidUser) {
-                    toast.error('File upload is a premium feature');
-                    navigate('/pricing');
+                    showPremiumBlockedMessage('File upload');
                     return;
                   }
                   setInputType('file');
@@ -305,8 +355,7 @@ const Analyzer = () => {
               <button
                 onClick={() => {
                   if (!isPaidUser) {
-                    toast.error('URL extraction is a premium feature');
-                    navigate('/pricing');
+                    showPremiumBlockedMessage('URL extraction');
                     return;
                   }
                   setInputType('url');

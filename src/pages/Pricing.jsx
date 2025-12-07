@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { Check, Zap, Shield, Clock, CreditCard, Headphones } from "lucide-react";
+import { Check, Zap, Shield, Clock, CreditCard, Headphones, Tag, X } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
 import {
   getSubscriptionPlans,
-  createRazorpayOrder,
+  createRazorpayOrderWithCoupon,
   verifyRazorpayPayment,
+  validateCoupon,
 } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +17,12 @@ const Pricing = () => {
   const [purchasing, setPurchasing] = useState(null);
   const { user, updateUser } = useAppContext();
   const navigate = useNavigate();
+
+  // Coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   // Load plans from backend
   useEffect(() => {
@@ -43,6 +50,38 @@ const Pricing = () => {
     };
   }, []);
 
+  // Validate coupon
+  const handleValidateCoupon = async (planId) => {
+    if (!couponCode.trim()) {
+      toast.error("Enter a coupon code");
+      return;
+    }
+
+    setCouponLoading(true);
+    try {
+      const { data } = await validateCoupon(couponCode.trim(), planId);
+      console.log('Coupon validation response:', data);
+      if (data.valid) {
+        setAppliedCoupon(data.coupon);
+        if (data.coupon.applicablePlans && data.coupon.applicablePlans.length > 0) {
+          toast.success(`Coupon applied! ${data.coupon.discountPercent}% off on ${data.coupon.applicablePlans.join(', ')} plans`);
+        } else {
+          toast.success(`Coupon applied! ${data.coupon.discountPercent}% off on all plans`);
+        }
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Invalid coupon");
+      setAppliedCoupon(null);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+  };
+
   // Handle Purchase Button
   const handlePurchase = async (planId) => {
     try {
@@ -59,8 +98,8 @@ const Pricing = () => {
       setPurchasing(planId);
       toast.loading("Preparing checkout...", { id: "checkout" });
 
-      // Create Razorpay order
-      const { data } = await createRazorpayOrder(planId);
+      // Create Razorpay order with coupon
+      const { data } = await createRazorpayOrderWithCoupon(planId, appliedCoupon?.code || null);
       toast.dismiss("checkout");
 
       // Initialize Razorpay checkout
@@ -69,7 +108,7 @@ const Pricing = () => {
         amount: data.amount,
         currency: data.currency,
         name: "PlagZap",
-        description: `${data.planName} Subscription`,
+        description: `${data.planName} Subscription${data.appliedCoupon ? ` (${data.appliedCoupon.discountPercent}% off)` : ''}`,
         order_id: data.orderId,
         handler: async function (response) {
           try {
@@ -159,36 +198,129 @@ const Pricing = () => {
           </p>
         </motion.div>
 
-        {/* PLANS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={plan.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className={`relative bg-background/50 backdrop-blur-md border ${
-                plan.id === "annual"
-                  ? "border-purple-500/50 scale-105"
-                  : "border-white/10"
-              } rounded-2xl p-8 shadow-2xl transition-all`}
-            >
-              {plan.id === "annual" && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                  Best Value
+        {/* Coupon Code Section */}
+        {user && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-md mx-auto mb-10"
+          >
+            <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 border border-purple-500/30 rounded-2xl p-6">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <Tag className="h-5 w-5 text-purple-400" />
+                Have a Coupon Code?
+              </h3>
+              
+              {appliedCoupon ? (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-green-400 font-bold">{appliedCoupon.code}</p>
+                      <p className="text-sm text-gray-400">{appliedCoupon.discountPercent}% discount applied</p>
+                    </div>
+                    <button
+                      onClick={removeCoupon}
+                      className="p-2 hover:bg-red-500/20 rounded-lg transition-colors"
+                    >
+                      <X className="h-5 w-5 text-red-400" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    placeholder="Enter coupon code"
+                    className="flex-1 px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:border-purple-500 outline-none text-center font-mono"
+                  />
+                  <button
+                    onClick={() => handleValidateCoupon(null)}
+                    disabled={couponLoading}
+                    className="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-xl font-semibold transition-colors disabled:opacity-50"
+                  >
+                    {couponLoading ? '...' : 'Apply'}
+                  </button>
                 </div>
               )}
+            </div>
+          </motion.div>
+        )}
 
-              {/* Plan Header */}
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">₹{plan.price}</span>
-                  {plan.id !== "free" && (
-                    <span className="text-gray-400">/ {plan.duration}</span>
+        {/* PLANS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {plans.map((plan, index) => {
+            // Calculate discounted price if coupon is applied AND valid for this plan
+            const applicablePlans = appliedCoupon?.applicablePlans || [];
+            const isApplicableEmpty = !applicablePlans || applicablePlans.length === 0;
+            const isPlanIncluded = applicablePlans.includes(plan.id);
+            
+            // Debug log
+            if (appliedCoupon && plan.id !== 'free') {
+              console.log(`Plan: ${plan.id}, ApplicablePlans: [${applicablePlans.join(',')}], IsEmpty: ${isApplicableEmpty}, IsPlanIncluded: ${isPlanIncluded}`);
+            }
+            
+            const isCouponValidForPlan = appliedCoupon && plan.id !== 'free' && (
+              // If no specific plans set, apply to all paid plans
+              isApplicableEmpty || isPlanIncluded
+            );
+            const hasDiscount = isCouponValidForPlan;
+            const discountedPrice = hasDiscount 
+              ? Math.round(plan.price - (plan.price * appliedCoupon.discountPercent / 100))
+              : plan.price;
+            const savings = hasDiscount ? plan.price - discountedPrice : 0;
+
+            return (
+              <motion.div
+                key={plan.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative bg-background/50 backdrop-blur-md border ${
+                  plan.id === "annual"
+                    ? "border-purple-500/50 scale-105"
+                    : hasDiscount && plan.id !== 'free'
+                    ? "border-green-500/50"
+                    : "border-white/10"
+                } rounded-2xl p-8 shadow-2xl transition-all`}
+              >
+                {plan.id === "annual" && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    Best Value
+                  </div>
+                )}
+
+                {/* Discount Badge */}
+                {hasDiscount && (
+                  <div className="absolute -top-3 -right-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                    -{appliedCoupon.discountPercent}% OFF
+                  </div>
+                )}
+
+                {/* Plan Header */}
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    {hasDiscount ? (
+                      <>
+                        <span className="text-4xl font-bold text-green-400">₹{discountedPrice}</span>
+                        <span className="text-xl text-gray-500 line-through">₹{plan.price}</span>
+                      </>
+                    ) : (
+                      <span className="text-4xl font-bold">₹{plan.price}</span>
+                    )}
+                    {plan.id !== "free" && (
+                      <span className="text-gray-400">/ {plan.duration}</span>
+                    )}
+                  </div>
+                  {hasDiscount && (
+                    <p className="text-sm text-green-400 mt-1 flex items-center gap-1">
+                      <Tag className="h-3 w-3" />
+                      You save ₹{savings}!
+                    </p>
                   )}
                 </div>
-              </div>
 
               {/* Features */}
               <ul className="mb-8 space-y-3">
@@ -224,7 +356,8 @@ const Pricing = () => {
                 )}
               </button>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Trust Badges */}

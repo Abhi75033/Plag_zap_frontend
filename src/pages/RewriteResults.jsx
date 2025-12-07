@@ -23,7 +23,7 @@ const RewriteResults = () => {
   const [hasRewritten, setHasRewritten] = useState(false);
   
   // Check if user is a paid subscriber
-  const isPaidUser = user?.subscriptionTier && user.subscriptionTier !== 'free';
+  const isPaidUser = user?.hasActiveSubscription === true;
 
   useEffect(() => {
     if (initialText) {

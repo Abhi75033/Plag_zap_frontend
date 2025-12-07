@@ -95,6 +95,14 @@ export const getAdminStats = () => api.get('/admin/stats');
 export const getAdminUsers = (page = 1) => api.get(`/admin/users?page=${page}`);
 export const deleteUser = (userId) => api.delete(`/admin/users/${userId}`);
 
+// Admin subscription management
+export const grantUserSubscription = (userId, subscriptionData) =>
+    api.post(`/admin/users/${userId}/subscription`, subscriptionData);
+export const updateUserSubscriptionStatus = (userId, status) =>
+    api.patch(`/admin/users/${userId}/subscription`, { status });
+export const revokeUserSubscription = (userId) =>
+    api.delete(`/admin/users/${userId}/subscription`);
+
 // Webhook methods
 export const getWebhooks = () => api.get('/webhooks');
 export const createWebhook = (data) => api.post('/webhooks', data);
@@ -109,5 +117,22 @@ export const submitFeedback = (data) => api.post('/feedback', data);
 export const getAllFeedbacks = (status) => api.get('/admin/feedbacks', { params: { status } });
 export const updateFeedbackStatus = (id, status, adminNote) => api.patch(`/admin/feedbacks/${id}`, { status, adminNote });
 export const deleteFeedback = (id) => api.delete(`/admin/feedbacks/${id}`);
+
+// Coupon APIs
+export const validateCoupon = (code, planId) => api.post('/subscriptions/validate-coupon', { code, planId });
+export const createRazorpayOrderWithCoupon = (planId, couponCode) =>
+    api.post('/subscriptions/create-order', { planId, couponCode });
+
+// Admin Coupon Management
+export const getAdminCoupons = () => api.get('/admin/coupons');
+export const createAdminCoupon = (couponData) => api.post('/admin/coupons', couponData);
+export const updateAdminCoupon = (id, couponData) => api.patch(`/admin/coupons/${id}`, couponData);
+export const deleteAdminCoupon = (id) => api.delete(`/admin/coupons/${id}`);
+
+// Admin Promotional Emails
+export const sendPromotionalEmail = (emailData) => api.post('/admin/emails/promotional', emailData);
+
+// Admin Price Management
+export const getAdminPrices = () => api.get('/admin/prices');
 
 export default api;

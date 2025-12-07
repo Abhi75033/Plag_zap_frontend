@@ -206,6 +206,38 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
+        {/* Subscription Status Alert Banner */}
+        {user?.subscriptionTier !== 'free' && !user?.hasActiveSubscription && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-2xl"
+          >
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-yellow-500/20 rounded-lg">
+                <AlertCircle className="h-5 w-5 text-yellow-400" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-bold text-yellow-400 mb-1">
+                  {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_PAUSED' && '⏸️ Your Subscription is Paused'}
+                  {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_SUSPENDED' && '🚫 Your Subscription is Suspended'}
+                  {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_EXPIRED' && '⌛ Your Subscription has Expired'}
+                  {!['SUBSCRIPTION_PAUSED', 'SUBSCRIPTION_SUSPENDED', 'SUBSCRIPTION_EXPIRED'].includes(user?.canPerformAnalysis?.reason) && '⚠️ Your Subscription is On Hold'}
+                </h4>
+                <p className="text-sm text-gray-300 mb-2">
+                  {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_PAUSED' && 'Your membership is currently paused. Premium features are temporarily unavailable.'}
+                  {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_SUSPENDED' && 'Your membership has been suspended. Please contact support for assistance.'}
+                  {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_EXPIRED' && 'Your subscription has expired. Renew now to continue using premium features.'}
+                  {!['SUBSCRIPTION_PAUSED', 'SUBSCRIPTION_SUSPENDED', 'SUBSCRIPTION_EXPIRED'].includes(user?.canPerformAnalysis?.reason) && 'Your membership is on hold. Premium features are temporarily unavailable.'}
+                </p>
+                <p className="text-xs text-gray-400">
+                  For assistance, contact us at: <a href="mailto:abhishekyadav1112.21@gmail.com" className="text-yellow-400 hover:underline">abhishekyadav1112.21@gmail.com</a>
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Subscription Card */}
