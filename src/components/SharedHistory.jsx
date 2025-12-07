@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Share2, Clock, User, MessageCircle, Send, X, Lightbulb, Trash2, Eye } from 'lucide-react';
 import { getTeamHistory, getSharedHistoryDetails, addHistoryComment, deleteHistoryComment } from '../services/api';
@@ -225,36 +226,38 @@ const SharedHistory = () => {
                 </>
             )}
 
-            {/* Details Modal */}
-            <AnimatePresence>
-                {selectedItem && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-                        onClick={() => setSelectedItem(null)}
-                    >
+            {/* Details Modal - Rendered via Portal to ensure it's above navbar */}
+            {ReactDOM.createPortal(
+                <AnimatePresence>
+                    {selectedItem && (
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4"
+                            style={{ zIndex: 9999 }}
+                            onClick={() => setSelectedItem(null)}
+                        >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: 20 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-gray-900 border border-white/10 rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden flex flex-col"
+                            className="bg-gray-900 border-t sm:border border-white/10 sm:rounded-2xl w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-hidden flex flex-col"
                         >
                             {/* Header */}
-                            <div className="flex items-center justify-between p-4 border-b border-white/10">
-                                <div>
-                                    <h3 className="text-lg font-bold">{selectedItem.title || 'Analysis Details'}</h3>
-                                    <p className="text-sm text-gray-400">
-                                        By {selectedItem.userId?.name} • {formatDate(selectedItem.createdAt)}
+                            <div className="flex items-start sm:items-center justify-between p-3 sm:p-4 border-b border-white/10 gap-2">
+                                <div className="min-w-0 flex-1">
+                                    <h3 className="text-base sm:text-lg font-bold truncate">{selectedItem.title || 'Analysis Details'}</h3>
+                                    <p className="text-xs sm:text-sm text-gray-400 truncate">
+                                        By {selectedItem.userId?.name?.split(' ')[0]} • {new Date(selectedItem.createdAt).toLocaleDateString()}
                                     </p>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <span className={`px-3 py-1 rounded-full text-sm font-bold ${getScoreColor(selectedItem.overallScore)}`}>
-                                        {selectedItem.overallScore?.toFixed(0)}% Match
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                    <span className={`px-2 py-0.5 rounded-full text-xs sm:text-sm font-bold ${getScoreColor(selectedItem.overallScore)}`}>
+                                        {selectedItem.overallScore?.toFixed(0)}%
                                     </span>
-                                    <button onClick={() => setSelectedItem(null)} className="text-gray-400 hover:text-white">
+                                    <button onClick={() => setSelectedItem(null)} className="p-1 text-gray-400 hover:text-white bg-white/5 rounded-lg">
                                         <X className="w-5 h-5" />
                                     </button>
                                 </div>
@@ -363,7 +366,9 @@ const SharedHistory = () => {
                         </motion.div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+                </AnimatePresence>,
+                document.body
+            )}
         </div>
     );
 };
