@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { getTeam, createTeam, joinTeam, leaveTeam } from '../services/api';
-import { Users, UserPlus, LogOut, Copy, Check, Shield, User } from 'lucide-react';
+import { Users, UserPlus, LogOut, Copy, Check, Shield, User, MessageSquare, BarChart3, FileText, CheckSquare, Trophy } from 'lucide-react';
 import toast from 'react-hot-toast';
+import TeamChat from '../components/TeamChat';
+import TeamAnalytics from '../components/TeamAnalytics';
+import SharedHistory from '../components/SharedHistory';
+import TeamTasks from '../components/TeamTasks';
+import TeamLeaderboard from '../components/TeamLeaderboard';
+import { useAppContext } from '../context/AppContext';
 
 const TeamDashboard = () => {
+    const { user } = useAppContext();
     const [team, setTeam] = useState(null);
     const [loading, setLoading] = useState(true);
     const [newTeamName, setNewTeamName] = useState('');
     const [inviteCodeInput, setInviteCodeInput] = useState('');
     const [creating, setCreating] = useState(false);
     const [joining, setJoining] = useState(false);
+    const [activeTab, setActiveTab] = useState('chat');
 
     useEffect(() => {
         loadTeam();
@@ -72,10 +80,20 @@ const TeamDashboard = () => {
         toast.success('Invite code copied');
     };
 
+    // Check if current user is admin
+    // Note: user from context has 'id', team member objects have '_id'
+    const userId = user?.id || user?._id;
+    const ownerId = team?.owner?._id || team?.owner;
+    const isAdmin = team?.members?.some(m => 
+        (m.user?._id === userId || m.user === userId) && m.role === 'admin'
+    ) || ownerId === userId;
+
+    console.log('isAdmin check:', { isAdmin, ownerId, userId, members: team?.members });
+
     if (loading) return <div className="min-h-screen pt-24 flex justify-center"><div className="animate-spin h-8 w-8 border-b-2 border-purple-500 rounded-full"></div></div>;
 
     return (
-        <div className="min-h-screen pt-24 px-4 pb-10 max-w-4xl mx-auto">
+        <div className="min-h-screen pt-24 px-4 pb-10 max-w-5xl mx-auto">
             <h1 className="text-3xl font-bold mb-8 flex items-center gap-3">
                 <Users className="text-purple-400" />
                 Team & Agency
@@ -129,67 +147,166 @@ const TeamDashboard = () => {
                     </div>
                 </div>
             ) : (
-                <div className="space-y-8">
+                <div className="space-y-6">
                     {/* Team Header */}
-                    <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-500/30 rounded-2xl p-8 relative overflow-hidden">
+                    <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-500/30 rounded-2xl p-6 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
-                        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                             <div>
-                                <h2 className="text-3xl font-bold mb-2">{team.name}</h2>
-                                <p className="text-gray-300 flex items-center gap-2">
+                                <h2 className="text-2xl font-bold mb-1">{team.name}</h2>
+                                <p className="text-gray-300 flex items-center gap-2 text-sm">
                                     <Shield className="w-4 h-4 text-purple-400" />
                                     {team.members.length} Members
                                 </p>
                             </div>
-                            <div className="bg-black/30 p-4 rounded-xl border border-white/10 flex flex-col items-center min-w-[200px]">
-                                <span className="text-xs text-gray-400 uppercase tracking-widest font-bold mb-2">Invite Code</span>
+                            <div className="bg-black/30 p-3 rounded-xl border border-white/10 flex flex-col items-center">
+                                <span className="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Invite Code</span>
                                 <button
                                     onClick={copyCode}
-                                    className="flex items-center gap-2 text-2xl font-mono font-bold text-white hover:text-purple-400 transition-colors"
+                                    className="flex items-center gap-2 text-xl font-mono font-bold text-white hover:text-purple-400 transition-colors"
                                 >
                                     {team.inviteCode}
-                                    <Copy className="w-5 h-5 opacity-50" />
+                                    <Copy className="w-4 h-4 opacity-50" />
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    {/* Members List */}
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold">Team Members</h3>
-                            <button
-                                onClick={handleLeave}
-                                className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm font-medium px-4 py-2 hover:bg-red-500/10 rounded-lg transition-colors"
-                            >
-                                <LogOut className="w-4 h-4" />
-                                Leave Team
-                            </button>
-                        </div>
-                        
-                        <div className="space-y-3">
-                            {team.members.map((member) => (
-                                <div key={member._id} className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full flex items-center justify-center font-bold text-lg">
-                                            {member.user?.name?.charAt(0) || <User className="w-5 h-5" />}
-                                        </div>
-                                        <div>
-                                            <p className="font-bold">{member.user?.name || 'Unknown User'}</p>
-                                            <p className="text-sm text-gray-500">{member.user?.email}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                                            member.role === 'admin' ? 'bg-purple-500/20 text-purple-400' : 'bg-gray-500/20 text-gray-400'
-                                        }`}>
-                                            {member.role}
-                                        </span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                    {/* Tabs */}
+                    <div className="flex gap-2 border-b border-white/10 pb-2 flex-wrap">
+                        <button
+                            onClick={() => setActiveTab('chat')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                                activeTab === 'chat'
+                                    ? 'bg-purple-600 text-white'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                            <MessageSquare className="w-4 h-4" />
+                            Chat
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('analytics')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                                activeTab === 'analytics'
+                                    ? 'bg-purple-600 text-white'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                            <BarChart3 className="w-4 h-4" />
+                            Analytics
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('history')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                                activeTab === 'history'
+                                    ? 'bg-purple-600 text-white'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                            <FileText className="w-4 h-4" />
+                            Shared
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('tasks')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                                activeTab === 'tasks'
+                                    ? 'bg-purple-600 text-white'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                            <CheckSquare className="w-4 h-4" />
+                            Tasks
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('leaderboard')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                                activeTab === 'leaderboard'
+                                    ? 'bg-purple-600 text-white'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                            <Trophy className="w-4 h-4" />
+                            Leaderboard
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('members')}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                                activeTab === 'members'
+                                    ? 'bg-purple-600 text-white'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            }`}
+                        >
+                            <Users className="w-4 h-4" />
+                            Members
+                        </button>
                     </div>
+
+                    {/* Tab Content */}
+                    {activeTab === 'chat' && (
+                        <TeamChat 
+                            teamId={team._id} 
+                            currentUserId={userId} 
+                            isAdmin={isAdmin} 
+                        />
+                    )}
+                    {activeTab === 'analytics' && (
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                            <TeamAnalytics />
+                        </div>
+                    )}
+                    {activeTab === 'history' && (
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                            <SharedHistory />
+                        </div>
+                    )}
+                    {activeTab === 'tasks' && (
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                            <TeamTasks />
+                        </div>
+                    )}
+                    {activeTab === 'leaderboard' && (
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                            <TeamLeaderboard />
+                        </div>
+                    )}
+                    {activeTab === 'members' && (
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="text-xl font-bold">Team Members</h3>
+                                <button
+                                    onClick={handleLeave}
+                                    className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm font-medium px-4 py-2 hover:bg-red-500/10 rounded-lg transition-colors"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    Leave Team
+                                </button>
+                            </div>
+                            
+                            <div className="space-y-3">
+                                {team.members.map((member) => (
+                                    <div key={member._id} className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full flex items-center justify-center font-bold text-lg">
+                                                {member.user?.name?.charAt(0) || <User className="w-5 h-5" />}
+                                            </div>
+                                            <div>
+                                                <p className="font-bold">{member.user?.name || 'Unknown User'}</p>
+                                                <p className="text-sm text-gray-500">{member.user?.email}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                                                member.role === 'admin' ? 'bg-purple-500/20 text-purple-400' : 'bg-gray-500/20 text-gray-400'
+                                            }`}>
+                                                {member.role}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

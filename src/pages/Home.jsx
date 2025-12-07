@@ -333,50 +333,286 @@ const HowItWorks = () => {
 }
 
 const Testimonials = () => {
-  const testimonials = [
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [rating, setRating] = useState(5);
+  const [feedbackForm, setFeedbackForm] = useState({ name: '', role: '', message: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [approvedFeedbacks, setApprovedFeedbacks] = useState([]);
+  
+  // Dummy testimonials (shown by default)
+  const dummyTestimonials = [
     {
       name: "Sarah Jenkins",
       role: "Content Manager @ TechFlow",
       text: "PlagZap saved us hours of editing time. The humanization feature is indistinguishable from our senior writers' output.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+      rating: 5
     },
     {
       name: "David Chen",
       role: "Freelance Copywriter",
       text: "I was skeptical about AI detection, but this tool found flagged content that 3 other checkers missed. Essential for my workflow.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David"
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+      rating: 5
     },
     {
       name: "Elena Rodriguez",
       role: "Academic Researcher",
       text: "The most accurate detector I've used. It gives me peace of mind before submitting my papers.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena"
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
+      rating: 5
+    },
+    {
+      name: "Michael Thompson",
+      role: "SEO Specialist @ GrowthLabs",
+      text: "Game changer for content teams! We run all our blog posts through PlagZap before publishing. The rewrite suggestions are gold.",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+      rating: 5
+    },
+    {
+      name: "Priya Sharma",
+      role: "PhD Student",
+      text: "As a non-native English speaker, this tool helps me ensure my academic writing doesn't accidentally mirror common AI patterns. Highly recommend!",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
+      rating: 4
+    },
+    {
+      name: "James Wilson",
+      role: "Marketing Director",
+      text: "We've integrated PlagZap into our entire content pipeline. The API is fast, reliable, and the accuracy is unmatched.",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
+      rating: 5
     }
   ];
+
+  // Fetch approved feedbacks from API
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      try {
+        const { data } = await import('../services/api').then(m => m.getApprovedFeedbacks());
+        setApprovedFeedbacks(data.feedbacks || []);
+      } catch (error) {
+        console.error('Failed to load feedbacks:', error);
+      }
+    };
+    fetchFeedbacks();
+  }, [feedbackSubmitted]);
+
+  // Combine dummy + approved feedbacks
+  const allTestimonials = [
+    ...dummyTestimonials,
+    ...approvedFeedbacks.map(f => ({
+      name: f.name,
+      role: f.role,
+      text: f.message,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${f.name}`,
+      rating: f.rating,
+      isUserSubmitted: true
+    }))
+  ];
+
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+    if (!feedbackForm.name || !feedbackForm.message || submitting) return;
+
+    setSubmitting(true);
+    try {
+      const api = await import('../services/api');
+      await api.submitFeedback({
+        name: feedbackForm.name,
+        role: feedbackForm.role,
+        message: feedbackForm.message,
+        rating: rating
+      });
+      
+      setFeedbackSubmitted(true);
+      setTimeout(() => {
+        setShowFeedbackForm(false);
+        setFeedbackSubmitted(false);
+        setFeedbackForm({ name: '', role: '', message: '' });
+        setRating(5);
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to submit feedback:', error);
+      alert(error.response?.data?.error || 'Failed to submit feedback');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <section className="py-24 px-6 relative z-10 bg-gradient-to-b from-transparent to-black/20">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-5xl font-bold text-center text-white mb-16">
-          Loved by <span className="text-violet-400">Creators</span>
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t, i) => (
-            <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm hover:bg-white/10 transition-colors">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            Loved by <span className="text-violet-400">Creators</span>
+          </h2>
+          <p className="text-gray-400 text-lg mb-8">
+            See what our users are saying about PlagZap
+          </p>
+          <button
+            onClick={() => setShowFeedbackForm(true)}
+            className="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all flex items-center gap-2 mx-auto shadow-lg shadow-violet-500/20"
+          >
+            <MessageSquare className="h-5 w-5" />
+            Share Your Feedback
+          </button>
+        </div>
+
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {allTestimonials.map((t, i) => (
+            <motion.div 
+              key={i} 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              viewport={{ once: true }}
+              className={`bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm hover:bg-white/10 transition-all hover:scale-[1.02] ${
+                t.isUserSubmitted ? 'ring-2 ring-violet-500/50' : ''
+              }`}
+            >
+              {t.isUserSubmitted && (
+                <div className="inline-flex items-center gap-1 px-2 py-1 bg-violet-500/20 text-violet-300 text-xs rounded-full mb-3">
+                  <Sparkles className="h-3 w-3" />
+                  New Feedback
+                </div>
+              )}
               <div className="flex gap-1 text-yellow-500 mb-4">
-                {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+                {[...Array(5)].map((_, idx) => (
+                  <Star 
+                    key={idx} 
+                    className={`h-4 w-4 ${idx < t.rating ? 'fill-current' : 'opacity-30'}`} 
+                  />
+                ))}
               </div>
-              <p className="text-gray-300 mb-6 leading-relaxed">"{t.text}"</p>
-              <div className="flex items-center gap-4">
-                <img src={t.avatar} alt={t.name} className="h-10 w-10 rounded-full" />
+              <p className="text-gray-300 mb-6 leading-relaxed text-sm">"{t.text}"</p>
+              <div className="flex items-center gap-3">
+                <img src={t.avatar} alt={t.name} className="h-10 w-10 rounded-full bg-gray-700" />
                 <div>
                   <h4 className="text-white font-bold text-sm">{t.name}</h4>
                   <p className="text-gray-500 text-xs">{t.role}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
+
+        {/* Feedback Form Modal */}
+        <AnimatePresence>
+          {showFeedbackForm && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+              onClick={() => setShowFeedbackForm(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-gray-900 border border-white/10 rounded-2xl p-8 max-w-md w-full shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {feedbackSubmitted ? (
+                  <div className="text-center py-8">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", damping: 10 }}
+                      className="h-20 w-20 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6"
+                    >
+                      <CheckCircle className="h-10 w-10 text-green-400" />
+                    </motion.div>
+                    <h3 className="text-2xl font-bold text-white mb-2">Thank You!</h3>
+                    <p className="text-gray-400">Your feedback has been submitted successfully.</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-bold text-white">Share Your Feedback</h3>
+                      <button 
+                        onClick={() => setShowFeedbackForm(false)}
+                        className="text-gray-400 hover:text-white"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleSubmitFeedback} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Your Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={feedbackForm.name}
+                          onChange={(e) => setFeedbackForm({ ...feedbackForm, name: e.target.value })}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-violet-500 transition-colors"
+                          placeholder="John Doe"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Your Role (Optional)</label>
+                        <input
+                          type="text"
+                          value={feedbackForm.role}
+                          onChange={(e) => setFeedbackForm({ ...feedbackForm, role: e.target.value })}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-violet-500 transition-colors"
+                          placeholder="Content Writer @ Company"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Rating</label>
+                        <div className="flex gap-2">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              type="button"
+                              onClick={() => setRating(star)}
+                              className="focus:outline-none transition-transform hover:scale-110"
+                            >
+                              <Star 
+                                className={`h-8 w-8 ${
+                                  star <= rating 
+                                    ? 'text-yellow-500 fill-current' 
+                                    : 'text-gray-600'
+                                }`} 
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Your Message *</label>
+                        <textarea
+                          required
+                          value={feedbackForm.message}
+                          onChange={(e) => setFeedbackForm({ ...feedbackForm, message: e.target.value })}
+                          rows={4}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-violet-500 transition-colors resize-none"
+                          placeholder="Tell us about your experience with PlagZap..."
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+                      >
+                        <MessageSquare className="h-5 w-5" />
+                        Submit Feedback
+                      </button>
+                    </form>
+                  </>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
