@@ -50,7 +50,9 @@ const PromotionalEmailForm = () => {
 
         setLoading(true);
         try {
+            console.log('Sending promotional email with data:', formData);
             const res = await sendPromotionalEmail(formData);
+            console.log('Response:', res.data);
             toast.success(`Email sent to ${res.data.totalSent} users!`);
             // Reset form
             setFormData({
