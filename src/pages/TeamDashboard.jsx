@@ -172,74 +172,79 @@ const TeamDashboard = () => {
                         </div>
                     </div>
 
-                    {/* Tabs */}
-                    <div className="flex gap-2 border-b border-white/10 pb-2 flex-wrap">
-                        <button
-                            onClick={() => setActiveTab('chat')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-                                activeTab === 'chat'
-                                    ? 'bg-purple-600 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                            }`}
-                        >
-                            <MessageSquare className="w-4 h-4" />
-                            Chat
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('analytics')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-                                activeTab === 'analytics'
-                                    ? 'bg-purple-600 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                            }`}
-                        >
-                            <BarChart3 className="w-4 h-4" />
-                            Analytics
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('history')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-                                activeTab === 'history'
-                                    ? 'bg-purple-600 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                            }`}
-                        >
-                            <FileText className="w-4 h-4" />
-                            Shared
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('tasks')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-                                activeTab === 'tasks'
-                                    ? 'bg-purple-600 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                            }`}
-                        >
-                            <CheckSquare className="w-4 h-4" />
-                            Tasks
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('leaderboard')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-                                activeTab === 'leaderboard'
-                                    ? 'bg-purple-600 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                            }`}
-                        >
-                            <Trophy className="w-4 h-4" />
-                            Leaderboard
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('members')}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-                                activeTab === 'members'
-                                    ? 'bg-purple-600 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                            }`}
-                        >
-                            <Users className="w-4 h-4" />
-                            Members
-                        </button>
+                    {/* Tabs - Horizontally Scrollable */}
+                    <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+                        <div className="flex gap-1 sm:gap-2 border-b border-white/10 pb-2 min-w-max">
+                            <button
+                                onClick={() => setActiveTab('chat')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'chat'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <MessageSquare className="w-4 h-4" />
+                                <span className="hidden sm:inline">Chat</span>
+                                <span className="sm:hidden">Chat</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('analytics')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'analytics'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <BarChart3 className="w-4 h-4" />
+                                <span className="hidden sm:inline">Analytics</span>
+                                <span className="sm:hidden">Stats</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('history')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'history'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <FileText className="w-4 h-4" />
+                                <span>Shared</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('tasks')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'tasks'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <CheckSquare className="w-4 h-4" />
+                                <span>Tasks</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('leaderboard')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'leaderboard'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <Trophy className="w-4 h-4" />
+                                <span className="hidden sm:inline">Leaderboard</span>
+                                <span className="sm:hidden">Rank</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('members')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'members'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <Users className="w-4 h-4" />
+                                <span>Members</span>
+                            </button>
+                        </div>
                     </div>
 
                     {/* Tab Content */}

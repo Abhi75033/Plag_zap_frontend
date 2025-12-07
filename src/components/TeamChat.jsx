@@ -253,35 +253,39 @@ const TeamChat = ({ teamId, currentUserId, isAdmin }) => {
     return (
         <div className="flex flex-col h-[600px] bg-black/20 border border-white/10 rounded-2xl overflow-hidden">
             {/* Header */}
-            <div className="p-4 border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5 text-purple-400" />
-                    <span className="font-bold">Team Chat</span>
-                    <span className="text-xs text-gray-500">({messages.length} messages)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <button
-                        onClick={() => setMessageType('message')}
-                        className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
-                            messageType === 'message' 
-                                ? 'bg-purple-600 text-white' 
-                                : 'bg-white/5 text-gray-400 hover:text-white'
-                        }`}
-                    >
-                        Message
-                    </button>
+            <div className="p-3 sm:p-4 border-b border-white/10">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                        <MessageSquare className="w-5 h-5 text-purple-400 flex-shrink-0" />
+                        <span className="font-bold text-sm sm:text-base truncate">Team Chat</span>
+                        <span className="text-xs text-gray-500 hidden sm:inline">({messages.length})</span>
+                    </div>
+                    <div className="flex gap-1 sm:gap-2 items-center flex-shrink-0">
+                        <button
+                            onClick={() => setMessageType('message')}
+                            className={`p-2 sm:px-3 sm:py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${
+                                messageType === 'message' 
+                                    ? 'bg-purple-600 text-white' 
+                                    : 'bg-white/5 text-gray-400 hover:text-white'
+                            }`}
+                            title="Message"
+                        >
+                            <MessageSquare className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">Message</span>
+                        </button>
                     {isAdmin && (
                         <>
                             <button
                                 onClick={() => setMessageType('announcement')}
-                                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${
+                                className={`p-2 sm:px-3 sm:py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${
                                     messageType === 'announcement' 
                                         ? 'bg-yellow-600 text-white' 
                                         : 'bg-white/5 text-gray-400 hover:text-white'
                                 }`}
+                                title="Announcement"
                             >
-                                <Megaphone className="w-3 h-3" />
-                                Announcement
+                                <Megaphone className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">Announce</span>
                             </button>
                             
                             {/* Admin Settings Button */}
@@ -318,7 +322,7 @@ const TeamChat = ({ teamId, currentUserId, isAdmin }) => {
                                                 >
                                                     <div className="flex items-center gap-2">
                                                         <Users className="w-4 h-4 text-blue-400" />
-                                                        <span className="text-sm">Admin-only messaging</span>
+                                                        <span className="text-sm">Admin-only</span>
                                                     </div>
                                                     <div className={`w-8 h-4 rounded-full transition-colors ${
                                                         teamSettings.adminOnlyMessages ? 'bg-green-500' : 'bg-gray-600'
@@ -337,7 +341,7 @@ const TeamChat = ({ teamId, currentUserId, isAdmin }) => {
                                                     className="w-full px-3 py-2 rounded-lg hover:bg-red-500/10 transition-colors flex items-center gap-2 text-red-400"
                                                 >
                                                     <Trash className="w-4 h-4" />
-                                                    <span className="text-sm">Clear all messages</span>
+                                                    <span className="text-sm">Clear all</span>
                                                 </button>
                                             </div>
                                         </motion.div>
@@ -346,6 +350,7 @@ const TeamChat = ({ teamId, currentUserId, isAdmin }) => {
                             </div>
                         </>
                     )}
+                    </div>
                 </div>
             </div>
 
