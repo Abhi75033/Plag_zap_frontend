@@ -132,77 +132,72 @@ const SharedHistory = () => {
                                 {/* Main Card - Clickable */}
                                 <div 
                                     onClick={() => openDetails(item)}
-                                    className="p-4 cursor-pointer group"
+                                    className="p-3 sm:p-4 cursor-pointer group"
                                 >
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex-1">
-                                            <h4 className="font-medium text-white mb-1 flex items-center gap-2">
-                                                {item.title || 'Untitled Analysis'}
-                                                <Eye className="w-4 h-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            </h4>
-                                            <p className="text-sm text-gray-400 line-clamp-2">
-                                                {item.originalText?.slice(0, 150)}...
-                                            </p>
-                                            <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                                                <span className="flex items-center gap-1">
-                                                    <User className="w-3 h-3" />
-                                                    {item.userId?.name || 'Unknown'}
-                                                </span>
-                                                <span className="flex items-center gap-1">
-                                                    <Clock className="w-3 h-3" />
-                                                    {formatDate(item.createdAt)}
-                                                </span>
-                                                <span className="flex items-center gap-1">
-                                                    <MessageCircle className="w-3 h-3" />
-                                                    {item.comments?.length || 0} comments
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className={`px-3 py-1 rounded-full text-sm font-bold ${getScoreColor(item.overallScore)}`}>
+                                    {/* Header with title and score */}
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                        <h4 className="font-medium text-white text-sm sm:text-base line-clamp-1 flex-1">
+                                            {item.title || 'Untitled Analysis'}
+                                        </h4>
+                                        <div className={`px-2 py-0.5 rounded-full text-xs sm:text-sm font-bold flex-shrink-0 ${getScoreColor(item.overallScore)}`}>
                                             {item.overallScore?.toFixed(0)}%
                                         </div>
                                     </div>
+                                    
+                                    {/* Preview text */}
+                                    <p className="text-xs sm:text-sm text-gray-400 line-clamp-2 mb-2">
+                                        {item.originalText?.slice(0, 100)}...
+                                    </p>
+                                    
+                                    {/* Metadata - wraps on mobile */}
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-gray-500">
+                                        <span className="flex items-center gap-1">
+                                            <User className="w-3 h-3" />
+                                            {item.userId?.name?.split(' ')[0] || 'Unknown'}
+                                        </span>
+                                        <span className="flex items-center gap-1">
+                                            <Clock className="w-3 h-3" />
+                                            {new Date(item.createdAt).toLocaleDateString()}
+                                        </span>
+                                        {item.comments?.length > 0 && (
+                                            <span className="flex items-center gap-1 text-purple-400">
+                                                <MessageCircle className="w-3 h-3" />
+                                                {item.comments.length}
+                                            </span>
+                                        )}
+                                        <Eye className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-50 transition-opacity" />
+                                    </div>
                                 </div>
 
-                                {/* Comments Section - Always visible */}
+                                {/* Comments Section - Simplified for mobile */}
                                 {item.comments && item.comments.length > 0 && (
-                                    <div className="border-t border-white/10 bg-black/20 px-4 py-3">
-                                        <div className="text-xs text-gray-400 mb-2 flex items-center gap-1">
-                                            <MessageCircle className="w-3 h-3" />
-                                            Team Feedback
-                                        </div>
-                                        <div className="space-y-2 max-h-32 overflow-y-auto">
-                                            {item.comments.slice(-3).map((comment) => (
+                                    <div className="border-t border-white/10 bg-black/30 px-3 py-2">
+                                        <div className="space-y-1.5">
+                                            {item.comments.slice(-2).map((comment) => (
                                                 <div key={comment._id} className="flex items-start gap-2">
-                                                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xs font-bold">
+                                                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-[10px] font-bold">
                                                         {comment.userId?.name?.charAt(0) || '?'}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="flex items-center gap-2 mb-0.5">
-                                                            <span className="text-xs font-medium text-white">{comment.userId?.name}</span>
+                                                        <div className="flex items-center gap-1 flex-wrap">
+                                                            <span className="text-[10px] font-medium text-white">{comment.userId?.name?.split(' ')[0]}</span>
                                                             {comment.type === 'suggestion' && (
-                                                                <span className="text-[10px] px-1.5 py-0.5 bg-yellow-500/20 text-yellow-400 rounded flex items-center gap-0.5">
-                                                                    <Lightbulb className="w-2.5 h-2.5" />
-                                                                    Suggestion
-                                                                </span>
+                                                                <span className="text-[9px] px-1 py-0.5 bg-yellow-500/20 text-yellow-400 rounded">💡</span>
                                                             )}
                                                             {comment.type === 'feedback' && (
-                                                                <span className="text-[10px] px-1.5 py-0.5 bg-blue-500/20 text-blue-400 rounded">
-                                                                    Feedback
-                                                                </span>
+                                                                <span className="text-[9px] px-1 py-0.5 bg-blue-500/20 text-blue-400 rounded">📝</span>
                                                             )}
-                                                            <span className="text-[10px] text-gray-600">{formatDate(comment.createdAt)}</span>
                                                         </div>
-                                                        <p className="text-xs text-gray-300 line-clamp-2">{comment.text}</p>
+                                                        <p className="text-[10px] text-gray-400 line-clamp-1">{comment.text}</p>
                                                     </div>
                                                 </div>
                                             ))}
-                                            {item.comments.length > 3 && (
+                                            {item.comments.length > 2 && (
                                                 <button 
-                                                    onClick={() => openDetails(item)}
-                                                    className="text-xs text-purple-400 hover:text-purple-300"
+                                                    onClick={(e) => { e.stopPropagation(); openDetails(item); }}
+                                                    className="text-[10px] text-purple-400 hover:text-purple-300"
                                                 >
-                                                    View all {item.comments.length} comments →
+                                                    +{item.comments.length - 2} more →
                                                 </button>
                                             )}
                                         </div>

@@ -111,27 +111,38 @@ const TeamTasks = () => {
     return (
         <div className="space-y-4">
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div className="flex gap-2">
-                    {['all', 'todo', 'in_progress', 'done'].map(f => (
-                        <button
-                            key={f}
-                            onClick={() => setFilter(f)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                                filter === f ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
-                            }`}
-                        >
-                            {f === 'all' ? 'All' : f.replace('_', ' ')}
-                        </button>
-                    ))}
-                </div>
+            <div className="space-y-3">
+                {/* Add Task Button - Full width on mobile */}
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className="flex items-center gap-1 px-4 py-2 bg-purple-600 text-white rounded-lg font-medium text-sm hover:bg-purple-700 transition-colors"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-purple-600 text-white rounded-xl font-medium text-sm hover:bg-purple-700 transition-colors"
                 >
                     <Plus className="w-4 h-4" />
-                    Add Task
+                    {showForm ? 'Cancel' : 'Add New Task'}
                 </button>
+
+                {/* Filter Buttons - Horizontally scrollable */}
+                <div className="overflow-x-auto scrollbar-hide -mx-2 px-2">
+                    <div className="flex gap-2 min-w-max pb-1">
+                        {['all', 'todo', 'in_progress', 'done'].map(f => {
+                            const StatusIcon = STATUS_ICONS[f] || Circle;
+                            return (
+                                <button
+                                    key={f}
+                                    onClick={() => setFilter(f)}
+                                    className={`px-3 py-2 rounded-xl text-xs font-medium transition-colors flex items-center gap-1.5 whitespace-nowrap ${
+                                        filter === f 
+                                            ? 'bg-purple-600 text-white' 
+                                            : 'bg-white/5 text-gray-400 hover:text-white border border-white/10'
+                                    }`}
+                                >
+                                    {f !== 'all' && <StatusIcon className="w-3.5 h-3.5" />}
+                                    {f === 'all' ? 'All' : f === 'in_progress' ? 'In Progress' : f.charAt(0).toUpperCase() + f.slice(1)}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
 
             {/* New Task Form */}
