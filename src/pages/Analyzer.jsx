@@ -430,28 +430,28 @@ const Analyzer = () => {
             )}
 
             {inputType === 'url' && (
-              <div className="h-64 flex flex-col justify-center items-center p-8">
-                <div className="w-full max-w-md space-y-4">
-                  <div className="text-center mb-6">
-                    <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <LinkIcon className="w-8 h-8 text-purple-400" />
+              <div className="h-auto sm:h-64 flex flex-col justify-center items-center p-4 sm:p-8">
+                <div className="w-full space-y-4">
+                  <div className="text-center mb-4 sm:mb-6">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <LinkIcon className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                     </div>
-                    <h3 className="text-xl font-bold">Analyze from URL</h3>
-                    <p className="text-gray-400 text-sm">Paste a link to fetch text from any webpage</p>
+                    <h3 className="text-lg sm:text-xl font-bold">Analyze from URL</h3>
+                    <p className="text-gray-400 text-xs sm:text-sm">Paste a link to fetch text from any webpage</p>
                   </div>
-                  <form onSubmit={handleUrlExtract} className="flex gap-2">
+                  <form onSubmit={handleUrlExtract} className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="url"
                       placeholder="https://example.com/article"
                       value={urlInput}
                       onChange={(e) => setUrlInput(e.target.value)}
-                      className="flex-1 bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors"
+                      className="flex-1 bg-black/20 border border-white/10 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base focus:outline-none focus:border-purple-500 transition-colors"
                       required
                     />
                     <button
                       type="submit"
                       disabled={extractingUrl}
-                      className="bg-purple-600 hover:bg-purple-700 text-white px-6 rounded-lg font-medium transition-colors disabled:opacity-50 flex items-center gap-2"
+                      className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 sm:py-3 rounded-lg font-medium transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       {extractingUrl ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Fetch'}
                     </button>
