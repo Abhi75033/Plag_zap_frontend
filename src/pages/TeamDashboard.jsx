@@ -276,33 +276,42 @@ const TeamDashboard = () => {
                         </div>
                     )}
                     {activeTab === 'members' && (
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                            <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xl font-bold">Team Members</h3>
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6">
+                                <h3 className="text-lg sm:text-xl font-bold">Team Members</h3>
                                 <button
                                     onClick={handleLeave}
-                                    className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm font-medium px-4 py-2 hover:bg-red-500/10 rounded-lg transition-colors"
+                                    className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm font-medium px-3 sm:px-4 py-2 hover:bg-red-500/10 rounded-lg transition-colors border border-red-500/20 hover:border-red-500/40"
                                 >
                                     <LogOut className="w-4 h-4" />
-                                    Leave Team
+                                    <span>Leave Team</span>
                                 </button>
                             </div>
                             
                             <div className="space-y-3">
                                 {team.members.map((member) => (
-                                    <div key={member._id} className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full flex items-center justify-center font-bold text-lg">
-                                                {member.user?.name?.charAt(0) || <User className="w-5 h-5" />}
+                                    <div 
+                                        key={member._id} 
+                                        className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 p-4 bg-black/30 rounded-xl border border-white/10 hover:border-purple-500/30 transition-all"
+                                    >
+                                        <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center font-bold text-base sm:text-lg shrink-0">
+                                                {member.user?.name?.charAt(0).toUpperCase() || <User className="w-5 h-5 sm:w-6 sm:h-6" />}
                                             </div>
-                                            <div>
-                                                <p className="font-bold">{member.user?.name || 'Unknown User'}</p>
-                                                <p className="text-sm text-gray-500">{member.user?.email}</p>
+                                            <div className="min-w-0 flex-1">
+                                                <p className="font-bold text-sm sm:text-base truncate">
+                                                    {member.user?.name || 'Unknown User'}
+                                                </p>
+                                                <p className="text-xs sm:text-sm text-gray-400 truncate">
+                                                    {member.user?.email}
+                                                </p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-4">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                                                member.role === 'admin' ? 'bg-purple-500/20 text-purple-400' : 'bg-gray-500/20 text-gray-400'
+                                        <div className="flex items-center gap-3 self-end sm:self-auto">
+                                            <span className={`px-2.5 sm:px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
+                                                member.role === 'admin' 
+                                                    ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
+                                                    : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
                                             }`}>
                                                 {member.role}
                                             </span>
