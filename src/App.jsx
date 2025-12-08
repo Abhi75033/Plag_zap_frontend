@@ -35,6 +35,7 @@ import Integrations from './pages/Integrations';
 import Features from './pages/Features';
 import Shipping from './pages/Shipping';
 import Refunds from './pages/Refunds';
+import AuthCallback from './pages/AuthCallback';
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/auth-callback" element={<AuthCallback />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-cancelled" element={<PaymentCancelled />} />
