@@ -19,6 +19,7 @@ import {
   ChevronDown,
   HelpCircle
 } from 'lucide-react';
+import DownloadApp from '../components/DownloadApp';
 
 // --- Utility Components ---
 
@@ -814,6 +815,7 @@ const App = () => {
               transition={{ duration: 0.3 }}
             >
               <Hero navigate={navigate} />
+              <DownloadApp />
               <Features />
               <HowItWorks />
               <Testimonials />
