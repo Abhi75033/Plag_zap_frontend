@@ -4,12 +4,15 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useAppContext } from '../context/AppContext';
 import { Mail, Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import PromotionalModal from '../components/ui/PromotionalModal';
+import api from '../services/api'; // Use centralized api client
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [promoModal, setPromoModal] = useState({ isOpen: false, promo: null });
   const { register } = useAppContext();
   const navigate = useNavigate();
 
@@ -19,9 +22,27 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await register(formData);
+      const response = await register(formData);
       toast.success('Account created successfully! 🎉');
-      navigate('/analyzer');
+      
+      // Check if user is free tier and fetch promo
+      let showPromo = false;
+      // Note: New users are usually free tier by default
+      if (response && response.user && response.user.subscriptionTier === 'free') {
+        try {
+          const { data } = await api.get('/promo-settings/active'); // Use api client
+          if (data.active) {
+             showPromo = true;
+             setPromoModal({ isOpen: true, promo: data });
+          }
+        } catch (promoError) {
+          console.log('Promo fetch error:', promoError);
+        }
+      }
+      
+      if (!showPromo) {
+        navigate('/analyzer');
+      }
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Registration failed';
       setError(errorMessage);
@@ -33,7 +54,7 @@ const Register = () => {
 
   const handleGoogleLogin = () => {
     // Redirect to backend Google OAuth endpoint
-    window.location.href = `${import.meta.env.VITE_API_URL || 'https://plagzap-backend-2.onrender.com/api'}/auth/google`;
+    window.location.href = `${api.defaults.baseURL}/auth/google`;
   };
 
   return (
@@ -164,6 +185,16 @@ const Register = () => {
           </p>
         </div>
       </motion.div>
+
+      {/* Promotional Modal */}
+      <PromotionalModal
+        isOpen={promoModal.isOpen}
+        onClose={() => {
+            setPromoModal({ isOpen: false, promo: null });
+            navigate('/analyzer');
+        }}
+        promo={promoModal.promo}
+      />
     </div>
   );
 };

@@ -26,6 +26,7 @@ import { useAppContext } from '../context/AppContext';
 import { getUsage, getHistory, getApiKeyHistory, revokeApiKey, getGamificationStats, cancelSubscription } from '../services/api';
 import WebhooksManager from '../components/ui/WebhooksManager';
 import StreakBadges from '../components/ui/StreakBadges';
+import PromoBanner from '../components/ui/PromoBanner';
 
 const Dashboard = () => {
   const { user, logout } = useAppContext();
@@ -179,6 +180,8 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen pt-24 px-4 pb-16">
       <div className="max-w-7xl mx-auto">
+        {/* Promotional Banner - only for free users */}
+        {user?.subscriptionTier === 'free' && <PromoBanner />}
         {/* Welcome Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

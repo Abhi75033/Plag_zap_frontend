@@ -17,6 +17,7 @@ import AnalysisReport from '../components/pdf/AnalysisReport';
 import ComparisonView from '../components/ui/ComparisonView';
 import CitationGenerator from '../components/ui/CitationGenerator';
 import GrammarView from '../components/ui/GrammarView';
+import PromoBanner from '../components/ui/PromoBanner';
 
 const Analyzer = () => {
   const navigate = useNavigate();
@@ -305,6 +306,9 @@ const Analyzer = () => {
 
   return (
     <div className="min-h-screen pt-20 sm:pt-24 px-2 sm:px-4 pb-6 sm:pb-10 max-w-6xl mx-auto">
+      {/* Promotional Banner - only for free users */}
+      {!isPaidUser && <PromoBanner />}
+      
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-start">
         {/* Input Section */}
         <div className="lg:col-span-8 space-y-4 sm:space-y-6">

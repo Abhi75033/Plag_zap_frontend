@@ -10,6 +10,7 @@ import {
   validateCoupon,
 } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import PromoBanner from "../components/ui/PromoBanner";
 
 const Pricing = () => {
   const [plans, setPlans] = useState([]);
@@ -37,6 +38,13 @@ const Pricing = () => {
         setLoading(false);
       }
     })();
+    
+    // Check for promo coupon code from banner
+    const promoCoupon = sessionStorage.getItem('promoCouponCode');
+    if (promoCoupon) {
+      setCouponCode(promoCoupon);
+      sessionStorage.removeItem('promoCouponCode'); // Clear after use
+    }
   }, []);
 
   // Load Razorpay script
@@ -184,6 +192,8 @@ const Pricing = () => {
     <div className="min-h-screen pt-24 px-4 pb-16">
       <div className="max-w-7xl mx-auto">
         
+        {/* Promotional Banner */}
+        <PromoBanner showOnPaidUsers={true} />
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

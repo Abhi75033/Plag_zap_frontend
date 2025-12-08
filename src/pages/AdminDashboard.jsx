@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CouponManager from '../components/admin/CouponManager';
 import PromotionalEmailForm from '../components/admin/PromotionalEmailForm';
 import PriceManager from '../components/admin/PriceManager';
+import PromoBannerSettings from '../components/admin/PromoBannerSettings';
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
     <div className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
@@ -569,6 +570,7 @@ const AdminDashboard = () => {
             {/* Marketing Tab - Coupons & Promotional Emails */}
             {activeTab === 'marketing' && (
                 <div className="space-y-8">
+                    <PromoBannerSettings />
                     <CouponManager />
                     <PriceManager />
                     <PromotionalEmailForm />
