@@ -304,29 +304,29 @@ const Analyzer = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 px-4 pb-10 max-w-6xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div className="min-h-screen pt-20 sm:pt-24 px-2 sm:px-4 pb-6 sm:pb-10 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-start">
         {/* Input Section */}
-        <div className="lg:col-span-8 space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold">Content Analyzer</h2>
+        <div className="lg:col-span-8 space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+            <h2 className="text-2xl sm:text-3xl font-bold">Content Analyzer</h2>
             {renderUsageInfo()}
           </div>
           
-          <div className="bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+          <div className="bg-background/50 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl relative overflow-hidden">
             {/* Input Type Tabs */}
-            <div className="flex items-center gap-2 mb-4 bg-black/20 p-1 rounded-lg w-fit">
+            <div className="flex items-center gap-1 sm:gap-2 mb-4 bg-black/20 p-1 rounded-lg w-full sm:w-fit overflow-x-auto">
               <button
                 onClick={() => setInputType('text')}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                   inputType === 'text' 
                     ? 'bg-purple-600 text-white shadow-lg' 
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  Text
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span>Text</span>
                 </div>
               </button>
               <button
@@ -337,7 +337,7 @@ const Analyzer = () => {
                   }
                   setInputType('file');
                 }}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                   inputType === 'file' 
                     ? 'bg-purple-600 text-white shadow-lg' 
                     : isPaidUser 
@@ -346,10 +346,10 @@ const Analyzer = () => {
                 }`}
                 title={!isPaidUser ? 'Upgrade to use file upload' : 'Upload a file'}
               >
-                 <div className="flex items-center gap-2">
-                  <Upload className="w-4 h-4" />
-                  File upload
-                  {!isPaidUser && <Lock className="w-3 h-3 ml-1" />}
+                 <div className="flex items-center gap-1.5 sm:gap-2">
+                  <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">File</span>
+                  {!isPaidUser && <Lock className="w-3 h-3" />}
                 </div>
               </button>
               <button
@@ -360,7 +360,7 @@ const Analyzer = () => {
                   }
                   setInputType('url');
                 }}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                   inputType === 'url' 
                     ? 'bg-purple-600 text-white shadow-lg' 
                     : isPaidUser 
@@ -369,10 +369,10 @@ const Analyzer = () => {
                 }`}
                 title={!isPaidUser ? 'Upgrade to use URL extraction' : 'Extract from URL'}
               >
-                 <div className="flex items-center gap-2">
-                  <LinkIcon className="w-4 h-4" />
-                  URL
-                  {!isPaidUser && <Lock className="w-3 h-3 ml-1" />}
+                 <div className="flex items-center gap-1.5 sm:gap-2">
+                  <LinkIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span>URL</span>
+                  {!isPaidUser && <Lock className="w-3 h-3" />}
                 </div>
               </button>
             </div>
@@ -406,7 +406,7 @@ const Analyzer = () => {
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="Paste your text here (min 10 words)..."
-                  className="w-full h-64 bg-black/20 border border-white/10 rounded-xl p-4 focus:outline-none focus:border-purple-500/50 transition-colors resize-none"
+                  className="w-full h-48 sm:h-64 bg-black/20 border border-white/10 rounded-xl p-3 sm:p-4 text-sm sm:text-base focus:outline-none focus:border-purple-500/50 transition-colors resize-none"
                 />
                 {!text && (
                     <button 
@@ -461,14 +461,14 @@ const Analyzer = () => {
             )}
           </div>
           
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4">
             <div className="flex-1 flex items-center justify-end">
               <button
                 onClick={handleAnalyze}
                 disabled={loading || !text}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 px-4 sm:px-8 rounded-lg sm:rounded-xl text-sm sm:text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loading ? <Loader2 className="animate-spin" /> : 'Run Plagiarism Check'}
+                {loading ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <><span className="hidden sm:inline">Run Plagiarism Check</span><span className="sm:hidden">Check Plagiarism</span></>}
               </button>
             </div>
           </div>
