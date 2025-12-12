@@ -36,6 +36,9 @@ coverage/
 *.tmp
 *.temp
 .cache/
+<<<<<<< HEAD
 
 # NPM Cache
 .npm-custom-cache/
+=======
+>>>>>>> a7f067731c73a6078caedeb8b869e6350e244874
