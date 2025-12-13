@@ -679,12 +679,15 @@ const VideoConnect = ({ teamId, user }) => {
             return 'flex flex-col';
         }
         
-        // Grid layout
+        // Grid layout - FORCE 2 columns on mobile to match Google Meet
+        // Mobile (<640px): Always 2 columns
+        // Desktop (>=640px): Dynamic based on participant count
         if (totalParticipants === 1) return 'grid grid-cols-1';
-        if (totalParticipants === 2) return 'grid grid-cols-2';
+        if (totalParticipants === 2) return 'grid grid-cols-1 sm:grid-cols-2';
+        // Force 2 columns on mobile, more on desktop
         if (totalParticipants <= 4) return 'grid grid-cols-2';
-        if (totalParticipants <= 9) return 'grid grid-cols-3';
-        return 'grid grid-cols-3 lg:grid-cols-4';
+        if (totalParticipants <= 9) return 'grid grid-cols-2 sm:grid-cols-3';
+        return 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4';
     };
 
     return (
@@ -835,55 +838,49 @@ const VideoConnect = ({ teamId, user }) => {
                 )}
             </div>
 
-            {/* Controls - Google Meet Style: Mobile First Design */}
-            <div className="p-3 sm:p-4 md:p-6 flex justify-center sm:justify-between items-center gap-3 sm:gap-4 bg-black/80 md:bg-black/40 backdrop-blur-md border-t border-white/10 fixed md:absolute bottom-0 w-full z-20">
-                {/* Mobile: Primary controls only (Mic, Cam, End Call) */}
-                {/* Desktop: All controls */}
+            {/* Controls - Google Meet Exact Mobile Design */}
+            <div className="p-4 sm:p-4 md:p-6 flex justify-between items-center gap-4 bg-black/90 md:bg-black/40 backdrop-blur-md border-t border-white/10 fixed md:absolute bottom-0 w-full z-20">
                 
-                {/* Left: Primary Media Controls - Always visible */}
-                <div className="flex items-center gap-2 sm:gap-3">
+                {/* Mobile: ONLY 4 buttons (Mic, Cam, More, Leave) */}
+                {/* Desktop: Show all controls */}
+                
+                {/* Left: Mic & Camera - Always visible */}
+                <div className="flex items-center gap-3">
                     <button 
                         onClick={toggleMic}
                         title={micOn ? "Mute" : "Unmute"}
-                        className={`p-3 sm:p-3.5 md:p-4 rounded-full transition-all min-w-[48px] min-h-[48px] sm:min-w-[52px] sm:min-h-[52px] flex items-center justify-center ${micOn ? 'bg-[#3C4043] hover:bg-[#5F6368]' : 'bg-red-600 hover:bg-red-700'}`}
+                        className={`p-4 rounded-full transition-all min-w-[56px] min-h-[56px] flex items-center justify-center ${
+                            micOn ? 'bg-[#3C4043] hover:bg-[#5F6368]' : 'bg-[#EA4335] hover:bg-[#D33B2C]'
+                        }`}
                     >
-                        {micOn ? <Mic className="w-5 sm:w-6 h-5 sm:h-6" /> : <MicOff className="w-5 sm:w-6 h-5 sm:h-6" />}
+                        {micOn ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
                     </button>
                     
                     <button 
                         onClick={toggleCam}
                         title={camOn ? "Turn off camera" : "Turn on camera"}
-                        className={`p-3 sm:p-3.5 md:p-4 rounded-full transition-all min-w-[48px] min-h-[48px] sm:min-w-[52px] sm:min-h-[52px] flex items-center justify-center ${camOn ? 'bg-[#3C4043] hover:bg-[#5F6368]' : 'bg-red-600 hover:bg-red-700'}`}
+                        className={`p-4 rounded-full transition-all min-w-[56px] min-h-[56px] flex items-center justify-center ${
+                            camOn ? 'bg-[#3C4043] hover:bg-[#5F6368]' : 'bg-[#EA4335] hover:bg-[#D33B2C]'
+                        }`}
                     >
-                        {camOn ? <Video className="w-5 sm:w-6 h-5 sm:h-6" /> : <VideoOff className="w-5 sm:w-6 h-5 sm:h-6" />}
+                        {camOn ? <Video className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
                     </button>
 
-                    {/* Desktop: Show screen share */}
+                    {/* Desktop only: Additional controls */}
                     <button 
                         onClick={toggleScreenShare}
                         title={isScreenSharing ? "Stop sharing" : "Share screen"}
-                        className={`hidden sm:flex p-3 md:p-4 rounded-full transition-all items-center justify-center ${isScreenSharing ? 'bg-purple-600 hover:bg-purple-700' : 'bg-[#3C4043] hover:bg-[#5F6368]'}`}
+                        className={`hidden md:flex p-4 rounded-full transition-all items-center justify-center ${
+                            isScreenSharing ? 'bg-purple-600 hover:bg-purple-700' : 'bg-[#3C4043] hover:bg-[#5F6368]'
+                        }`}
                     >
                         {isScreenSharing ? <MonitorOff className="w-5 h-5" /> : <Monitor className="w-5 h-5" />}
                     </button>
-                </div>
 
-                {/* Center: End Call Button - Google Meet style (prominently placed) */}
-                <button 
-                    onClick={leaveCall}
-                    className="bg-red-600 hover:bg-red-700 text-white p-3.5 sm:p-4 md:px-6 rounded-full font-bold shadow-lg flex items-center gap-2 min-w-[48px] min-h-[48px] sm:min-w-[52px] sm:min-h-[52px]"
-                >
-                    <PhoneOff className="w-5 sm:w-6 h-5 sm:h-6" />
-                    <span className="hidden md:inline text-sm">Leave</span>
-                </button>
-
-                {/* Right: Secondary Controls */}
-                <div className="flex items-center gap-2 sm:gap-3">
-                    {/* Chat Toggle - Always visible */}
                     <button 
                         onClick={() => { setShowChat(!showChat); if (!showChat) setUnreadCount(0); }}
                         title="Toggle chat"
-                        className="p-2.5 sm:p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all relative min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        className="hidden md:flex p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all relative items-center justify-center"
                     >
                         <MessageSquare className="w-5 h-5" />
                         {unreadCount > 0 && (
@@ -892,47 +889,18 @@ const VideoConnect = ({ teamId, user }) => {
                             </span>
                         )}
                     </button>
+                </div>
 
-                    {/* Desktop: Layout and Fullscreen */}
-                    <button 
-                        onClick={() => {
-                            const layouts = ['grid', 'sidebar', 'spotlight'];
-                            const currentIndex = layouts.indexOf(layout);
-                            const nextLayout = layouts[(currentIndex + 1) % layouts.length];
-                            setLayout(nextLayout);
-                            toast(`Layout: ${nextLayout}`);
-                        }}
-                        title="Change layout"
-                        className="hidden md:flex p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all items-center justify-center"
-                    >
-                        <Grid3x3 className="w-5 h-5" />
-                    </button>
-
-                    <button 
-                        onClick={toggleFullscreen}
-                        title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-                        className="hidden md:flex p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all items-center justify-center"
-                    >
-                        {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
-                    </button>
-
-                    {/* Settings - Desktop only */}
-                    <button 
-                        onClick={() => setShowSettings(!showSettings)}
-                        title="Settings"
-                        className="hidden sm:flex p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all items-center justify-center"
-                    >
-                        <SettingsIcon className="w-5 h-5" />
-                    </button>
-
-                    {/* More Options - Always visible */}
+                {/* Right: More & Leave - Always visible */}
+                <div className="flex items-center gap-3">
+                    {/* More Options */}
                     <div className="relative">
                         <button 
                             onClick={() => setShowMoreMenu(!showMoreMenu)}
                             title="More options"
-                            className="p-2.5 sm:p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all min-w-[44px] min-h-[44px] flex items-center justify-center"
+                            className="p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all min-w-[56px] min-h-[56px] md:min-w-[48px] md:min-h-[48px] flex items-center justify-center"
                         >
-                            <MoreVertical className="w-5 h-5" />
+                            <MoreVertical className="w-6 h-6 md:w-5 md:h-5" />
                         </button>
 
                         {showMoreMenu && (
@@ -977,6 +945,15 @@ const VideoConnect = ({ teamId, user }) => {
                             </>
                         )}
                     </div>
+
+                    {/* Leave Button - Google Meet style (red, prominent) */}
+                    <button 
+                        onClick={leaveCall}
+                        className="bg-[#EA4335] hover:bg-[#D33B2C] text-white p-4 rounded-full font-bold shadow-lg flex items-center gap-2 min-w-[56px] min-h-[56px]"
+                    >
+                        <PhoneOff className="w-6 h-6" />
+                        <span className="hidden md:inline text-sm">Leave</span>
+                    </button>
                 </div>
             </div>
 
