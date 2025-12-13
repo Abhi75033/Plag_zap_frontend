@@ -61,22 +61,39 @@ const TeamTasks = () => {
         }
     };
 
-    const handleCreate = async (e) => {
+    const handleCreateTask = async (e) => {
         e.preventDefault();
-        if (!newTask.title.trim()) return;
+        if (!newTask.title.trim()) {
+            toast.error('Task title cannot be empty.');
+            return;
+        }
 
         try {
-            const { data } = await createTeamTask({
-                ...newTask,
-                assignee: newTask.assignee || null,
+            // The select input for assignee already sets newTask.assignee to the member's _id.
+            // So, we just need to ensure it's null if empty.
+            const taskData = {
+                title: newTask.title,
+                description: newTask.description,
+                priority: newTask.priority,
+                assignee: newTask.assignee || null, // Use the ID directly from state
                 dueDate: newTask.dueDate || null
-            });
+            };
+
+            const { data } = await createTeamTask(taskData);
+            
             setTasks(prev => [data.task, ...prev]);
-            setNewTask({ title: '', description: '', priority: 'medium', assignee: '', dueDate: '' });
             setShowForm(false);
-            toast.success('Task created');
+            setNewTask({
+                title: '',
+                description: '',
+                priority: 'medium',
+                assignee: '',
+                dueDate: ''
+            });
+            toast.success('Task created successfully!');
         } catch (error) {
-            toast.error('Failed to create task');
+            console.error('Create task error:', error);
+            toast.error(error.response?.data?.error || 'Failed to create task');
         }
     };
 
