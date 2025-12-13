@@ -907,38 +907,41 @@ const VideoConnect = ({ teamId, user }) => {
                             <>
                                 {/* Click outside to close */}
                                 <div 
-                                    className="fixed inset-0 z-40" 
+                                    className="fixed inset-0 z-[100]" 
                                     onClick={() => setShowMoreMenu(false)}
                                 />
                                 
-                                {/* Menu */}
+                                {/* Menu - Fixed positioning for mobile */}
                                 <div 
-                                    className="fixed md:absolute bottom-20 md:bottom-full right-2 md:right-0 mb-2 bg-[#303134] rounded-lg shadow-2xl border border-white/10 p-2 min-w-[200px] z-50"
+                                    className="fixed bottom-[80px] right-4 md:absolute md:bottom-full md:right-0 md:mb-2 bg-[#303134] rounded-lg shadow-2xl border border-white/10 p-2 min-w-[200px] max-w-[280px] z-[101]"
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     <button 
-                                        onClick={toggleHandRaise}
-                                        className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left"
+                                        onClick={() => {
+                                            toggleHandRaise();
+                                            setShowMoreMenu(false);
+                                        }}
+                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-lg transition-colors text-left"
                                     >
-                                        <Hand className="w-4 h-4" />
-                                        <span className="text-sm">{handRaised ? 'Lower hand' : 'Raise hand'}</span>
+                                        <Hand className="w-5 h-5" />
+                                        <span className="text-sm font-medium">{handRaised ? 'Lower hand' : 'Raise hand'}</span>
                                     </button>
                                     <div className="border-t border-white/10 my-2"></div>
-                                    <p className="text-xs text-gray-500 px-4 py-1">Reactions</p>
-                                    <button onClick={() => sendReaction('👍')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
-                                        <span className="text-lg">👍</span>
+                                    <p className="text-xs text-gray-500 px-4 py-1 font-semibold uppercase">Reactions</p>
+                                    <button onClick={() => { sendReaction('👍'); setShowMoreMenu(false); }} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-2xl">👍</span>
                                         <span className="text-sm">Thumbs up</span>
                                     </button>
-                                    <button onClick={() => sendReaction('❤️')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
-                                        <span className="text-lg">❤️</span>
+                                    <button onClick={() => { sendReaction('❤️'); setShowMoreMenu(false); }} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-2xl">❤️</span>
                                         <span className="text-sm">Heart</span>
                                     </button>
-                                    <button onClick={() => sendReaction('😂')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
-                                        <span className="text-lg">😂</span>
+                                    <button onClick={() => { sendReaction('😂'); setShowMoreMenu(false); }} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-2xl">😂</span>
                                         <span className="text-sm">Laugh</span>
                                     </button>
-                                    <button onClick={() => sendReaction('🎉')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
-                                        <span className="text-lg">🎉</span>
+                                    <button onClick={() => { sendReaction('🎉'); setShowMoreMenu(false); }} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-2xl">🎉</span>
                                         <span className="text-sm">Party</span>
                                     </button>
                                 </div>
