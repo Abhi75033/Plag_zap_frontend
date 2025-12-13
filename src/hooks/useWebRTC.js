@@ -173,24 +173,6 @@ export const useWebRTC = (meetingCode, localStream, token) => {
         }
     }, [localStream]);
 
-    // Update local stream for all peers
-    useEffect(() => {
-        if (!localStream) return;
-
-        peersRef.current.forEach((peer) => {
-            // Replace tracks
-            const senders = peer.getSenders();
-            localStream.getTracks().forEach(track => {
-                const sender = senders.find(s => s.track?.kind === track.kind);
-                if (sender) {
-                    sender.replaceTrack(track);
-                } else {
-                    peer.addTrack(track, localStream);
-                }
-            });
-        });
-    }, [localStream]);
-
     // Leave meeting
     const leaveMeeting = useCallback(() => {
         if (socketRef.current) {

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useMediaDevices } from '../hooks/useMediaDevices';
 import { useWebRTC } from '../hooks/useWebRTC';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { meetingAPI } from '../services/meetingAPI';
 import VideoGrid from '../components/meet/VideoGrid';
 import ControlBar from '../components/meet/ControlBar';
@@ -179,6 +180,18 @@ const VideoMeeting = () => {
         navigate('/team');
     };
 
+    // Keyboard shortcuts (must be after handler functions)
+    useKeyboardShortcuts({
+        onToggleAudio: handleToggleAudio,
+        onToggleVideo: handleToggleVideo,
+        onToggleScreenShare: handleToggleScreenShare,
+        onToggleChat: () => setShowChat(!showChat),
+        onToggleParticipants: () => setShowParticipants(!showParticipants),
+        onToggleHand: handleToggleHand,
+        onLeave: handleLeave,
+        isEnabled: !loading && !joining
+    });
+
     // Loading state
     if (loading || joining) {
         return (
@@ -201,22 +214,30 @@ const VideoMeeting = () => {
     return (
         <div className="min-h-screen bg-[#202124] flex flex-col overflow-hidden">
             {/* Top Bar */}
-            <div className="h-16 flex items-center justify-between px-4 sm:px-6 bg-[#202124] border-b border-white/10 relative z-30">
+            <header 
+                className="h-16 flex items-center justify-between px-4 sm:px-6 bg-[#202124] border-b border-white/10 relative z-30"
+                role="banner"
+                aria-label="Meeting header"
+            >
                 <div className="flex items-center gap-3">
-                    <h1 className="text-white font-medium text-lg truncate max-w-[300px]">
+                    <h1 className="text-white font-medium text-lg truncate max-w-[300px]" id="meeting-title">
                         {meeting?.title || 'Meeting'}
                     </h1>
-                    <span className="text-[#9aa0a6] text-sm font-mono">
+                    <span className="text-[#9aa0a6] text-sm font-mono" aria-label="Meeting code">
                         {code}
                     </span>
                 </div>
-                <div className="flex items-center gap-2 text-[#9aa0a6] text-sm">
-                    <span className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`} />
+                <div className="flex items-center gap-2 text-[#9aa0a6] text-sm" role="status" aria-live="polite" aria-label="Meeting status">
+                    <span 
+                        className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`}
+                        role="status"
+                        aria-label={connected ? 'Connected' : 'Disconnected'}
+                    />
                     <span className="hidden sm:inline">
                         {peers.size + 1} participant{peers.size !== 0 ? 's' : ''}
                     </span>
                 </div>
-            </div>
+            </header>
 
             {/* Video Grid */}
             <VideoGrid

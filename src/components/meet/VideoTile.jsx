@@ -84,4 +84,5 @@ const VideoTile = ({
     );
 };
 
-export default VideoTile;
+// Memoize to prevent unnecessary re-renders
+export default React.memo(VideoTile);

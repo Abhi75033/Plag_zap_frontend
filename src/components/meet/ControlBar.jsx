@@ -35,25 +35,27 @@ const ControlBar = ({
                     <div className="bg-[#202124] border-t border-white/10 backdrop-blur-md">
                         <div className="max-w-7xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-between">
                             {/* Left: Participants & Chat (Desktop) */}
-                            <div className="hidden md:flex items-center gap-3">
+                            <div className="hidden md:flex items-center gap-3" role="group" aria-label="Meeting tools">
                                 <button
                                     onClick={onToggleParticipants}
                                     className="p-3 hover:bg-white/10 rounded-lg transition-colors"
-                                    title="Participants"
+                                    aria-label="Toggle participants panel"
+                                    title="Show/hide participants"
                                 >
-                                    <Users className="w-5 h-5 text-white" />
+                                    <Users className="w-5 h-5 text-white" aria-hidden="true" />
                                 </button>
                                 <button
                                     onClick={onToggleChat}
                                     className="p-3 hover:bg-white/10 rounded-lg transition-colors"
-                                    title="Chat"
+                                    aria-label="Toggle chat panel"
+                                    title="Show/hide chat"
                                 >
-                                    <MessageSquare className="w-5 h-5 text-white" />
+                                    <MessageSquare className="w-5 h-5 text-white" aria-hidden="true" />
                                 </button>
                             </div>
 
                             {/* Center: Main Controls */}
-                            <div className="flex items-center justify-center gap-3 sm:gap-4">
+                            <div className="flex items-center justify-center gap-3 sm:gap-4" role="group" aria-label="Meeting controls">
                                 {/* Mic Toggle */}
                                 <button
                                     onClick={onToggleAudio}
@@ -62,12 +64,14 @@ const ControlBar = ({
                                             ? 'bg-[#3c4043] hover:bg-[#5f6368]'
                                             : 'bg-[#ea4335] hover:bg-[#d33b2c]'
                                     }`}
+                                    aria-label={audioEnabled ? 'Mute microphone (Ctrl+D)' : 'Unmute microphone (Ctrl+D)'}
+                                    aria-pressed={!audioEnabled}
                                     title={audioEnabled ? 'Mute' : 'Unmute'}
                                 >
                                     {audioEnabled ? (
-                                        <Mic className="w-6 h-6 text-white" />
+                                        <Mic className="w-6 h-6 text-white" aria-hidden="true" />
                                     ) : (
-                                        <MicOff className="w-6 h-6 text-white" />
+                                        <MicOff className="w-6 h-6 text-white" aria-hidden="true" />
                                     )}
                                 </button>
 
@@ -79,12 +83,14 @@ const ControlBar = ({
                                             ? 'bg-[#3c4043] hover:bg-[#5f6368]'
                                             : 'bg-[#ea4335] hover:bg-[#d33b2c]'
                                     }`}
+                                    aria-label={videoEnabled ? 'Turn off camera (Ctrl+E)' : 'Turn on camera (Ctrl+E)'}
+                                    aria-pressed={!videoEnabled}
                                     title={videoEnabled ? 'Turn off camera' : 'Turn on camera'}
                                 >
                                     {videoEnabled ? (
-                                        <Video className="w-6 h-6 text-white" />
+                                        <Video className="w-6 h-6 text-white" aria-hidden="true" />
                                     ) : (
-                                        <VideoOff className="w-6 h-6 text-white" />
+                                        <VideoOff className="w-6 h-6 text-white" aria-hidden="true" />
                                     )}
                                 </button>
 
@@ -96,12 +102,14 @@ const ControlBar = ({
                                             ? 'bg-[#1a73e8] hover:bg-[#1557b0]'
                                             : 'bg-[#3c4043] hover:bg-[#5f6368]'
                                     }`}
+                                    aria-label={isScreenSharing ? 'Stop sharing screen' : 'Share screen (Ctrl+Shift+E)'}
+                                    aria-pressed={isScreenSharing}
                                     title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
                                 >
                                     {isScreenSharing ? (
-                                        <MonitorOff className="w-6 h-6 text-white" />
+                                        <MonitorOff className="w-6 h-6 text-white" aria-hidden="true" />
                                     ) : (
-                                        <Monitor className="w-6 h-6 text-white" />
+                                        <Monitor className="w-6 h-6 text-white" aria-hidden="true" />
                                     )}
                                 </button>
 
@@ -113,23 +121,26 @@ const ControlBar = ({
                                             ? 'bg-yellow-600 hover:bg-yellow-700'
                                             : 'bg-[#3c4043] hover:bg-[#5f6368]'
                                     }`}
+                                    aria-label={handRaised ? 'Lower hand (Ctrl+Shift+H)' : 'Raise hand (Ctrl+Shift+H)'}
+                                    aria-pressed={handRaised}
                                     title={handRaised ? 'Lower hand' : 'Raise hand'}
                                 >
-                                    <Hand className="w-6 h-6 text-white" />
+                                    <Hand className="w-6 h-6 text-white" aria-hidden="true" />
                                 </button>
 
                                 {/* Leave Call Button (Prominent Red) */}
                                 <button
                                     onClick={onLeave}
                                     className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#ea4335] hover:bg-[#d33b2c] flex items-center justify-center transition-all hover:scale-105 shadow-lg ml-2 sm:ml-4"
+                                    aria-label="Leave meeting (Ctrl+W)"
                                     title="Leave call"
                                 >
-                                    <PhoneOff className="w-6 h-6 text-white" />
+                                    <PhoneOff className="w-6 h-6 text-white" aria-hidden="true" />
                                 </button>
                             </div>
 
                             {/* Right: Empty for balance (Desktop) */}
-                            <div className="hidden md:block w-[100px]"></div>
+                            <div className="hidden md:block w-[100px]" aria-hidden="true"></div>
                         </div>
                     </div>
                 </motion.div>
@@ -138,4 +149,5 @@ const ControlBar = ({
     );
 };
 
-export default ControlBar;
+// Memoize to prevent unnecessary re-renders
+export default React.memo(ControlBar);

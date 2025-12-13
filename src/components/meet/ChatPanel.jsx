@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sanitizeChatMessage, debounce } from '../../utils/sanitization';
+import toast from 'react-hot-toast';
 
 /**
  * ChatPanel Component - Google Meet Style
@@ -29,11 +31,35 @@ const ChatPanel = ({ socket, currentUser, isOpen, onClose }) => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    // Debounced send to prevent spam (rate limiting)
+    const debouncedSend = useCallback(
+        debounce((message) => {
+            if (socket) {
+                socket.emit('chat-message', { message });
+            }
+        }, 300),
+        [socket]
+    );
+
     const handleSend = (e) => {
         e.preventDefault();
         if (!newMessage.trim() || !socket) return;
 
-        socket.emit('chat-message', { message: newMessage });
+        // Sanitize input to prevent XSS
+        const sanitizedMessage = sanitizeChatMessage(newMessage);
+        
+        if (!sanitizedMessage) {
+            toast.error('Invalid message');
+            return;
+        }
+
+        // Check length after sanitization
+        if (sanitizedMessage.length > 500) {
+            toast.error('Message too long (max 500 characters)');
+            return;
+        }
+
+        debouncedSend(sanitizedMessage);
         setNewMessage('');
     };
 

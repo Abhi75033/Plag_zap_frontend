@@ -20,7 +20,8 @@ import TeamDashboard from './pages/TeamDashboard';
 import VideoMeeting from './pages/VideoMeeting'; // Video meeting import
 import AdminRoute from './components/AdminRoute';
 import ApiDocs from './pages/ApiDocs';
-import ChatWidget from './components/ui/ChatWidget';
+import AuthRedirect from './components/AuthRedirect';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Static pages
 import About from './pages/About';
@@ -115,6 +116,17 @@ function App() {
                   <RewriteResults />
                 </ProtectedRoute>
               }
+            />
+            {/* Video Meeting */}
+            <Route 
+              path="/meet/:code" 
+              element={
+                <ProtectedRoute>
+                  <ErrorBoundary>
+                    <VideoMeeting />
+                  </ErrorBoundary>
+                </ProtectedRoute>
+              } 
             />
             <Route
               path="/rewrite"

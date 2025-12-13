@@ -76,44 +76,47 @@ export const useMediaDevices = () => {
     const toggleVideo = async () => {
         if (!localStream) return videoEnabled;
 
-        // Can't toggle camera while screen sharing - screen share uses video track
-        if (isScreenSharing) {
-            console.log('Stop screen sharing first to toggle camera');
-            return videoEnabled;
-        }
+        const videoTracks = localStream.getVideoTracks();
 
         // If turning ON the camera
         if (!videoEnabled) {
-            try {
-                // Get new video stream
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: mediaConstraints.video
-                });
-                const videoTrack = stream.getVideoTracks()[0];
-
-                // Remove old video track if exists
-                const oldTrack = localStream.getVideoTracks()[0];
-                if (oldTrack) {
-                    oldTrack.stop();
-                    localStream.removeTrack(oldTrack);
-                }
-
-                // Add new video track
-                localStream.addTrack(videoTrack);
-                videoTrack.enabled = true;
+            // Check if track exists and is not destroyed
+            if (videoTracks.length > 0 && videoTracks[0].readyState !== 'ended') {
+                // Track exists, just enable it
+                videoTracks[0].enabled = true;
                 setVideoEnabled(true);
+                console.log('Camera toggled: ON');
                 return true;
-            } catch (err) {
-                console.error('Error re-enabling camera:', err);
-                setError(err.message);
-                return false;
+            } else {
+                // Track doesn't exist or is destroyed, create new one
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: mediaConstraints.video
+                    });
+                    const newVideoTrack = stream.getVideoTracks()[0];
+
+                    // Remove old track if exists
+                    if (videoTracks.length > 0) {
+                        localStream.removeTrack(videoTracks[0]);
+                    }
+
+                    // Add new track
+                    localStream.addTrack(newVideoTrack);
+                    setVideoEnabled(true);
+                    console.log('Camera recreated and toggled: ON');
+                    return true;
+                } catch (err) {
+                    console.error('Error recreating camera:', err);
+                    setError(err.message);
+                    return false;
+                }
             }
         } else {
             // If turning OFF the camera
-            const videoTrack = localStream.getVideoTracks()[0];
-            if (videoTrack) {
-                videoTrack.enabled = false;
+            if (videoTracks.length > 0) {
+                videoTracks[0].enabled = false;
                 setVideoEnabled(false);
+                console.log('Camera toggled: OFF');
             }
             return false;
         }
