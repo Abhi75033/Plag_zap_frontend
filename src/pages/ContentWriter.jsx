@@ -224,13 +224,13 @@ const ContentWriter = () => {
                 <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-1 lg:grid-cols-3 md:gap-8">
                     
                     {/* MOBILE: Input Section First - Desktop: Right Panel */}
-                    <div className="md:hidden space-y-4">
+                    <div className="lg:hidden space-y-4">
                         {/* Mode Selector - Mobile */}
                         <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
                             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
                                 Writing Mode
                             </h3>
-                            <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+                            <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
                                 {MODES.map((mode) => {
                                     const Icon = mode.icon;
                                     return (
@@ -243,9 +243,9 @@ const ContentWriter = () => {
                                                     : 'bg-white/5 active:bg-white/10'
                                             }`}
                                         >
-                                            <div className="flex flex-col items-center gap-1 min-w-[80px]">
+                                            <div className="flex flex-col items-center gap-1 min-w-[70px]">
                                                 <Icon className="w-5 h-5" />
-                                                <div className="text-xs font-semibold text-center">{mode.label.split(' ')[0]}</div>
+                                                <div className="text-[10px] font-semibold text-center leading-tight">{mode.label.split(' ')[0]}</div>
                                             </div>
                                         </button>
                                     );
@@ -258,23 +258,25 @@ const ContentWriter = () => {
                             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
                                 Settings
                             </h3>
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-xs text-gray-400 mb-2 block">Tone</label>
+                                    <label className="text-xs text-gray-400 mb-1.5 block">Tone</label>
                                     <select
                                         value={tone}
                                         onChange={(e) => setTone(e.target.value)}
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm"
+                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-2.5 py-2 text-sm appearance-none"
+                                        style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%239CA3AF\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '2.5rem' }}
                                     >
                                         {TONES.map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs text-gray-400 mb-2 block">Length</label>
+                                    <label className="text-xs text-gray-400 mb-1.5 block">Length</label>
                                     <select
                                         value={length}
                                         onChange={(e) => setLength(e.target.value)}
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm"
+                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-2.5 py-2 text-xs appearance-none truncate"
+                                        style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%239CA3AF\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '2.5rem' }}
                                     >
                                         {LENGTHS.map(l => <option key={l} value={l}>{l}</option>)}
                                     </select>
@@ -297,7 +299,7 @@ const ContentWriter = () => {
                             </div>
                         )}
 
-                        {/* Input Section - FIRST on mobile */}
+                        {/* Input Section */}
                         <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
                             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
                                 Input
@@ -310,7 +312,7 @@ const ContentWriter = () => {
                                         value={topic}
                                         onChange={(e) => setTopic(e.target.value)}
                                         placeholder="Enter your topic..."
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500"
+                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                                     />
                                 </div>
 
@@ -352,7 +354,7 @@ const ContentWriter = () => {
                                         value={keywords}
                                         onChange={(e) => setKeywords(e.target.value)}
                                         placeholder="AI, machine learning..."
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500"
+                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                                     />
                                 </div>
 
@@ -702,28 +704,28 @@ const TopicInsight = ({ analysis, loading }) => (
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: 'auto' }}
         exit={{ opacity: 0, height: 0 }}
-        className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-lg p-4"
+        className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-lg p-3 md:p-4"
     >
-        <div className="flex items-start gap-3">
-            <Lightbulb className="w-5 h-5 text-purple-400 mt-0.5" />
-            <div className="flex-1">
-                <h4 className="text-sm font-semibold text-purple-300 mb-2">Topic Insight</h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>
-                        <span className="text-gray-400">Domain:</span>
-                        <span className="ml-2 text-white">{analysis.domain}</span>
+        <div className="flex items-start gap-2 md:gap-3">
+            <Lightbulb className="w-4 h-4 md:w-5 md:h-5 text-purple-400 mt-0.5 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+                <h4 className="text-xs md:text-sm font-semibold text-purple-300 mb-2">Topic Insight</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-gray-400 flex-shrink-0">Domain:</span>
+                        <span className="text-white font-medium truncate">{analysis.domain}</span>
                     </div>
-                    <div>
-                        <span className="text-gray-400">Intent:</span>
-                        <span className="ml-2 text-white">{analysis.intent}</span>
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-gray-400 flex-shrink-0">Intent:</span>
+                        <span className="text-white font-medium truncate">{analysis.intent}</span>
                     </div>
-                    <div>
-                        <span className="text-gray-400">Complexity:</span>
-                        <span className="ml-2 text-white">{analysis.complexity}</span>
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-gray-400 flex-shrink-0">Complexity:</span>
+                        <span className="text-white font-medium truncate">{analysis.complexity}</span>
                     </div>
-                    <div>
-                        <span className="text-gray-400">Best Mode:</span>
-                        <span className="ml-2 text-white">{analysis.recommendedMode}</span>
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-gray-400 flex-shrink-0">Best Mode:</span>
+                        <span className="text-white font-medium truncate">{analysis.recommendedMode}</span>
                     </div>
                 </div>
             </div>
@@ -743,13 +745,13 @@ const SuggestedTitles = ({ titles, onSelect, loading }) => {
         >
             <button
                 onClick={() => setExpanded(!expanded)}
-                className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5 transition-colors"
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 flex items-center justify-between active:bg-white/5 md:hover:bg-white/5 transition-colors"
             >
                 <div className="flex items-center gap-2">
-                    <Target className="w-4 h-4 text-blue-400" />
-                    <span className="text-sm font-semibold">Suggested Titles ({titles.length})</span>
+                    <Target className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                    <span className="text-xs md:text-sm font-semibold">Suggested Titles ({titles.length})</span>
                 </div>
-                {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                {expanded ? <ChevronUp className="w-4 h-4 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 flex-shrink-0" />}
             </button>
             <AnimatePresence>
                 {expanded && (
@@ -759,7 +761,7 @@ const SuggestedTitles = ({ titles, onSelect, loading }) => {
                         exit={{ height: 0 }}
                         className="border-t border-white/10"
                     >
-                        <div className="p-4 space-y-2">
+                        <div className="p-3 md:p-4 space-y-2">
                             {titles.map((title, idx) => (
                                 <button
                                     key={idx}
@@ -768,7 +770,7 @@ const SuggestedTitles = ({ titles, onSelect, loading }) => {
                                         setExpanded(false);
                                         toast.success('Title applied!');
                                     }}
-                                    className="w-full text-left px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-sm"
+                                    className="w-full text-left px-3 py-2 rounded-lg bg-white/5 active:bg-white/10 md:hover:bg-white/10 transition-colors text-xs md:text-sm leading-relaxed break-words"
                                 >
                                     {title}
                                 </button>
@@ -786,22 +788,22 @@ const AngleSuggestions = ({ angles, loading }) => (
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: 'auto' }}
         exit={{ opacity: 0, height: 0 }}
-        className="bg-green-500/10 border border-green-500/20 rounded-lg p-4"
+        className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 md:p-4"
     >
-        <div className="flex items-start gap-3">
-            <TrendingUp className="w-5 h-5 text-green-400 mt-0.5" />
-            <div className="flex-1 space-y-2 text-sm">
+        <div className="flex items-start gap-2 md:gap-3">
+            <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-green-400 mt-0.5 flex-shrink-0" />
+            <div className="flex-1 space-y-2 text-xs md:text-sm min-w-0">
                 <div>
                     <span className="text-green-300 font-semibold">Best Angle:</span>
-                    <p className="text-gray-300 mt-1">{angles.angle}</p>
+                    <p className="text-gray-300 mt-1 leading-relaxed break-words">{angles.angle}</p>
                 </div>
                 <div>
                     <span className="text-green-300 font-semibold">Focus On:</span>
-                    <p className="text-gray-300 mt-1">{angles.focus}</p>
+                    <p className="text-gray-300 mt-1 leading-relaxed break-words">{angles.focus}</p>
                 </div>
                 <div>
                     <span className="text-green-300 font-semibold">Avoid:</span>
-                    <p className="text-gray-300 mt-1">{angles.avoid}</p>
+                    <p className="text-gray-300 mt-1 leading-relaxed break-words">{angles.avoid}</p>
                 </div>
             </div>
         </div>
