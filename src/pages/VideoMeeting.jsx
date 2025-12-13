@@ -429,6 +429,32 @@ const VideoMeeting = () => {
                             <Copy className="w-5 h-5 sm:w-6 sm:h-6" />
                         </button>
 
+                        {/* Participants Button */}
+                        <button
+                            onClick={() => setShowParticipants(!showParticipants)}
+                            className={`p-3 sm:p-4 rounded-full transition-all ${
+                                showParticipants
+                                    ? 'bg-purple-600 hover:bg-purple-700'
+                                    : 'bg-gray-700 hover:bg-gray-600'
+                            }`}
+                            title="Participants"
+                        >
+                            <Users className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+
+                        {/* Chat Button */}
+                        <button
+                            onClick={() => setShowChat(!showChat)}
+                            className={`p-3 sm:p-4 rounded-full transition-all ${
+                                showChat
+                                    ? 'bg-purple-600 hover:bg-purple-700'
+                                    : 'bg-gray-700 hover:bg-gray-600'
+                            }`}
+                            title="Chat"
+                        >
+                            <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+
                         {/* Settings Button */}
                         <button
                             onClick={() => setShowSettings(true)}
