@@ -91,6 +91,13 @@ export const deleteTeamTask = (id) => api.delete(`/team/tasks/${id}`);
 // AI Content Writer
 export const generateContent = (data) => api.post('/content/generate', data);
 
+// AI Writer Intelligence
+export const analyzeTopic = (data) => api.post('/writer/analyze-topic', data);
+export const generateTitles = (data) => api.post('/writer/generate-titles', data);
+export const suggestAngles = (data) => api.post('/writer/suggest-angles', data);
+export const buildResearch = (data) => api.post('/writer/build-research', data);
+export const refineContent = (data) => api.post('/writer/refine-content', data);
+
 // Gamification
 export const getGamificationStats = () => api.get('/gamification/stats');
 
