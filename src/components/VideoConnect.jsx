@@ -820,8 +820,7 @@ const VideoConnect = ({ teamId, user }) => {
                     <button 
                         onClick={toggleScreenShare}
                         title={isScreenSharing ? "Stop sharing" : "Share screen"}
-                        className="hidden sm:flex"
-                        className={`p-3 md:p-4 rounded-full transition-all touch-manipulation ${isScreenSharing ? 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30' : 'bg-white/10 hover:bg-white/20'}`}
+                        className={`hidden sm:flex p-3 md:p-4 rounded-full transition-all touch-manipulation ${isScreenSharing ? 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30' : 'bg-white/10 hover:bg-white/20'}`}
                     >
                         {isScreenSharing ? <MonitorOff className="w-5 h-5" /> : <Monitor className="w-5 h-5" />}
                     </button>
