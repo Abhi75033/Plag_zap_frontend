@@ -29,6 +29,7 @@ const VideoMeeting = () => {
     const [showChat, setShowChat] = useState(false);
     const [showParticipants, setShowParticipants] = useState(false);
     const [activeSpeaker, setActiveSpeaker] = useState(null);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const activeSpeakerDetectorRef = useRef(null);
 
@@ -180,6 +181,36 @@ const VideoMeeting = () => {
         navigate('/team');
     };
 
+    // Handle fullscreen toggle
+    const handleToggleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            // Enter fullscreen
+            document.documentElement.requestFullscreen().then(() => {
+                setIsFullscreen(true);
+            }).catch((err) => {
+                console.error('Error entering fullscreen:', err);
+                toast.error('Could not enter fullscreen');
+            });
+        } else {
+            // Exit fullscreen
+            document.exitFullscreen().then(() => {
+                setIsFullscreen(false);
+            }).catch((err) => {
+                console.error('Error exiting fullscreen:', err);
+            });
+        }
+    };
+
+    // Listen for fullscreen changes (e.g., ESC key)
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
     // Keyboard shortcuts (must be after handler functions)
     useKeyboardShortcuts({
         onToggleAudio: handleToggleAudio,
@@ -254,12 +285,14 @@ const VideoMeeting = () => {
                 videoEnabled={videoEnabled}
                 isScreenSharing={isScreenSharing}
                 handRaised={handRaised}
+                isFullscreen={isFullscreen}
                 onToggleAudio={handleToggleAudio}
                 onToggleVideo={handleToggleVideo}
                 onToggleScreenShare={handleToggleScreenShare}
                 onToggleHand={handleToggleHand}
                 onToggleChat={() => setShowChat(!showChat)}
                 onToggleParticipants={() => setShowParticipants(!showParticipants)}
+                onToggleFullscreen={handleToggleFullscreen}
                 onLeave={handleLeave}
             />
 

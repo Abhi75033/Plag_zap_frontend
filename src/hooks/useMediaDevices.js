@@ -76,6 +76,13 @@ export const useMediaDevices = () => {
     const toggleVideo = async () => {
         if (!localStream) return videoEnabled;
 
+        // Can't toggle camera while screen sharing
+        if (isScreenSharing) {
+            console.log('Cannot toggle camera during screen share');
+            setError('Stop screen sharing first');
+            return videoEnabled;
+        }
+
         const videoTracks = localStream.getVideoTracks();
 
         // If turning ON the camera
@@ -85,7 +92,13 @@ export const useMediaDevices = () => {
                 // Track exists, just enable it
                 videoTracks[0].enabled = true;
                 setVideoEnabled(true);
-                console.log('Camera toggled: ON');
+                console.log('Camera toggled: ON (enabled existing track)');
+
+                // Force stream update to trigger re-render
+                setLocalStream(new MediaStream([
+                    ...localStream.getAudioTracks(),
+                    ...localStream.getVideoTracks()
+                ]));
                 return true;
             } else {
                 // Track doesn't exist or is destroyed, create new one
@@ -97,13 +110,20 @@ export const useMediaDevices = () => {
 
                     // Remove old track if exists
                     if (videoTracks.length > 0) {
+                        videoTracks[0].stop();
                         localStream.removeTrack(videoTracks[0]);
                     }
 
                     // Add new track
                     localStream.addTrack(newVideoTrack);
                     setVideoEnabled(true);
-                    console.log('Camera recreated and toggled: ON');
+                    console.log('Camera toggled: ON (new track created)');
+
+                    // Force stream update
+                    setLocalStream(new MediaStream([
+                        ...localStream.getAudioTracks(),
+                        ...localStream.getVideoTracks()
+                    ]));
                     return true;
                 } catch (err) {
                     console.error('Error recreating camera:', err);
@@ -117,6 +137,12 @@ export const useMediaDevices = () => {
                 videoTracks[0].enabled = false;
                 setVideoEnabled(false);
                 console.log('Camera toggled: OFF');
+
+                // Force stream update to trigger re-render
+                setLocalStream(new MediaStream([
+                    ...localStream.getAudioTracks(),
+                    ...localStream.getVideoTracks()
+                ]));
             }
             return false;
         }

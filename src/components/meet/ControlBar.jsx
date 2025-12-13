@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mic, MicOff, Video, VideoOff, Monitor, MonitorOff, PhoneOff, MessageSquare, Hand, Users } from 'lucide-react';
+import { Mic, MicOff, Video, VideoOff, Monitor, MonitorOff, PhoneOff, MessageSquare, Hand, Users, Maximize, Minimize } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -11,12 +11,14 @@ const ControlBar = ({
     videoEnabled,
     isScreenSharing,
     handRaised,
+    isFullscreen,
     onToggleAudio,
     onToggleVideo,
     onToggleScreenShare,
     onToggleHand,
     onToggleChat,
     onToggleParticipants,
+    onToggleFullscreen,
     onLeave,
     className = ''
 }) => {
@@ -34,23 +36,23 @@ const ControlBar = ({
                 >
                     <div className="bg-[#202124] border-t border-white/10 backdrop-blur-md">
                         <div className="max-w-7xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-between">
-                            {/* Left: Participants & Chat (Desktop) */}
-                            <div className="hidden md:flex items-center gap-3" role="group" aria-label="Meeting tools">
+                            {/* Left: Participants & Chat (All devices) */}
+                            <div className="flex items-center gap-2 sm:gap-3" role="group" aria-label="Meeting tools">
                                 <button
                                     onClick={onToggleParticipants}
-                                    className="p-3 hover:bg-white/10 rounded-lg transition-colors"
+                                    className="p-2 sm:p-3 hover:bg-white/10 rounded-lg transition-colors"
                                     aria-label="Toggle participants panel"
                                     title="Show/hide participants"
                                 >
-                                    <Users className="w-5 h-5 text-white" aria-hidden="true" />
+                                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-white" aria-hidden="true" />
                                 </button>
                                 <button
                                     onClick={onToggleChat}
-                                    className="p-3 hover:bg-white/10 rounded-lg transition-colors"
+                                    className="p-2 sm:p-3 hover:bg-white/10 rounded-lg transition-colors"
                                     aria-label="Toggle chat panel"
                                     title="Show/hide chat"
                                 >
-                                    <MessageSquare className="w-5 h-5 text-white" aria-hidden="true" />
+                                    <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-white" aria-hidden="true" />
                                 </button>
                             </div>
 
@@ -78,14 +80,25 @@ const ControlBar = ({
                                 {/* Camera Toggle */}
                                 <button
                                     onClick={onToggleVideo}
+                                    disabled={isScreenSharing}
                                     className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 ${
-                                        videoEnabled
+                                        isScreenSharing
+                                            ? 'bg-[#5f6368] cursor-not-allowed opacity-50'
+                                            : videoEnabled
                                             ? 'bg-[#3c4043] hover:bg-[#5f6368]'
                                             : 'bg-[#ea4335] hover:bg-[#d33b2c]'
                                     }`}
-                                    aria-label={videoEnabled ? 'Turn off camera (Ctrl+E)' : 'Turn on camera (Ctrl+E)'}
+                                    aria-label={
+                                        isScreenSharing 
+                                            ? 'Camera disabled during screen share'
+                                            : videoEnabled ? 'Turn off camera (Ctrl+E)' : 'Turn on camera (Ctrl+E)'
+                                    }
                                     aria-pressed={!videoEnabled}
-                                    title={videoEnabled ? 'Turn off camera' : 'Turn on camera'}
+                                    title={
+                                        isScreenSharing
+                                            ? 'Stop screen sharing first'
+                                            : videoEnabled ? 'Turn off camera' : 'Turn on camera'
+                                    }
                                 >
                                     {videoEnabled ? (
                                         <Video className="w-6 h-6 text-white" aria-hidden="true" />
@@ -94,10 +107,10 @@ const ControlBar = ({
                                     )}
                                 </button>
 
-                                {/* Screen Share Toggle (Desktop only) */}
+                                {/* Screen Share Toggle */}
                                 <button
                                     onClick={onToggleScreenShare}
-                                    className={`hidden sm:flex w-12 h-12 sm:w-14 sm:h-14 rounded-full items-center justify-center transition-all hover:scale-105 ${
+                                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 ${
                                         isScreenSharing
                                             ? 'bg-[#1a73e8] hover:bg-[#1557b0]'
                                             : 'bg-[#3c4043] hover:bg-[#5f6368]'
@@ -110,6 +123,20 @@ const ControlBar = ({
                                         <MonitorOff className="w-6 h-6 text-white" aria-hidden="true" />
                                     ) : (
                                         <Monitor className="w-6 h-6 text-white" aria-hidden="true" />
+                                    )}
+                                </button>
+
+                                {/* Fullscreen Toggle */}
+                                <button
+                                    onClick={onToggleFullscreen}
+                                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#3c4043] hover:bg-[#5f6368] flex items-center justify-center transition-all hover:scale-105"
+                                    aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+                                    title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+                                >
+                                    {isFullscreen ? (
+                                        <Minimize className="w-6 h-6 text-white" aria-hidden="true" />
+                                    ) : (
+                                        <Maximize className="w-6 h-6 text-white" aria-hidden="true" />
                                     )}
                                 </button>
 
@@ -139,7 +166,7 @@ const ControlBar = ({
                                 </button>
                             </div>
 
-                            {/* Right: Empty for balance (Desktop) */}
+                            {/* Right: Empty for balance (Desktop only) */}
                             <div className="hidden md:block w-[100px]" aria-hidden="true"></div>
                         </div>
                     </div>
