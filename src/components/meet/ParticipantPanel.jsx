@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, User, MicOff, Hand } from 'lucide-react';
+import { Users, User, MicOff, Hand, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -31,13 +31,20 @@ const ParticipantPanel = ({ participants, localUser, isOpen, onClose }) => {
                 className="fixed left-0 top-16 bottom-0 w-80 bg-[#202124] border-r border-white/10 flex flex-col z-40"
             >
                 {/* Header */}
-                <div className="p-4 border-b border-white/10">
-                    <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-bold flex items-center gap-2">
-                            <Users className="w-5 h-5 text-purple-400" />
+                <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Users className="w-5 h-5 text-purple-400" />
+                        <h3 className="text-lg font-bold">
                             Participants ({allParticipants.length})
                         </h3>
                     </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        title="Close"
+                    >
+                        <X className="w-5 h-5 text-gray-400" />
+                    </button>
                 </div>
 
                 {/* Participant List */}
