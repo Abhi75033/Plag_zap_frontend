@@ -204,7 +204,7 @@ const TeamTasks = () => {
                             >
                                 <option value="">Unassigned</option>
                                 {members.map(m => (
-                                    <option key={m._id} value={m._id}>{m.name}</option>
+                                    <option key={m.id} value={m.id}>{m.name}</option>
                                 ))}
                             </select>
                             <input
