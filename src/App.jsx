@@ -160,7 +160,6 @@ function App() {
               }
             />
           </Routes>
-          <ChatWidget />
           <Toaster 
             position="top-center"
             toastOptions={{
