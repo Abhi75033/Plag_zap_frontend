@@ -93,13 +93,29 @@ export const useWebRTC = (meetingCode, localStream, token) => {
 
         // User left
         socket.on('user-left', ({ socketId, userName }) => {
-            console.log('👋 User left:', userName);
-            const peer = peersRef.current.get(socketId);
-            if (peer) {
-                peer.close();
-                peersRef.current.delete(socketId);
-                setPeers(new Map(peersRef.current));
+            console.log(`👋 ${userName} left`);
+            const newPeers = new Map(peersRef.current);
+            const peerData = newPeers.get(socketId);
+
+            if (peerData) { // peerData is the RTCPeerConnection object directly
+                peerData.close();
             }
+
+            newPeers.delete(socketId);
+            peersRef.current = newPeers;
+            setPeers(new Map(newPeers));
+        });
+
+        // Host left - meeting ended
+        socket.on('host-left', () => {
+            console.log('👑 Host left - meeting ended');
+            // Will be handled by VideoMeeting component
+        });
+
+        // Meeting already ended
+        socket.on('meeting-ended', () => {
+            console.log('⛔ Meeting has ended');
+            // Will be handled by VideoMeeting component
         });
 
         return () => {

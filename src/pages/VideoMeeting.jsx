@@ -102,6 +102,69 @@ const VideoMeeting = () => {
         }
     }, [mediaError]);
 
+    // Socket event listeners
+    useEffect(() => {
+        if (!socket) return;
+
+        // Chat message
+        socket.on('chat-message', (message) => {
+            setMessages(prev => [...prev, message]);
+        });
+
+        // Participant state changes
+        socket.on('participant-audio-changed', ({ socketId, enabled }) => {
+            setParticipants(prev =>
+                prev.map(p => p.socketId === socketId ? { ...p, audioEnabled: enabled } : p)
+            );
+        });
+
+        socket.on('participant-video-changed', ({ socketId, enabled }) => {
+            setParticipants(prev =>
+                prev.map(p => p.socketId === socketId ? { ...p, videoEnabled: enabled } : p)
+            );
+        });
+
+        socket.on('participant-hand-raised', ({ socketId, raised }) => {
+            setParticipants(prev =>
+                prev.map(p => p.socketId === socketId ? { ...p, handRaised: raised } : p)
+            );
+        });
+
+        // Host left - meeting ended
+        socket.on('host-left', ({ message }) => {
+            console.log('Host left, meeting ended');
+            toast.error(message || 'The host ended the meeting');
+            
+            // Stop all media tracks
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+            }
+            
+            // Navigate away after short delay
+            setTimeout(() => {
+                navigate('/team');
+            }, 2000);
+        });
+
+        // Meeting already ended when trying to join
+        socket.on('meeting-ended', ({ message }) => {
+            console.log('Meeting has ended');
+            toast.error(message || 'This meeting has ended');
+            setTimeout(() => {
+                navigate('/team');
+            }, 1500);
+        });
+
+        return () => {
+            socket.off('chat-message');
+            socket.off('participant-audio-changed');
+            socket.off('participant-video-changed');
+            socket.off('participant-hand-raised');
+            socket.off('host-left');
+            socket.off('meeting-ended');
+        };
+    }, [socket, localStream, navigate]);
+
     // Active speaker detection
     useEffect(() => {
         if (!localStream) return;
