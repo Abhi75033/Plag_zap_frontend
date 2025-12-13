@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
+    baseURL: 'http://localhost:5001/api',
 });
 
 // Add auth token to requests
@@ -22,6 +22,10 @@ export const getCurrentUser = () => api.get('/auth/me');
 export const getSubscriptionPlans = () => api.get('/subscriptions/plans');
 export const createRazorpayOrder = (planId) => api.post('/subscriptions/create-order', { planId });
 export const verifyRazorpayPayment = (paymentData) => api.post('/subscriptions/verify-payment', paymentData);
+// Dictionary
+export const lookupDictionary = (text, targetLang) => api.post('/dictionary/lookup', { text, targetLang });
+
+// Subscription Routes
 export const purchaseSubscription = (planId) => api.post('/subscriptions/purchase', { planId }); // Mock for testing
 export const cancelSubscription = () => api.post('/subscriptions/cancel');
 export const getUsage = () => api.get('/subscriptions/usage');

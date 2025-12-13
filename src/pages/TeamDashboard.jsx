@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { getTeam, createTeam, joinTeam, leaveTeam } from '../services/api';
-import { Users, UserPlus, LogOut, Copy, Check, Shield, User, MessageSquare, BarChart3, FileText, CheckSquare, Trophy } from 'lucide-react';
+import { Users, UserPlus, LogOut, Copy, Check, Shield, User, MessageSquare, BarChart3, FileText, CheckSquare, Trophy, BookOpen, Video as VideoIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import TeamChat from '../components/TeamChat';
 import TeamAnalytics from '../components/TeamAnalytics';
 import SharedHistory from '../components/SharedHistory';
 import TeamTasks from '../components/TeamTasks';
 import TeamLeaderboard from '../components/TeamLeaderboard';
+import TeamDictionary from '../components/TeamDictionary';
+import VideoConnect from '../components/VideoConnect';
 import { useAppContext } from '../context/AppContext';
 
 const TeamDashboard = () => {
+    // ... (existing state) ...
+    
+
     const { user } = useAppContext();
     const [team, setTeam] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -244,6 +249,30 @@ const TeamDashboard = () => {
                                 <Users className="w-4 h-4" />
                                 <span>Members</span>
                             </button>
+                            <button
+                                onClick={() => setActiveTab('dictionary')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'dictionary'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <BookOpen className="w-4 h-4" />
+                                <span className="hidden sm:inline">Dictionary</span>
+                                <span className="sm:hidden">Dict</span>
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('video')}
+                                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base whitespace-nowrap ${
+                                    activeTab === 'video'
+                                        ? 'bg-purple-600 text-white'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <VideoIcon className="w-4 h-4" />
+                                <span className="hidden sm:inline">Video Meet</span>
+                                <span className="sm:hidden">Meet</span>
+                            </button>
                         </div>
                     </div>
 
@@ -319,6 +348,16 @@ const TeamDashboard = () => {
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    )}
+                    {activeTab === 'dictionary' && (
+                        <div className="mt-6">
+                            <TeamDictionary />
+                        </div>
+                    )}
+                    {activeTab === 'video' && (
+                        <div className="mt-6">
+                            <VideoConnect teamId={team.inviteCode} user={user} />
                         </div>
                     )}
                 </div>
