@@ -88,7 +88,6 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/analyzer" element={<Analyzer />} />
             <Route path="/writer" element={<ContentWriter />} />
-            <Route path="/result/:id" element={<ResultPage />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/security" element={<Security />} />
             <Route path="/gdpr" element={<GDPR />} />
