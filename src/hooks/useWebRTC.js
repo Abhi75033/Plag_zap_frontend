@@ -119,12 +119,13 @@ export const useWebRTC = (meetingCode, localStream, token) => {
         });
 
         return () => {
+            console.log('🧹 useWebRTC cleanup - disconnecting socket');
             socket.disconnect();
             // Close all peer connections
             peersRef.current.forEach(peer => peer.close());
             peersRef.current.clear();
         };
-    }, [meetingCode, token]);
+    }, [meetingCode, localStream, token]); // Added localStream to prevent unnecessary re-runs
 
     // Create peer connection
     const createPeerConnection = useCallback(async (socketId, createOffer) => {

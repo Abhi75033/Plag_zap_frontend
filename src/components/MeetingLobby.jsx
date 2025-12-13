@@ -24,12 +24,27 @@ const MeetingLobby = ({ teamId, teamName }) => {
 
     const loadMeetings = async () => {
         try {
+            setLoading(true);
             const response = await meetingAPI.getMyMeetings();
             setRecentMeetings(response.data.meetings || []);
         } catch (error) {
             console.error('Error loading meetings:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleClearHistory = async () => {
+        try {
+            const { clearMeetingHistory } = await import('../services/api');
+            const response = await clearMeetingHistory();
+            if (response.data.success) {
+                setRecentMeetings([]);
+                toast.success('Meeting history cleared successfully');
+            }
+        } catch (error) {
+            console.error('Error clearing history:', error);
+            toast.error('Failed to clear meeting history');
         }
     };
 
@@ -161,13 +176,26 @@ const MeetingLobby = ({ teamId, teamName }) => {
                 </div>
             </div>
 
-            {/* Recent/Active Meetings */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <Video className="w-5 h-5 text-purple-400" />
-                    Your Meetings
-                </h3>
-
+            {/* Your Meetings Section */}
+            <div className="bg-[#202124] border border-[#5f6368] rounded-xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                        <Video className="w-5 h-5 text-[#8ab4f8]" />
+                        <h3 className="text-lg font-medium text-white">Your Meetings</h3>
+                    </div>
+                    {recentMeetings.length > 0 && (
+                        <button
+                            onClick={() => {
+                                if (window.confirm('Are you sure you want to clear all meeting history? This cannot be undone.')) {
+                                    handleClearHistory();
+                                }
+                            }}
+                            className="px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors"
+                        >
+                            Clear History
+                        </button>
+                    )}
+                </div>
                 {loading ? (
                     <div className="text-center py-8">
                         <Loader2 className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-2" />
