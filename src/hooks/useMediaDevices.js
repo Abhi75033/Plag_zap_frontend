@@ -73,15 +73,57 @@ export const useMediaDevices = () => {
     };
 
     // Toggle video
-    const toggleVideo = () => {
-        if (localStream) {
-            localStream.getVideoTracks().forEach(track => {
-                track.enabled = !videoEnabled;
-            });
-            setVideoEnabled(!videoEnabled);
-            return !videoEnabled;
+    const toggleVideo = async () => {
+        if (!localStream) return videoEnabled;
+
+        // If turning ON the camera
+        if (!videoEnabled) {
+            // Don't turn on camera if screen sharing
+            if (isScreenSharing) {
+                console.log('Cannot turn on camera while screen sharing');
+                return false;
+            }
+
+            try {
+                // Get new video stream
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: mediaConstraints.video
+                });
+                const videoTrack = stream.getVideoTracks()[0];
+
+                // Remove old video track if exists
+                const oldTrack = localStream.getVideoTracks()[0];
+                if (oldTrack) {
+                    localStream.removeTrack(oldTrack);
+                }
+
+                // Add new video track
+                localStream.addTrack(videoTrack);
+                setVideoEnabled(true);
+                return true;
+            } catch (err) {
+                console.error('Error re-enabling camera:', err);
+                setError(err.message);
+                return false;
+            }
+        } else {
+            // If turning OFF the camera
+            // Don't disable if screen sharing (screen share uses video track)
+            if (isScreenSharing) {
+                // Just set state, don't touch the track
+                setVideoEnabled(false);
+                return false;
+            }
+
+            // Stop and remove camera track
+            const videoTrack = localStream.getVideoTracks()[0];
+            if (videoTrack) {
+                videoTrack.stop();
+                localStream.removeTrack(videoTrack);
+            }
+            setVideoEnabled(false);
+            return false;
         }
-        return videoEnabled;
     };
 
     // Start screen sharing

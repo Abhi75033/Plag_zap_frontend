@@ -134,8 +134,8 @@ const VideoMeeting = () => {
     };
 
     // Handle video toggle
-    const handleToggleVideo = () => {
-        const newState = toggleVideo();
+    const handleToggleVideo = async () => {
+        const newState = await toggleVideo();
         if (socket) {
             socket.emit('toggle-video', { enabled: newState });
         }
