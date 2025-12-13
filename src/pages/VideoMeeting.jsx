@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { 
+    Video, VideoOff, Mic, MicOff, PhoneOff, Settings, 
+    Monitor, Users, MessageSquare, Copy
+} from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useMediaDevices } from '../hooks/useMediaDevices';
 import { useWebRTC } from '../hooks/useWebRTC';
@@ -362,23 +366,104 @@ const VideoMeeting = () => {
                 videoEnabled={videoEnabled}
             />
 
-            {/* Control Bar */}
-            <ControlBar
-                audioEnabled={audioEnabled}
-                videoEnabled={videoEnabled}
-                isScreenSharing={isScreenSharing}
-                handRaised={handRaised}
-                isFullscreen={isFullscreen}
-                onToggleAudio={handleToggleAudio}
-                onToggleVideo={handleToggleVideo}
-                onToggleScreenShare={handleToggleScreenShare}
-                onToggleHand={handleToggleHand}
-                onToggleChat={() => setShowChat(!showChat)}
-                onToggleParticipants={() => setShowParticipants(!showParticipants)}
-                onToggleFullscreen={handleToggleFullscreen}
-                onToggleSettings={() => setShowSettings(true)}
-                onLeave={handleLeave}
-            />
+            {/* Video Controls Bar - Mobile Optimized */}
+            <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/95 to-transparent p-3 sm:p-6 z-30">
+                <div className="max-w-4xl mx-auto">
+                    <div className="flex items-center justify-center gap-2 sm:gap-4">
+                        {/* Mic Button */}
+                        <button
+                            onClick={handleToggleAudio}
+                            className={`p-3 sm:p-4 rounded-full transition-all ${
+                                audioEnabled
+                                    ? 'bg-gray-700 hover:bg-gray-600'
+                                    : 'bg-red-600 hover:bg-red-700'
+                            }`}
+                            title={audioEnabled ? 'Mute' : 'Unmute'}
+                        >
+                            {audioEnabled ? (
+                                <Mic className="w-5 h-5 sm:w-6 sm:h-6" />
+                            ) : (
+                                <MicOff className="w-5 h-5 sm:w-6 sm:h-6" />
+                            )}
+                        </button>
+
+                        {/* Camera Button */}
+                        <button
+                            onClick={handleToggleVideo}
+                            className={`p-3 sm:p-4 rounded-full transition-all ${
+                                videoEnabled
+                                    ? 'bg-gray-700 hover:bg-gray-600'
+                                    : 'bg-red-600 hover:bg-red-700'
+                            }`}
+                            title={videoEnabled ? 'Stop video' : 'Start video'}
+                        >
+                            {videoEnabled ? (
+                                <Video className="w-5 h-5 sm:w-6 sm:h-6" />
+                            ) : (
+                                <VideoOff className="w-5 h-5 sm:w-6 sm:h-6" />
+                            )}
+                        </button>
+
+                        {/* Screen Share Button - Desktop only (mobile browsers don't support it) */}
+                        <button
+                            onClick={handleToggleScreenShare}
+                            className={`hidden sm:block p-3 sm:p-4 rounded-full transition-all ${
+                                isScreenSharing
+                                    ? 'bg-purple-600 hover:bg-purple-700'
+                                    : 'bg-gray-700 hover:bg-gray-600'
+                            }`}
+                            title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
+                        >
+                            <Monitor className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+
+                        {/* Share Meeting Code Button */}
+                        <button
+                            onClick={() => {
+                                navigator.clipboard.writeText(code);
+                                toast.success('Meeting code copied!');
+                            }}
+                            className="p-3 sm:p-4 rounded-full bg-gray-700 hover:bg-gray-600 transition-all"
+                            title="Copy meeting code"
+                        >
+                            <Copy className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+
+                        {/* Settings Button */}
+                        <button
+                            onClick={() => setShowSettings(true)}
+                            className="p-3 sm:p-4 rounded-full bg-gray-700 hover:bg-gray-600 transition-all"
+                            title="Settings"
+                        >
+                            <Settings className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+
+                        {/* Leave/Hangup Button - ALWAYS VISIBLE */}
+                        <button
+                            onClick={handleLeave}
+                            className="p-3 sm:p-4 rounded-full bg-red-600 hover:bg-red-700 transition-all"
+                            title="Leave meeting"
+                        >
+                            <PhoneOff className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+                    </div>
+
+                    {/* Meeting Code - Mobile Optimized */}
+                    <div className="mt-3 sm:mt-4 text-center">
+                        <button
+                            onClick={() => {
+                                navigator.clipboard.writeText(code);
+                                toast.success('Meeting code copied!');
+                            }}
+                            className="inline-flex items-center gap-2 bg-black/50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-black/70 transition-colors"
+                        >
+                            <span className="text-gray-400 text-xs sm:text-sm">Meeting Code:</span>
+                            <span className="font-mono font-bold text-xs sm:text-sm">{code}</span>
+                            <Copy className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             {/* Settings Modal */}
             <SettingsModal

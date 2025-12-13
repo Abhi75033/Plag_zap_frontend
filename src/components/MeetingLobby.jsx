@@ -227,20 +227,23 @@ const MeetingLobby = ({ teamId, teamName }) => {
                         <p className="text-gray-500 text-sm mt-1">Create your first meeting to get started</p>
                     </div>
                 ) : (
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                         {recentMeetings.map((meeting) => (
                             <div
                                 key={meeting.code}
-                                className="flex items-center justify-between p-4 bg-black/30 rounded-xl border border-white/10 hover:border-purple-500/30 transition-all group"
+                                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-black/30 rounded-xl border border-white/10 hover:border-purple-500/30 transition-all group gap-3"
                             >
-                                <div className="flex-1">
-                                    <h4 className="font-bold text-sm mb-1">{meeting.title}</h4>
-                                    <div className="flex items-center gap-3 text-xs text-gray-400">
-                                        <span className="font-mono">{meeting.code}</span>
-                                        <span>•</span>
-                                        <span>{meeting.participantCount} participant{meeting.participantCount !== 1 ? 's' : ''}</span>
-                                        <span>•</span>
-                                        <span className={`px-2 py-0.5 rounded-full ${
+                                <div className="flex-1 min-w-0">
+                                    <h4 className="font-bold text-sm mb-1 truncate">{meeting.title}</h4>
+                                    <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                                        <span className="font-mono bg-white/5 px-2 py-0.5 rounded">{meeting.code}</span>
+                                        <span className="hidden sm:inline">•</span>
+                                        <span className="flex items-center gap-1">
+                                            <Users className="w-3 h-3" />
+                                            {meeting.participantCount}
+                                        </span>
+                                        <span className="hidden sm:inline">•</span>
+                                        <span className={`px-2 py-0.5 rounded-full text-xs ${
                                             meeting.status === 'active' 
                                                 ? 'bg-green-500/20 text-green-400'
                                                 : 'bg-gray-500/20 text-gray-400'
@@ -249,7 +252,7 @@ const MeetingLobby = ({ teamId, teamName }) => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 self-end sm:self-auto">
                                     <button
                                         onClick={() => copyCode(meeting.code)}
                                         className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -263,7 +266,7 @@ const MeetingLobby = ({ teamId, teamName }) => {
                                     </button>
                                     <button
                                         onClick={() => navigate(`/meet/${meeting.code}`)}
-                                        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium text-sm transition-colors"
+                                        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium text-sm transition-colors whitespace-nowrap"
                                     >
                                         Join
                                     </button>
