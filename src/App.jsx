@@ -20,7 +20,6 @@ import TeamDashboard from './pages/TeamDashboard';
 import VideoMeeting from './pages/VideoMeeting'; // Video meeting import
 import AdminRoute from './components/AdminRoute';
 import ApiDocs from './pages/ApiDocs';
-import AuthRedirect from './components/AuthRedirect';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // Static pages
