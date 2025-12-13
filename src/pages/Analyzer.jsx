@@ -502,7 +502,7 @@ const Analyzer = () => {
                     setCitationSource={setCitationSource} 
                  />
               </div>
-\
+
               <div className="mb-6 flex justify-end">
                   <div className="w-full sm:w-auto p-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 flex items-center p-[4px] relative">
                       {/* Animated Background Pill for Active State */}
@@ -584,10 +584,12 @@ const Analyzer = () => {
                     }
                     setText(newText);
                     toast.success(`Applied ${issues.length} grammar fix${issues.length > 1 ? 'es' : ''}!`);
-                    // Re-run grammar check on new text
-                    checkGrammar(newText).then(res => {
-                      setGrammarResult(res.data);
-                    }).catch(() => {});
+        const tabs = [
+        { id: 'plagiarism', label: 'Plagiarism Checker', icon: FileText },
+        { id: 'ai-detector', label: 'AI Detector', icon: Sparkles },
+        { id: 'paraphraser', label: 'Paraphraser', icon: Zap },
+        { id: 'dictionary', label: 'Dictionary', icon: Languages }
+    ];                }).catch(() => {});
                   }}
                 />
               )}
