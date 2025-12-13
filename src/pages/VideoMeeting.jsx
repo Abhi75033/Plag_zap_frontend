@@ -175,12 +175,30 @@ const VideoMeeting = () => {
 
     // Handle leave
     const handleLeave = () => {
+        console.log('Leaving meeting - cleanup started');
+        
+        // Stop active speaker detection
         if (activeSpeakerDetectorRef.current) {
             activeSpeakerDetectorRef.current.stop();
         }
+
+        // Stop all media tracks
+        if (localStream) {
+            localStream.getTracks().forEach(track => {
+                track.stop();
+                console.log(`Stopped ${track.kind} track`);
+            });
+        }
+
+        // Leave room via WebRTC hook
         leaveMeeting();
+        
+        // Show toast and navigate after short delay
         toast.success('Left meeting');
-        navigate('/team');
+        
+        setTimeout(() => {
+            navigate('/team');
+        }, 500);
     };
 
     // Handle fullscreen toggle

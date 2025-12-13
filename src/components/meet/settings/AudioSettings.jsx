@@ -86,6 +86,58 @@ const AudioSettings = ({ localStream }) => {
                         <AudioLevelMeter stream={localStream} />
                     </div>
                 )}
+
+                {/* Microphone Test */}
+                <div className="mt-3">
+                    <button
+                        onClick={() => {
+                            if (!localStream) {
+                                alert('Please allow microphone access first');
+                                return;
+                            }
+                            
+                            // Simple test: record 3 seconds and play back
+                            const mediaRecorder = new MediaRecorder(localStream);
+                            const audioChunks = [];
+                            
+                            mediaRecorder.ondataavailable = (event) => {
+                                audioChunks.push(event.data);
+                            };
+                            
+                            mediaRecorder.onstop = () => {
+                                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                                const audioUrl = URL.createObjectURL(audioBlob);
+                                const audio = new Audio(audioUrl);
+                                audio.play();
+                                setTimeout(() => URL.revokeObjectURL(audioUrl), 5000);
+                            };
+                            
+                            mediaRecorder.start();
+                            setTimeout(() => mediaRecorder.stop(), 3000);
+                            
+                            // Show feedback
+                            const btn = event.currentTarget;
+                            const originalText = btn.textContent;
+                            btn.textContent = 'Recording... (3s)';
+                            btn.disabled = true;
+                            
+                            setTimeout(() => {
+                                btn.textContent = 'Playing back...';
+                            }, 3000);
+                            
+                            setTimeout(() => {
+                                btn.textContent = originalText;
+                                btn.disabled = false;
+                            }, 6000);
+                        }}
+                        className="w-full px-4 py-2 bg-[#3c4043] hover:bg-[#5f6368] text-[#e8eaed] text-sm rounded-lg transition-colors"
+                    >
+                        Test Microphone (3s recording)
+                    </button>
+                    <p className="text-[#9aa0a6] text-xs mt-1">
+                        Records 3 seconds and plays it back
+                    </p>
+                </div>
             </div>
 
             {/* Speakers Section */}
