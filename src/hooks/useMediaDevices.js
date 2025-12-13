@@ -76,14 +76,14 @@ export const useMediaDevices = () => {
     const toggleVideo = async () => {
         if (!localStream) return videoEnabled;
 
+        // Can't toggle camera while screen sharing - screen share uses video track
+        if (isScreenSharing) {
+            console.log('Stop screen sharing first to toggle camera');
+            return videoEnabled;
+        }
+
         // If turning ON the camera
         if (!videoEnabled) {
-            // Don't turn on camera if screen sharing
-            if (isScreenSharing) {
-                console.log('Cannot turn on camera while screen sharing');
-                return false;
-            }
-
             try {
                 // Get new video stream
                 const stream = await navigator.mediaDevices.getUserMedia({
@@ -94,11 +94,13 @@ export const useMediaDevices = () => {
                 // Remove old video track if exists
                 const oldTrack = localStream.getVideoTracks()[0];
                 if (oldTrack) {
+                    oldTrack.stop();
                     localStream.removeTrack(oldTrack);
                 }
 
                 // Add new video track
                 localStream.addTrack(videoTrack);
+                videoTrack.enabled = true;
                 setVideoEnabled(true);
                 return true;
             } catch (err) {
@@ -108,20 +110,11 @@ export const useMediaDevices = () => {
             }
         } else {
             // If turning OFF the camera
-            // Don't disable if screen sharing (screen share uses video track)
-            if (isScreenSharing) {
-                // Just set state, don't touch the track
-                setVideoEnabled(false);
-                return false;
-            }
-
-            // Stop and remove camera track
             const videoTrack = localStream.getVideoTracks()[0];
             if (videoTrack) {
-                videoTrack.stop();
-                localStream.removeTrack(videoTrack);
+                videoTrack.enabled = false;
+                setVideoEnabled(false);
             }
-            setVideoEnabled(false);
             return false;
         }
     };
@@ -131,23 +124,25 @@ export const useMediaDevices = () => {
         try {
             const screenStream = await navigator.mediaDevices.getDisplayMedia(screenShareConstraints);
             screenStreamRef.current = screenStream;
+            const screenTrack = screenStream.getVideoTracks()[0];
 
-            // Replace video track
+            // Store current camera track
             if (localStream) {
-                const videoTrack = screenStream.getVideoTracks()[0];
-                const sender = localStream.getVideoTracks()[0];
+                const cameraTrack = localStream.getVideoTracks()[0];
+                videoStreamRef.current = localStream.clone(); // Store camera stream
 
-                // Stop camera
-                if (sender) {
-                    sender.stop();
-                    localStream.removeTrack(sender);
+                // Replace camera track with screen track
+                if (cameraTrack) {
+                    cameraTrack.stop();
+                    localStream.removeTrack(cameraTrack);
                 }
 
-                localStream.addTrack(videoTrack);
+                localStream.addTrack(screenTrack);
                 setIsScreenSharing(true);
+                setVideoEnabled(true); // Screen share counts as "video on"
 
                 // Listen for user stopping share via browser UI
-                videoTrack.onended = () => {
+                screenTrack.onended = () => {
                     stopScreenShare();
                 };
 
@@ -166,26 +161,38 @@ export const useMediaDevices = () => {
             screenStreamRef.current = null;
         }
 
-        // Restart camera
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: mediaConstraints.video });
-            const videoTrack = stream.getVideoTracks()[0];
+        // Remove screen share track
+        if (localStream) {
+            const screenTrack = localStream.getVideoTracks()[0];
+            if (screenTrack) {
+                screenTrack.stop();
+                localStream.removeTrack(screenTrack);
+            }
+        }
 
-            if (localStream) {
-                // Remove screen share track
-                const screenTrack = localStream.getVideoTracks()[0];
-                if (screenTrack) {
-                    screenTrack.stop();
-                    localStream.removeTrack(screenTrack);
+        // Restart camera if it was on before
+        if (videoStreamRef.current) {
+            try {
+                // Get fresh camera stream
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: mediaConstraints.video
+                });
+                const videoTrack = stream.getVideoTracks()[0];
+
+                if (localStream) {
+                    localStream.addTrack(videoTrack);
                 }
 
-                // Add camera track
-                localStream.addTrack(videoTrack);
                 setIsScreenSharing(false);
                 setVideoEnabled(true);
+            } catch (err) {
+                console.error('Error restarting camera after screen share:', err);
+                setIsScreenSharing(false);
+                setVideoEnabled(false);
             }
-        } catch (err) {
-            console.error('Error restarting camera:', err);
+        } else {
+            setIsScreenSharing(false);
+            setVideoEnabled(false);
         }
     };
 
