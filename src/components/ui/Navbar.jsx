@@ -65,6 +65,7 @@ const Navbar = () => {
                 <NavLink to="/">Home</NavLink>
                 {user && <NavLink to="/dashboard">Dashboard</NavLink>}
                 {user && <NavLink to="/analyzer">Analyzer</NavLink>}
+                {user && <NavLink to="/writer">AI Writer</NavLink>}
                 {user && <NavLink to="/history">History</NavLink>}
                 {user && <NavLink to="/team">Team</NavLink>}
                 {user?.role === 'admin' && <NavLink to="/admin">Admin</NavLink>}
@@ -186,6 +187,9 @@ const Navbar = () => {
                 </MobileNavLink>
                 <MobileNavLink to="/analyzer" icon={BarChart3} onClick={closeMobileMenu}>
                   Analyzer
+                </MobileNavLink>
+                <MobileNavLink to="/writer" icon={Sparkles} onClick={closeMobileMenu}>
+                  AI Writer
                 </MobileNavLink>
                 <MobileNavLink to="/history" icon={History} onClick={closeMobileMenu}>
                   History

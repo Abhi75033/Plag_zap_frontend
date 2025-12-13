@@ -88,6 +88,9 @@ export const createTeamTask = (taskData) => api.post('/team/tasks', taskData);
 export const updateTeamTask = (id, updates) => api.patch(`/team/tasks/${id}`, updates);
 export const deleteTeamTask = (id) => api.delete(`/team/tasks/${id}`);
 
+// AI Content Writer
+export const generateContent = (data) => api.post('/content/generate', data);
+
 // Gamification
 export const getGamificationStats = () => api.get('/gamification/stats');
 

@@ -5,6 +5,7 @@ import { AppProvider } from './context/AppContext';
 import Navbar from './components/ui/Navbar';
 import Home from './pages/Home';
 import Analyzer from './pages/Analyzer';
+import ContentWriter from './pages/ContentWriter';
 import RewriteResults from './pages/RewriteResults';
 import History from './pages/History';
 import Login from './pages/Login';
@@ -85,6 +86,9 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/analyzer" element={<Analyzer />} />
+            <Route path="/writer" element={<ContentWriter />} />
+            <Route path="/result/:id" element={<ResultPage />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/security" element={<Security />} />
             <Route path="/gdpr" element={<GDPR />} />
