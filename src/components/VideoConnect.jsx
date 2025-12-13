@@ -944,7 +944,10 @@ const VideoConnect = ({ teamId, user }) => {
                                 />
                                 
                                 {/* Menu */}
-                                <div className="fixed md:absolute bottom-20 md:bottom-full right-2 md:right-0 mb-2 bg-[#303134] rounded-lg shadow-2xl border border-white/10 p-2 min-w-[200px] z-50">
+                                <div 
+                                    className="fixed md:absolute bottom-20 md:bottom-full right-2 md:right-0 mb-2 bg-[#303134] rounded-lg shadow-2xl border border-white/10 p-2 min-w-[200px] z-50"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
                                     <button 
                                         onClick={toggleHandRaise}
                                         className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left"
