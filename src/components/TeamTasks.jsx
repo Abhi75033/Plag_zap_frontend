@@ -169,7 +169,7 @@ const TeamTasks = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        onSubmit={handleCreate}
+                        onSubmit={handleCreateTask}
                         className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3 overflow-hidden"
                     >
                         <input
