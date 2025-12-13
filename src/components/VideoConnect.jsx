@@ -142,14 +142,17 @@ const VideoConnect = ({ teamId, user }) => {
             if (!stream) setStream(currentStream);
             originalStreamRef.current = currentStream; // Store original stream
             
-            socketRef.current = io.connect('http://localhost:5001');
+            socketRef.current = io.connect('https://plagzap-backend-8yxx.onrender.com');
             
             socketRef.current.emit('join-room', roomToJoin, user.id);
             setMeetingCode(roomToJoin);
+            console.log(`🟢 Joining room: ${roomToJoin} as user: ${user.id}`);
 
             socketRef.current.on('all-users', users => {
+                console.log(`👥 Users in room:`, users);
                 const peersList = [];
                 users.forEach(userID => {
+                    console.log(`🔗 Creating peer connection for user: ${userID}`);
                     const peer = createPeer(userID, socketRef.current.id, currentStream);
                     peersRef.current.push({ peerID: userID, peer });
                     peersList.push({ peerID: userID, peer });
@@ -158,6 +161,7 @@ const VideoConnect = ({ teamId, user }) => {
             });
 
             socketRef.current.on('user-joined', payload => {
+                console.log(`✅ New user joined:`, payload.callerID);
                 const peer = addPeer(payload.signal, payload.callerID, currentStream);
                 peersRef.current.push({ peerID: payload.callerID, peer });
                 setPeers(users => [...users, { peerID: payload.callerID, peer }]);
@@ -165,11 +169,17 @@ const VideoConnect = ({ teamId, user }) => {
             });
 
             socketRef.current.on('receiving-returned-signal', payload => {
+                console.log(`🔄 Received signal from:`, payload.id);
                 const item = peersRef.current.find(p => p.peerID === payload.id);
-                item.peer.signal(payload.signal);
+                if (item) {
+                    item.peer.signal(payload.signal);
+                } else {
+                    console.warn(`⚠️ Could not find peer for signal:`, payload.id);
+                }
             });
 
             socketRef.current.on('user-left', id => {
+                console.log(`👋 User left:`, id);
                 const peerObj = peersRef.current.find(p => p.peerID === id);
                 if (peerObj) peerObj.peer.destroy();
                 const newPeers = peersRef.current.filter(p => p.peerID !== id);
@@ -764,19 +774,46 @@ const VideoConnect = ({ teamId, user }) => {
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                        <div className="flex-1 overflow-y-auto p-3 space-y-2">
                             {messages.length === 0 ? (
-                                <p className="text-gray-500 text-sm text-center mt-8">No messages yet</p>
+                                <div className="flex flex-col items-center justify-center h-full text-center">
+                                    <MessageSquare className="w-12 h-12 text-gray-600 mb-2" />
+                                    <p className="text-gray-500 text-sm">No messages yet</p>
+                                    <p className="text-gray-600 text-xs mt-1">Send a message to start the conversation</p>
+                                </div>
                             ) : (
-                                messages.map((msg, idx) => (
-                                    <div key={idx} className="bg-white/5 rounded-lg p-3">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="font-bold text-sm text-purple-400">{msg.userName}</span>
-                                            <span className="text-xs text-gray-500">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                                messages.map((msg, idx) => {
+                                    const isOwnMessage = msg.userId === user?.id;
+                                    return (
+                                        <div key={idx} className={`flex gap-2 ${isOwnMessage ? 'flex-row-reverse' : 'flex-row'}`}>
+                                            {/* Avatar */}
+                                            <div className="flex-shrink-0">
+                                                <div className="w-8 h-8 rounded-full bg-purple-600/30 flex items-center justify-center text-purple-300 text-xs font-bold">
+                                                    {msg.userName?.charAt(0)?.toUpperCase() || 'U'}
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Message bubble */}
+                                            <div className={`flex flex-col max-w-[70%] ${isOwnMessage ? 'items-end' : 'items-start'}`}>
+                                                <div className="flex items-baseline gap-2 mb-0.5">
+                                                    <span className={`text-xs font-semibold ${isOwnMessage ? 'text-purple-400' : 'text-blue-400'}`}>
+                                                        {isOwnMessage ? 'You' : msg.userName}
+                                                    </span>
+                                                    <span className="text-[10px] text-gray-500">
+                                                        {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </span>
+                                                </div>
+                                                <div className={`rounded-2xl px-3 py-2 ${
+                                                    isOwnMessage 
+                                                        ? 'bg-purple-600/40 rounded-tr-sm' 
+                                                        : 'bg-white/10 rounded-tl-sm'
+                                                }`}>
+                                                    <p className="text-sm text-white break-words">{msg.message}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <p className="text-sm text-gray-300">{msg.message}</p>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </div>
                         <div className="p-4 border-t border-white/10 flex-shrink-0 bg-[#202124]">
@@ -798,138 +835,143 @@ const VideoConnect = ({ teamId, user }) => {
                 )}
             </div>
 
-            {/* Controls - Mobile optimized with better spacing */}
-            <div className="p-2 sm:p-3 md:p-6 flex flex-wrap justify-center sm:justify-between items-center gap-2 sm:gap-3 md:gap-6 bg-black/60 md:bg-black/40 backdrop-blur-sm border-t border-white/10 fixed md:absolute bottom-0 w-full z-20 safe-area-inset-bottom">
-                <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 order-1">
+            {/* Controls - Google Meet Style: Mobile First Design */}
+            <div className="p-3 sm:p-4 md:p-6 flex justify-center sm:justify-between items-center gap-3 sm:gap-4 bg-black/80 md:bg-black/40 backdrop-blur-md border-t border-white/10 fixed md:absolute bottom-0 w-full z-20">
+                {/* Mobile: Primary controls only (Mic, Cam, End Call) */}
+                {/* Desktop: All controls */}
+                
+                {/* Left: Primary Media Controls - Always visible */}
+                <div className="flex items-center gap-2 sm:gap-3">
                     <button 
                         onClick={toggleMic}
                         title={micOn ? "Mute" : "Unmute"}
-                        className={`p-2.5 sm:p-3 md:p-4 rounded-full transition-all touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center ${micOn ? 'bg-white/10 hover:bg-white/20 active:bg-white/30' : 'bg-red-500/20 text-red-500 hover:bg-red-500/30 active:bg-red-500/40'}`}
+                        className={`p-3 sm:p-3.5 md:p-4 rounded-full transition-all min-w-[48px] min-h-[48px] sm:min-w-[52px] sm:min-h-[52px] flex items-center justify-center ${micOn ? 'bg-[#3C4043] hover:bg-[#5F6368]' : 'bg-red-600 hover:bg-red-700'}`}
                     >
-                        {micOn ? <Mic className="w-4 sm:w-5 md:w-5 h-4 sm:h-5 md:h-5" /> : <MicOff className="w-4 sm:w-5 md:w-5 h-4 sm:h-5 md:h-5" />}
+                        {micOn ? <Mic className="w-5 sm:w-6 h-5 sm:h-6" /> : <MicOff className="w-5 sm:w-6 h-5 sm:h-6" />}
                     </button>
                     
                     <button 
                         onClick={toggleCam}
                         title={camOn ? "Turn off camera" : "Turn on camera"}
-                        className={`p-2.5 sm:p-3 md:p-4 rounded-full transition-all touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center ${camOn ? 'bg-white/10 hover:bg-white/20 active:bg-white/30' : 'bg-red-500/20 text-red-500 hover:bg-red-500/30 active:bg-red-500/40'}`}
+                        className={`p-3 sm:p-3.5 md:p-4 rounded-full transition-all min-w-[48px] min-h-[48px] sm:min-w-[52px] sm:min-h-[52px] flex items-center justify-center ${camOn ? 'bg-[#3C4043] hover:bg-[#5F6368]' : 'bg-red-600 hover:bg-red-700'}`}
                     >
-                        {camOn ? <Video className="w-4 sm:w-5 md:w-5 h-4 sm:h-5 md:h-5" /> : <VideoOff className="w-4 sm:w-5 md:w-5 h-4 sm:h-5 md:h-5" />}
+                        {camOn ? <Video className="w-5 sm:w-6 h-5 sm:h-6" /> : <VideoOff className="w-5 sm:w-6 h-5 sm:h-6" />}
                     </button>
 
+                    {/* Desktop: Show screen share */}
                     <button 
                         onClick={toggleScreenShare}
                         title={isScreenSharing ? "Stop sharing" : "Share screen"}
-                        className={`hidden sm:flex p-3 md:p-4 rounded-full transition-all touch-manipulation ${isScreenSharing ? 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30' : 'bg-white/10 hover:bg-white/20'}`}
+                        className={`hidden sm:flex p-3 md:p-4 rounded-full transition-all items-center justify-center ${isScreenSharing ? 'bg-purple-600 hover:bg-purple-700' : 'bg-[#3C4043] hover:bg-[#5F6368]'}`}
                     >
                         {isScreenSharing ? <MonitorOff className="w-5 h-5" /> : <Monitor className="w-5 h-5" />}
                     </button>
-
-                    {handRaised && (
-                        <div className="bg-yellow-500/20 text-yellow-400 px-3 py-2 rounded-full text-sm flex items-center gap-2">
-                            <Hand className="w-4 h-4" />
-                            Hand raised
-                        </div>
-                    )}
                 </div>
 
-                {/* Center: Leave Call */}
+                {/* Center: End Call Button - Google Meet style (prominently placed) */}
                 <button 
                     onClick={leaveCall}
-                    className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white p-2.5 sm:p-3 md:p-4 px-4 sm:px-6 md:px-8 rounded-full font-bold shadow-lg shadow-red-500/20 flex items-center gap-1 md:gap-2 touch-manipulation order-2 min-w-[44px] min-h-[44px]"
+                    className="bg-red-600 hover:bg-red-700 text-white p-3.5 sm:p-4 md:px-6 rounded-full font-bold shadow-lg flex items-center gap-2 min-w-[48px] min-h-[48px] sm:min-w-[52px] sm:min-h-[52px]"
                 >
-                    <PhoneOff className="w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6" />
-                    <span className="hidden sm:inline text-xs sm:text-sm md:text-base">Leave</span>
+                    <PhoneOff className="w-5 sm:w-6 h-5 sm:h-6" />
+                    <span className="hidden md:inline text-sm">Leave</span>
                 </button>
 
-                <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 order-3">
-                    {/* Layout Switcher */}
-                    <div className="relative">
-                        <button 
-                            onClick={() => {
-                                const layouts = ['grid', 'sidebar', 'spotlight'];
-                                const currentIndex = layouts.indexOf(layout);
-                                const nextLayout = layouts[(currentIndex + 1) % layouts.length];
-                                setLayout(nextLayout);
-                                toast(`Layout: ${nextLayout}`);
-                            }}
-                            title="Change layout"
-                            className="hidden sm:flex p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-all touch-manipulation items-center justify-center"
-                        >
-                            <Grid3x3 className="w-5 h-5" />
-                        </button>
-                    </div>
-
-                    {/* Chat Toggle */}
+                {/* Right: Secondary Controls */}
+                <div className="flex items-center gap-2 sm:gap-3">
+                    {/* Chat Toggle - Always visible */}
                     <button 
                         onClick={() => { setShowChat(!showChat); if (!showChat) setUnreadCount(0); }}
                         title="Toggle chat"
-                        className="p-2.5 sm:p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-all touch-manipulation relative min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        className="p-2.5 sm:p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all relative min-w-[44px] min-h-[44px] flex items-center justify-center"
                     >
-                        <MessageSquare className="w-4 sm:w-5 h-4 sm:h-5" />
+                        <MessageSquare className="w-5 h-5" />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] sm:text-xs rounded-full w-4 sm:w-5 h-4 sm:h-5 flex items-center justify-center font-bold">
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold">
                                 {unreadCount}
                             </span>
                         )}
                     </button>
 
-                    {/* Fullscreen Toggle */}
+                    {/* Desktop: Layout and Fullscreen */}
+                    <button 
+                        onClick={() => {
+                            const layouts = ['grid', 'sidebar', 'spotlight'];
+                            const currentIndex = layouts.indexOf(layout);
+                            const nextLayout = layouts[(currentIndex + 1) % layouts.length];
+                            setLayout(nextLayout);
+                            toast(`Layout: ${nextLayout}`);
+                        }}
+                        title="Change layout"
+                        className="hidden md:flex p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all items-center justify-center"
+                    >
+                        <Grid3x3 className="w-5 h-5" />
+                    </button>
+
                     <button 
                         onClick={toggleFullscreen}
                         title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-                        className="hidden md:flex p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-all touch-manipulation items-center justify-center"
+                        className="hidden md:flex p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all items-center justify-center"
                     >
                         {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
                     </button>
 
-                    {/* Settings */}
+                    {/* Settings - Desktop only */}
                     <button 
                         onClick={() => setShowSettings(!showSettings)}
                         title="Settings"
-                        className="p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-all touch-manipulation"
+                        className="hidden sm:flex p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all items-center justify-center"
                     >
-                        <SettingsIcon className="w-4 sm:w-5 h-4 sm:h-5" />
+                        <SettingsIcon className="w-5 h-5" />
                     </button>
 
-                    {/* More Options */}
+                    {/* More Options - Always visible */}
                     <div className="relative">
                         <button 
                             onClick={() => setShowMoreMenu(!showMoreMenu)}
                             title="More options"
-                            className="p-2.5 sm:p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 transition-all touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
+                            className="p-2.5 sm:p-3 md:p-4 rounded-full bg-[#3C4043] hover:bg-[#5F6368] transition-all min-w-[44px] min-h-[44px] flex items-center justify-center"
                         >
-                            <MoreVertical className="w-4 sm:w-5 h-4 sm:h-5" />
+                            <MoreVertical className="w-5 h-5" />
                         </button>
 
                         {showMoreMenu && (
-                            <div className="fixed md:absolute bottom-20 md:bottom-full right-2 md:right-0 mb-2 bg-[#303134] rounded-lg shadow-2xl border border-white/10 p-2 min-w-[200px] z-40">
-                                <button 
-                                    onClick={toggleHandRaise}
-                                    className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors"
-                                >
-                                    <Hand className="w-4 h-4" />
-                                    <span className="text-sm">{handRaised ? 'Lower hand' : 'Raise hand'}</span>
-                                </button>
-                                <div className="border-t border-white/10 my-2"></div>
-                                <p className="text-xs text-gray-500 px-4 py-1">Reactions</p>
-                                <button onClick={() => sendReaction('👍')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors">
-                                    <span className="text-lg">👍</span>
-                                    <span className="text-sm">Thumbs up</span>
-                                </button>
-                                <button onClick={() => sendReaction('❤️')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors">
-                                    <span className="text-lg">❤️</span>
-                                    <span className="text-sm">Heart</span>
-                                </button>
-                                <button onClick={() => sendReaction('😂')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors">
-                                    <span className="text-lg">😂</span>
-                                    <span className="text-sm">Laugh</span>
-                                </button>
-                                <button onClick={() => sendReaction('🎉')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors">
-                                    <span className="text-lg">🎉</span>
-                                    <span className="text-sm">Party</span>
-                                </button>
-                            </div>
+                            <>
+                                {/* Click outside to close */}
+                                <div 
+                                    className="fixed inset-0 z-40" 
+                                    onClick={() => setShowMoreMenu(false)}
+                                />
+                                
+                                {/* Menu */}
+                                <div className="fixed md:absolute bottom-20 md:bottom-full right-2 md:right-0 mb-2 bg-[#303134] rounded-lg shadow-2xl border border-white/10 p-2 min-w-[200px] z-50">
+                                    <button 
+                                        onClick={toggleHandRaise}
+                                        className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left"
+                                    >
+                                        <Hand className="w-4 h-4" />
+                                        <span className="text-sm">{handRaised ? 'Lower hand' : 'Raise hand'}</span>
+                                    </button>
+                                    <div className="border-t border-white/10 my-2"></div>
+                                    <p className="text-xs text-gray-500 px-4 py-1">Reactions</p>
+                                    <button onClick={() => sendReaction('👍')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-lg">👍</span>
+                                        <span className="text-sm">Thumbs up</span>
+                                    </button>
+                                    <button onClick={() => sendReaction('❤️')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-lg">❤️</span>
+                                        <span className="text-sm">Heart</span>
+                                    </button>
+                                    <button onClick={() => sendReaction('😂')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-lg">😂</span>
+                                        <span className="text-sm">Laugh</span>
+                                    </button>
+                                    <button onClick={() => sendReaction('🎉')} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors text-left">
+                                        <span className="text-lg">🎉</span>
+                                        <span className="text-sm">Party</span>
+                                    </button>
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>

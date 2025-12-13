@@ -18,6 +18,7 @@ import ComparisonView from '../components/ui/ComparisonView';
 import CitationGenerator from '../components/ui/CitationGenerator';
 import GrammarView from '../components/ui/GrammarView';
 import PromoBanner from '../components/ui/PromoBanner';
+import TeamDictionary from '../components/TeamDictionary';
 
 import AnalysisResultsPanel from '../components/ui/AnalysisResultsPanel';
 
@@ -28,7 +29,7 @@ const Analyzer = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [grammarResult, setGrammarResult] = useState(null);
-  const [viewMode, setViewMode] = useState('highlight'); // 'highlight', 'comparison', 'grammar'
+  const [viewMode, setViewMode] = useState('highlight'); // 'highlight', 'comparison', 'grammar', 'dictionary'
   const { addToHistory } = useAppContext();
   const [usage, setUsage] = useState(null);
   const [citationSource, setCitationSource] = useState(null); // State for citation modal
@@ -511,8 +512,8 @@ const Analyzer = () => {
                             className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg shadow-lg h-full absolute"
                             initial={false}
                             animate={{
-                                x: viewMode === 'highlight' ? '0%' : viewMode === 'comparison' ? '100%' : '200%',
-                                width: '33.33%',
+                                x: viewMode === 'highlight' ? '0%' : viewMode === 'comparison' ? '100%' : viewMode === 'grammar' ? '200%' : '300%',
+                                width: '25%',
                                 opacity: 1
                             }}
                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -520,10 +521,10 @@ const Analyzer = () => {
                       </div>
 
                       {/* Buttons */}
-                      <div className="grid grid-cols-3 gap-1 relative z-10 w-full sm:w-[360px]">
+                      <div className="grid grid-cols-4 gap-1 relative z-10 w-full sm:w-[480px]">
                           <button
                             onClick={() => setViewMode('highlight')}
-                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                            className={`px- 2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
                                 viewMode === 'highlight' ? 'text-white' : 'text-gray-400 hover:text-white'
                             }`}
                           >
@@ -549,6 +550,16 @@ const Analyzer = () => {
                           >
                             <Wand2 className="w-3.5 h-3.5" />
                             <span className="truncate">Grammar</span>
+                          </button>
+                          
+                          <button
+                            onClick={() => setViewMode('dictionary')}
+                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'dictionary' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            }`}
+                          >
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span className="truncate">Dict</span>
                           </button>
                       </div>
                   </div>
@@ -580,6 +591,7 @@ const Analyzer = () => {
                   }}
                 />
               )}
+              {viewMode === 'dictionary' && <TeamDictionary />}
             </motion.div>
           )}
         </div>
