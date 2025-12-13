@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mic, MicOff, Video, VideoOff, Monitor, MonitorOff, PhoneOff, MessageSquare, Hand, Users, Maximize, Minimize } from 'lucide-react';
+import { Mic, MicOff, Video, VideoOff, Monitor, MonitorOff, PhoneOff, MessageSquare, Hand, Users, Maximize, Minimize, MoreVertical } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -19,6 +19,7 @@ const ControlBar = ({
     onToggleChat,
     onToggleParticipants,
     onToggleFullscreen,
+    onToggleSettings,
     onLeave,
     className = ''
 }) => {
@@ -138,6 +139,16 @@ const ControlBar = ({
                                     ) : (
                                         <Maximize className="w-6 h-6 text-white" aria-hidden="true" />
                                     )}
+                                </button>
+
+                                {/* Settings (Three Dots) */}
+                                <button
+                                    onClick={onToggleSettings}
+                                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#3c4043] hover:bg-[#5f6368] flex items-center justify-center transition-all hover:scale-105"
+                                    aria-label="Settings"
+                                    title="Settings"
+                                >
+                                    <MoreVertical className="w-6 h-6 text-white" aria-hidden="true" />
                                 </button>
 
                                 {/* Raise Hand */}

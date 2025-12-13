@@ -9,6 +9,7 @@ import VideoGrid from '../components/meet/VideoGrid';
 import ControlBar from '../components/meet/ControlBar';
 import ChatPanel from '../components/meet/ChatPanel';
 import ParticipantPanel from '../components/meet/ParticipantPanel';
+import SettingsModal from '../components/meet/settings/SettingsModal';
 import { ActiveSpeakerDetector } from '../utils/activeSpeaker';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
@@ -30,6 +31,7 @@ const VideoMeeting = () => {
     const [showParticipants, setShowParticipants] = useState(false);
     const [activeSpeaker, setActiveSpeaker] = useState(null);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
 
     const activeSpeakerDetectorRef = useRef(null);
 
@@ -293,7 +295,15 @@ const VideoMeeting = () => {
                 onToggleChat={() => setShowChat(!showChat)}
                 onToggleParticipants={() => setShowParticipants(!showParticipants)}
                 onToggleFullscreen={handleToggleFullscreen}
+                onToggleSettings={() => setShowSettings(true)}
                 onLeave={handleLeave}
+            />
+
+            {/* Settings Modal */}
+            <SettingsModal
+                isOpen={showSettings}
+                onClose={() => setShowSettings(false)}
+                localStream={localStream}
             />
 
             {/* Chat Panel */}
