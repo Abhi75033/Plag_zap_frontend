@@ -183,7 +183,25 @@ const ContentWriter = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white pb-20 md:pb-0">
+        <div className="min-h-screen relative overflow-hidden text-white pb-20 md:pb-0">
+            {/* Animated Background */}
+            <div className="fixed inset-0 bg-black">
+                {/* Base gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20"></div>
+                
+                {/* Animated gradient orbs */}
+                <div className="absolute top-0 -left-48 w-96 h-96 bg-purple-600/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+                <div className="absolute top-0 -right-48 w-96 h-96 bg-blue-600/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+                <div className="absolute -bottom-48 left-1/2 w-96 h-96 bg-pink-600/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+                
+                {/* Noise texture overlay */}
+                <div className="absolute inset-0 opacity-5" style={{
+                    backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")'
+                }}></div>
+            </div>
+
+            {/* Content */}
+            <div className="relative z-10">
             {/* Header */}
             <div className="border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4">
@@ -452,6 +470,7 @@ const ContentWriter = () => {
                         )}
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );

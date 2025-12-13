@@ -27,6 +27,7 @@ export default {
                 "text-reveal": "text-reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s",
                 "shimmer": "shimmer 2s linear infinite",
                 "spotlight": "spotlight 2s ease .75s 1 forwards",
+                "blob": "blob 7s infinite",
             },
             keyframes: {
                 "text-reveal": {
@@ -53,6 +54,20 @@ export default {
                     "100%": {
                         opacity: 1,
                         transform: "translate(-50%,-40%) scale(1)",
+                    },
+                },
+                blob: {
+                    "0%": {
+                        transform: "translate(0px, 0px) scale(1)",
+                    },
+                    "33%": {
+                        transform: "translate(30px, -50px) scale(1.1)",
+                    },
+                    "66%": {
+                        transform: "translate(-20px, 20px) scale(0.9)",
+                    },
+                    "100%": {
+                        transform: "translate(0px, 0px) scale(1)",
                     },
                 },
             },
