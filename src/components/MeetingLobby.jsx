@@ -102,6 +102,25 @@ const MeetingLobby = ({ teamId, teamName }) => {
 
     return (
         <div className="space-y-6">
+            {/* Development Notice Banner */}
+            <div className="bg-gradient-to-r from-yellow-900/30 to-orange-900/30 border border-yellow-500/40 rounded-xl p-4">
+                <div className="flex items-start gap-3">
+                    <div className="mt-0.5">
+                        <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div className="flex-1">
+                        <h4 className="text-yellow-400 font-semibold text-sm mb-1">
+                            🚧 Meeting Feature in Development
+                        </h4>
+                        <p className="text-gray-300 text-sm">
+                            This feature is currently under development. If you encounter any bugs or issues, please report them to help us improve!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             {/* Quick Actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Create Meeting Card */}

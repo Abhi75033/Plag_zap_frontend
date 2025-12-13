@@ -55,9 +55,9 @@ export const sendTeamMessage = (content, type = 'message', replyTo = null) => ap
 export const deleteTeamMessage = (id) => api.delete(`/team/messages/${id}`);
 export const reactToMessage = (id, emoji) => api.post(`/team/messages/${id}/react`, { emoji });
 export const togglePinMessage = (id) => api.post(`/team/messages/${id}/pin`);
-export const endMeeting = (code) => api.post(`/api/meetings/${code}/end`);
+export const endMeeting = (code) => api.post(`/meetings/${code}/end`);
 // Clear meeting history
-export const clearMeetingHistory = () => api.delete('/api/meetings/user/clear-history');
+export const clearMeetingHistory = () => api.delete('/meetings/user/clear-history');
 export const getTeamMembersList = () => api.get('/team/members-list');
 export const markMessagesAsRead = (messageIds) => api.post('/team/messages/read', { messageIds });
 export const getMessageReceipts = (id) => api.get(`/team/messages/${id}/receipts`);
