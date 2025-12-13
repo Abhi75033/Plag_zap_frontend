@@ -584,12 +584,10 @@ const Analyzer = () => {
                     }
                     setText(newText);
                     toast.success(`Applied ${issues.length} grammar fix${issues.length > 1 ? 'es' : ''}!`);
-        const tabs = [
-        { id: 'plagiarism', label: 'Plagiarism Checker', icon: FileText },
-        { id: 'ai-detector', label: 'AI Detector', icon: Sparkles },
-        { id: 'paraphraser', label: 'Paraphraser', icon: Zap },
-        { id: 'dictionary', label: 'Dictionary', icon: Languages }
-    ];                }).catch(() => {});
+                    // Re-run grammar check on new text
+                    checkGrammar(newText).then(res => {
+                      setGrammarResult(res.data);
+                    }).catch(() => {});
                   }}
                 />
               )}
