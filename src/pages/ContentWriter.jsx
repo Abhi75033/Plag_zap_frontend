@@ -183,9 +183,9 @@ const ContentWriter = () => {
     };
 
     return (
-        <div className="min-h-screen relative overflow-hidden text-white pb-20 md:pb-0">
+        <div className="min-h-screen relative text-white pb-20 md:pb-0">
             {/* Animated Background */}
-            <div className="fixed inset-0 bg-black">
+            <div className="fixed inset-0 bg-black overflow-hidden">
                 {/* Base gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20"></div>
                 
@@ -220,10 +220,230 @@ const ContentWriter = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-8">
-                <div className="grid lg:grid-cols-3 gap-4 md:gap-8">
-                    {/* Left Panel - Controls */}
-                    <div className="lg:col-span-1 space-y-4 md:space-y-6">
-                        {/* Mode Selector - Horizontal on mobile, vertical on desktop */}
+                {/* Mobile-First Layout */}
+                <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-1 lg:grid-cols-3 md:gap-8">
+                    
+                    {/* MOBILE: Input Section First - Desktop: Right Panel */}
+                    <div className="md:hidden space-y-4">
+                        {/* Mode Selector - Mobile */}
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
+                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                                Writing Mode
+                            </h3>
+                            <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+                                {MODES.map((mode) => {
+                                    const Icon = mode.icon;
+                                    return (
+                                        <button
+                                            key={mode.id}
+                                            onClick={() => setSelectedMode(mode)}
+                                            className={`flex-shrink-0 p-3 rounded-lg transition-all ${
+                                                selectedMode.id === mode.id
+                                                    ? `bg-gradient-to-r ${mode.color} shadow-lg`
+                                                    : 'bg-white/5 active:bg-white/10'
+                                            }`}
+                                        >
+                                            <div className="flex flex-col items-center gap-1 min-w-[80px]">
+                                                <Icon className="w-5 h-5" />
+                                                <div className="text-xs font-semibold text-center">{mode.label.split(' ')[0]}</div>
+                                            </div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Settings - Mobile */}
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
+                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                                Settings
+                            </h3>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Tone</label>
+                                    <select
+                                        value={tone}
+                                        onChange={(e) => setTone(e.target.value)}
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm"
+                                    >
+                                        {TONES.map(t => <option key={t} value={t}>{t}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Length</label>
+                                    <select
+                                        value={length}
+                                        onChange={(e) => setLength(e.target.value)}
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm"
+                                    >
+                                        {LENGTHS.map(l => <option key={l} value={l}>{l}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                         {/* Quality Metrics - Mobile */}
+                        {feedback && (
+                            <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
+                                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                                    Quality Metrics
+                                </h3>
+                                <div className="space-y-3">
+                                    <MetricBar label="Plagiarism Risk" value={feedback.plagiarismRisk} max={100} invert />
+                                    <MetricBar label="AI Detection Risk" value={feedback.aiDetectionRisk} max={100} invert />
+                                    <MetricBar label="Readability" value={feedback.readability} max={100} />
+                                    <MetricBar label="Tone Match" value={feedback.toneMatch} max={100} />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Input Section - FIRST on mobile */}
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
+                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                                Input
+                            </h3>
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Topic *</label>
+                                    <input
+                                        type="text"
+                                        value={topic}
+                                        onChange={(e) => setTopic(e.target.value)}
+                                        placeholder="Enter your topic..."
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500"
+                                    />
+                                </div>
+
+                                {/* Topic Intelligence - Auto-appears */}
+                                <AnimatePresence>
+                                    {intelligence.analysis && (
+                                        <TopicInsight 
+                                            analysis={intelligence.analysis}
+                                            loading={intelligenceLoading.analysis}
+                                        />
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Suggested Titles */}
+                                <AnimatePresence>
+                                    {intelligence.titles.length > 0 && (
+                                        <SuggestedTitles 
+                                            titles={intelligence.titles}
+                                            onSelect={setTopic}
+                                            loading={intelligenceLoading.titles}
+                                        />
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Content Angles */}
+                                <AnimatePresence>
+                                    {intelligence.angles && (
+                                        <AngleSuggestions 
+                                            angles={intelligence.angles}
+                                            loading={intelligenceLoading.angles}
+                                        />
+                                    )}
+                                </AnimatePresence>
+
+                                <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Keywords (optional)</label>
+                                    <input
+                                        type="text"
+                                        value={keywords}
+                                        onChange={(e) => setKeywords(e.target.value)}
+                                        placeholder="AI, machine learning..."
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500"
+                                    />
+                                </div>
+
+                                {/* Research Builder (Research/Academic only) */}
+                                {(selectedMode.id === 'research' || selectedMode.id === 'academic') && topic.trim() && (
+                                    <ResearchBuilder
+                                        topic={topic}
+                                        mode={selectedMode.id}
+                                        research={intelligence.research}
+                                        loading={intelligenceLoading.research}
+                                        onBuild={handleBuildResearch}
+                                        expanded={expandedSections.research}
+                                        onToggle={() => toggleSection('research')}
+                                    />
+                                )}
+
+                                <button
+                                    onClick={handleGenerate}
+                                    disabled={loading || !topic.trim()}
+                                    className={`w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-sm ${
+                                        loading || !topic.trim()
+                                            ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                                            : `bg-gradient-to-r ${selectedMode.color} active:scale-95`
+                                    }`}
+                                >
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            Generating...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Wand2 className="w-5 h-5" />
+                                            Generate Content
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Refinement Actions - Mobile */}
+                        {generatedContent && (
+                            <RefinementActions 
+                                onRefine={handleRefineContent}
+                                loading={loading}
+                                mode={selectedMode.id}
+                            />
+                        )}
+
+                        {/* Output Section - Mobile */}
+                        {generatedContent && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm"
+                            >
+                                <div className="flex items-center justify-between mb-3">
+                                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                        Generated Content
+                                    </h3>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={copyToClipboard}
+                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
+                                        >
+                                            <Copy className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={downloadDoc}
+                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
+                                        >
+                                            <Download className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="bg-black/20 border border-white/10 rounded-xl p-4 max-h-[400px] overflow-y-auto">
+                                    <div className="prose prose-invert max-w-none text-sm">
+                                        {generatedContent.split('\n').map((paragraph, idx) => (
+                                            <p key={idx} className="mb-3 leading-relaxed">
+                                                {paragraph}
+                                            </p>
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </div>
+
+                    {/* Left Panel - Controls (Hidden on Mobile, Visible on Desktop) */}
+                    <div className="hidden lg:block lg:col-span-1 space-y-4 md:space-y-6">
+                        {/* Mode Selector */}
                         <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
                             <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
                                 Writing Mode
@@ -322,8 +542,8 @@ const ContentWriter = () => {
                         )}
                     </div>
 
-                    {/* Right Panel - Editor */}
-                    <div className="lg:col-span-2 space-y-4 md:space-y-6">
+                    {/* Right Panel - Editor (Hidden on Mobile, Visible on Desktop) */}
+                    <div className="hidden lg:block lg:col-span-2 space-y-4 md:space-y-6">
                         {/* Input Section */}
                         <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
                             <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
