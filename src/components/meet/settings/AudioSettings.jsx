@@ -46,13 +46,6 @@ const AudioSettings = ({ localStream }) => {
         localStorage.setItem('preferredSpeaker', deviceId);
     };
 
-    const testSpeakers = () => {
-        setTestingAudio(true);
-        const audio = new Audio('/notification.mp3'); // You'll need to add this sound
-        audio.play().catch(err => console.error('Test audio failed:', err));
-        setTimeout(() => setTestingAudio(false), 1000);
-    };
-
     const handleVolumeChange = (e) => {
         const newVolume = parseInt(e.target.value);
         setVolume(newVolume);
@@ -159,7 +152,34 @@ const AudioSettings = ({ localStream }) => {
                         ))}
                     </select>
                     <button
-                        onClick={testSpeakers}
+                        onClick={() => {
+                            setTestingAudio(true);
+                            
+                            // Generate test beep using Web Audio API
+                            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                            const oscillator = audioContext.createOscillator();
+                            const gainNode = audioContext.createGain();
+                            
+                            oscillator.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                            
+                            // 800Hz beep
+                            oscillator.frequency.value = 800;
+                            oscillator.type = 'sine';
+                            
+                            // Fade in/out
+                            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.1);
+                            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);
+                            
+                            oscillator.start(audioContext.currentTime);
+                            oscillator.stop(audioContext.currentTime + 0.5);
+                            
+                            setTimeout(() => {
+                                setTestingAudio(false);
+                                audioContext.close();
+                            }, 600);
+                        }}
                         disabled={testingAudio}
                         className="px-4 py-2.5 bg-[#1a73e8] hover:bg-[#1557b0] text-white rounded-lg transition-colors disabled:opacity-50"
                     >
