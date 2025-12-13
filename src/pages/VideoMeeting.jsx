@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useMediaDevices } from '../hooks/useMediaDevices';
@@ -6,6 +6,9 @@ import { useWebRTC } from '../hooks/useWebRTC';
 import { meetingAPI } from '../services/meetingAPI';
 import VideoGrid from '../components/meet/VideoGrid';
 import ControlBar from '../components/meet/ControlBar';
+import ChatPanel from '../components/meet/ChatPanel';
+import ParticipantPanel from '../components/meet/ParticipantPanel';
+import { ActiveSpeakerDetector } from '../utils/activeSpeaker';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 
@@ -21,6 +24,12 @@ const VideoMeeting = () => {
     const [meeting, setMeeting] = useState(null);
     const [loading, setLoading] = useState(true);
     const [joining, setJoining] = useState(true);
+    const [handRaised, setHandRaised] = useState(false);
+    const [showChat, setShowChat] = useState(false);
+    const [showParticipants, setShowParticipants] = useState(false);
+    const [activeSpeaker, setActiveSpeaker] = useState(null);
+
+    const activeSpeakerDetectorRef = useRef(null);
 
     // Media devices hook
     const {
@@ -50,7 +59,7 @@ const VideoMeeting = () => {
         const loadMeeting = async () => {
             try {
                 const response = await meetingAPI.getMeeting(code);
-                setMeeting (response.data.meeting);
+                setMeeting(response.data.meeting);
                 setLoading(false);
             } catch (error) {
                 console.error('Error loading meeting:', error);
@@ -89,6 +98,33 @@ const VideoMeeting = () => {
         }
     }, [mediaError]);
 
+    // Active speaker detection
+    useEffect(() => {
+        if (!localStream) return;
+
+        const detector = new ActiveSpeakerDetector();
+        activeSpeakerDetectorRef.current = detector;
+
+        // Add local stream
+        detector.addStream('local', localStream);
+
+        // Add peer streams
+        peers.forEach((peerData, socketId) => {
+            if (peerData.stream) {
+                detector.addStream(socketId, peerData.stream);
+            }
+        });
+
+        // Start detection
+        detector.start((speakerId) => {
+            setActiveSpeaker(speakerId);
+        });
+
+        return () => {
+            detector.stop();
+        };
+    }, [localStream, peers]);
+
     // Handle audio toggle
     const handleToggleAudio = () => {
         const newState = toggleAudio();
@@ -120,11 +156,27 @@ const VideoMeeting = () => {
         }
     };
 
+    // Handle raise hand
+    const handleToggleHand = () => {
+        const newState = !handRaised;
+        setHandRaised(newState);
+        if (socket) {
+            socket.emit('raise-hand', { raised: newState });
+        }
+        toast(newState ? '✋ Hand raised' : 'Hand lowered', {
+            icon: newState ? '✋' : '👋',
+            duration: 2000
+        });
+    };
+
     // Handle leave
     const handleLeave = () => {
+        if (activeSpeakerDetectorRef.current) {
+            activeSpeakerDetectorRef.current.stop();
+        }
         leaveMeeting();
         toast.success('Left meeting');
-        navigate('/');
+        navigate('/team');
     };
 
     // Loading state
@@ -149,12 +201,12 @@ const VideoMeeting = () => {
     return (
         <div className="min-h-screen bg-[#202124] flex flex-col overflow-hidden">
             {/* Top Bar */}
-            <div className="h-16 flex items-center justify-between px-4 sm:px-6 bg-[#202124] border-b border-white/10">
+            <div className="h-16 flex items-center justify-between px-4 sm:px-6 bg-[#202124] border-b border-white/10 relative z-30">
                 <div className="flex items-center gap-3">
                     <h1 className="text-white font-medium text-lg truncate max-w-[300px]">
                         {meeting?.title || 'Meeting'}
                     </h1>
-                    <span className="text-[#9aa0a6] text-sm">
+                    <span className="text-[#9aa0a6] text-sm font-mono">
                         {code}
                     </span>
                 </div>
@@ -180,10 +232,30 @@ const VideoMeeting = () => {
                 audioEnabled={audioEnabled}
                 videoEnabled={videoEnabled}
                 isScreenSharing={isScreenSharing}
+                handRaised={handRaised}
                 onToggleAudio={handleToggleAudio}
                 onToggleVideo={handleToggleVideo}
                 onToggleScreenShare={handleToggleScreenShare}
+                onToggleHand={handleToggleHand}
+                onToggleChat={() => setShowChat(!showChat)}
+                onToggleParticipants={() => setShowParticipants(!showParticipants)}
                 onLeave={handleLeave}
+            />
+
+            {/* Chat Panel */}
+            <ChatPanel
+                socket={socket}
+                currentUser={user}
+                isOpen={showChat}
+                onClose={() => setShowChat(false)}
+            />
+
+            {/* Participant Panel */}
+            <ParticipantPanel
+                participants={participants}
+                localUser={user}
+                isOpen={showParticipants}
+                onClose={() => setShowParticipants(false)}
             />
         </div>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mic, MicOff, Video, VideoOff, Monitor, MonitorOff, PhoneOff, MoreVertical } from 'lucide-react';
+import { Mic, MicOff, Video, VideoOff, Monitor, MonitorOff, PhoneOff, MessageSquare, Hand, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -10,22 +10,17 @@ const ControlBar = ({
     audioEnabled,
     videoEnabled,
     isScreenSharing,
+    handRaised,
     onToggleAudio,
     onToggleVideo,
     onToggleScreenShare,
+    onToggleHand,
+    onToggleChat,
+    onToggleParticipants,
     onLeave,
     className = ''
 }) => {
     const [showControls, setShowControls] = useState(true);
-
-    // Auto-hide controls after 3 seconds (future feature)
-    // useEffect(() => {
-    //     let timeout;
-    //     if (showControls) {
-    //         timeout = setTimeout(() => setShowControls(false), 3000);
-    //     }
-    //     return () => clearTimeout(timeout);
-    // }, [showControls]);
 
     return (
         <AnimatePresence>
@@ -38,66 +33,103 @@ const ControlBar = ({
                     className={`fixed bottom-0 left-0 right-0 z-50 ${className}`}
                 >
                     <div className="bg-[#202124] border-t border-white/10 backdrop-blur-md">
-                        <div className="max-w-7xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-center gap-3 sm:gap-4">
-                            {/* Mic Toggle */}
-                            <button
-                                onClick={onToggleAudio}
-                                className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 ${
-                                    audioEnabled
-                                        ? 'bg-[#3c4043] hover:bg-[#5f6368]'
-                                        : 'bg-[#ea4335] hover:bg-[#d33b2c]'
-                                }`}
-                                title={audioEnabled ? 'Mute' : 'Unmute'}
-                            >
-                                {audioEnabled ? (
-                                    <Mic className="w-6 h-6 text-white" />
-                                ) : (
-                                    <MicOff className="w-6 h-6 text-white" />
-                                )}
-                            </button>
+                        <div className="max-w-7xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-between">
+                            {/* Left: Participants & Chat (Desktop) */}
+                            <div className="hidden md:flex items-center gap-3">
+                                <button
+                                    onClick={onToggleParticipants}
+                                    className="p-3 hover:bg-white/10 rounded-lg transition-colors"
+                                    title="Participants"
+                                >
+                                    <Users className="w-5 h-5 text-white" />
+                                </button>
+                                <button
+                                    onClick={onToggleChat}
+                                    className="p-3 hover:bg-white/10 rounded-lg transition-colors"
+                                    title="Chat"
+                                >
+                                    <MessageSquare className="w-5 h-5 text-white" />
+                                </button>
+                            </div>
 
-                            {/* Camera Toggle */}
-                            <button
-                                onClick={onToggleVideo}
-                                className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 ${
-                                    videoEnabled
-                                        ? 'bg-[#3c4043] hover:bg-[#5f6368]'
-                                        : 'bg-[#ea4335] hover:bg-[#d33b2c]'
-                                }`}
-                                title={videoEnabled ? 'Turn off camera' : 'Turn on camera'}
-                            >
-                                {videoEnabled ? (
-                                    <Video className="w-6 h-6 text-white" />
-                                ) : (
-                                    <VideoOff className="w-6 h-6 text-white" />
-                                )}
-                            </button>
+                            {/* Center: Main Controls */}
+                            <div className="flex items-center justify-center gap-3 sm:gap-4">
+                                {/* Mic Toggle */}
+                                <button
+                                    onClick={onToggleAudio}
+                                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 ${
+                                        audioEnabled
+                                            ? 'bg-[#3c4043] hover:bg-[#5f6368]'
+                                            : 'bg-[#ea4335] hover:bg-[#d33b2c]'
+                                    }`}
+                                    title={audioEnabled ? 'Mute' : 'Unmute'}
+                                >
+                                    {audioEnabled ? (
+                                        <Mic className="w-6 h-6 text-white" />
+                                    ) : (
+                                        <MicOff className="w-6 h-6 text-white" />
+                                    )}
+                                </button>
 
-                            {/* Screen Share Toggle (Desktop only) */}
-                            <button
-                                onClick={onToggleScreenShare}
-                                className={`hidden sm:flex w-12 h-12 sm:w-14 sm:h-14 rounded-full items-center justify-center transition-all hover:scale-105 ${
-                                    isScreenSharing
-                                        ? 'bg-[#1a73e8] hover:bg-[#1557b0]'
-                                        : 'bg-[#3c4043] hover:bg-[#5f6368]'
-                                }`}
-                                title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
-                            >
-                                {isScreenSharing ? (
-                                    <MonitorOff className="w-6 h-6 text-white" />
-                                ) : (
-                                    <Monitor className="w-6 h-6 text-white" />
-                                )}
-                            </button>
+                                {/* Camera Toggle */}
+                                <button
+                                    onClick={onToggleVideo}
+                                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 ${
+                                        videoEnabled
+                                            ? 'bg-[#3c4043] hover:bg-[#5f6368]'
+                                            : 'bg-[#ea4335] hover:bg-[#d33b2c]'
+                                    }`}
+                                    title={videoEnabled ? 'Turn off camera' : 'Turn on camera'}
+                                >
+                                    {videoEnabled ? (
+                                        <Video className="w-6 h-6 text-white" />
+                                    ) : (
+                                        <VideoOff className="w-6 h-6 text-white" />
+                                    )}
+                                </button>
 
-                            {/* Leave Call Button (Prominent Red) */}
-                            <button
-                                onClick={onLeave}
-                                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#ea4335] hover:bg-[#d33b2c] flex items-center justify-center transition-all hover:scale-105 shadow-lg ml-2 sm:ml-4"
-                                title="Leave call"
-                            >
-                                <PhoneOff className="w-6 h-6 text-white" />
-                            </button>
+                                {/* Screen Share Toggle (Desktop only) */}
+                                <button
+                                    onClick={onToggleScreenShare}
+                                    className={`hidden sm:flex w-12 h-12 sm:w-14 sm:h-14 rounded-full items-center justify-center transition-all hover:scale-105 ${
+                                        isScreenSharing
+                                            ? 'bg-[#1a73e8] hover:bg-[#1557b0]'
+                                            : 'bg-[#3c4043] hover:bg-[#5f6368]'
+                                    }`}
+                                    title={isScreenSharing ? 'Stop sharing' : 'Share screen'}
+                                >
+                                    {isScreenSharing ? (
+                                        <MonitorOff className="w-6 h-6 text-white" />
+                                    ) : (
+                                        <Monitor className="w-6 h-6 text-white" />
+                                    )}
+                                </button>
+
+                                {/* Raise Hand */}
+                                <button
+                                    onClick={onToggleHand}
+                                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 ${
+                                        handRaised
+                                            ? 'bg-yellow-600 hover:bg-yellow-700'
+                                            : 'bg-[#3c4043] hover:bg-[#5f6368]'
+                                    }`}
+                                    title={handRaised ? 'Lower hand' : 'Raise hand'}
+                                >
+                                    <Hand className="w-6 h-6 text-white" />
+                                </button>
+
+                                {/* Leave Call Button (Prominent Red) */}
+                                <button
+                                    onClick={onLeave}
+                                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#ea4335] hover:bg-[#d33b2c] flex items-center justify-center transition-all hover:scale-105 shadow-lg ml-2 sm:ml-4"
+                                    title="Leave call"
+                                >
+                                    <PhoneOff className="w-6 h-6 text-white" />
+                                </button>
+                            </div>
+
+                            {/* Right: Empty for balance (Desktop) */}
+                            <div className="hidden md:block w-[100px]"></div>
                         </div>
                     </div>
                 </motion.div>
