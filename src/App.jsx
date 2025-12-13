@@ -16,7 +16,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import DownloadExtension from './pages/DownloadExtension';
 import AdminDashboard from './pages/AdminDashboard';
-import TeamDashboard from './pages/TeamDashboard'; // New Import
+import TeamDashboard from './pages/TeamDashboard';
+import VideoMeeting from './pages/VideoMeeting'; // Video meeting import
 import AdminRoute from './components/AdminRoute';
 import ApiDocs from './pages/ApiDocs';
 import ChatWidget from './components/ui/ChatWidget';
@@ -98,6 +99,7 @@ function App() {
             <Route path="/pricing" element={<ProtectedRoute><Pricing /></ProtectedRoute>} />
             <Route path="/integrations" element={<ProtectedRoute><Integrations /></ProtectedRoute>} />
             <Route path="/team" element={<ProtectedRoute><TeamDashboard /></ProtectedRoute>} />
+            <Route path="/meet/:code" element={<ProtectedRoute><VideoMeeting /></ProtectedRoute>} />
             <Route
               path="/analyzer"
               element={
