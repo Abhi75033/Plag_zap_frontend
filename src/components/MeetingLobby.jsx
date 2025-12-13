@@ -1,0 +1,233 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { meetingAPI } from '../services/meetingAPI';
+import { Video, Copy, Check, Loader2, Users } from 'lucide-react';
+import toast from 'react-hot-toast';
+
+/**
+ * Meeting Lobby Component
+ * Create or join video meetings from Team Dashboard
+ */
+const MeetingLobby = ({ teamId, teamName }) => {
+    const navigate = useNavigate();
+    const [creating, setCreating] = useState(false);
+    const [joining, setJoining] = useState(false);
+    const [joinCode, setJoinCode] = useState('');
+    const [recentMeetings, setRecentMeetings] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [copied, setCopied] = useState(false);
+
+    // Load recent meetings
+    useEffect(() => {
+        loadMeetings();
+    }, []);
+
+    const loadMeetings = async () => {
+        try {
+            const response = await meetingAPI.getMyMeetings();
+            setRecentMeetings(response.data.meetings || []);
+        } catch (error) {
+            console.error('Error loading meetings:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Create instant meeting
+    const handleCreateMeeting = async () => {
+        setCreating(true);
+        try {
+            const response = await meetingAPI.createMeeting(
+                `${teamName} - Team Meeting`,
+                50
+            );
+            const meetingCode = response.data.meeting.code;
+            toast.success('Meeting created!');
+            
+            // Navigate to meeting
+            navigate(`/meet/${meetingCode}`);
+        } catch (error) {
+            console.error('Error creating meeting:', error);
+            toast.error(error.response?.data?.error || 'Failed to create meeting');
+        } finally {
+            setCreating(false);
+        }
+    };
+
+    // Join existing meeting
+    const handleJoinMeeting = async (e) => {
+        e.preventDefault();
+        if (!joinCode.trim()) return;
+
+        setJoining(true);
+        try {
+            // Format code if needed
+            const formattedCode = joinCode.toUpperCase().replace(/\s/g, '');
+            
+            // Validate meeting exists
+            await meetingAPI.getMeeting(formattedCode);
+            
+            // Navigate to meeting
+            navigate(`/meet/${formattedCode}`);
+        } catch (error) {
+            console.error('Error joining meeting:', error);
+            toast.error(error.response?.data?.error || 'Meeting not found');
+        } finally {
+            setJoining(false);
+        }
+    };
+
+    // Copy meeting code
+    const copyCode = (code) => {
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        toast.success('Meeting code copied!');
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <div className="space-y-6">
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Create Meeting Card */}
+                <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border border-purple-500/30 rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center shrink-0">
+                            <Video className="w-6 h-6 text-purple-400" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-lg font-bold mb-2">Start Instant Meeting</h3>
+                            <p className="text-gray-400 text-sm mb-4">
+                                Create a meeting room instantly for your team
+                            </p>
+                            <button
+                                onClick={handleCreateMeeting}
+                                disabled={creating}
+                                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                            >
+                                {creating ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                        Creating...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Video className="w-5 h-5" />
+                                        New Meeting
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Join Meeting Card */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center shrink-0">
+                            <Users className="w-6 h-6 text-blue-400" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-lg font-bold mb-2">Join Meeting</h3>
+                            <p className="text-gray-400 text-sm mb-4">
+                                Enter a meeting code to join
+                            </p>
+                            <form onSubmit={handleJoinMeeting} className="space-y-3">
+                                <input
+                                    type="text"
+                                    placeholder="ABC-DEFG-HIJ"
+                                    value={joinCode}
+                                    onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 font-mono text-center tracking-wider focus:outline-none focus:border-blue-500 transition-colors uppercase"
+                                    maxLength={13}
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={joining || !joinCode.trim()}
+                                    className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                                >
+                                    {joining ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            Joining...
+                                        </>
+                                    ) : (
+                                        'Join'
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Recent/Active Meetings */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Video className="w-5 h-5 text-purple-400" />
+                    Your Meetings
+                </h3>
+
+                {loading ? (
+                    <div className="text-center py-8">
+                        <Loader2 className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-2" />
+                        <p className="text-gray-400 text-sm">Loading meetings...</p>
+                    </div>
+                ) : recentMeetings.length === 0 ? (
+                    <div className="text-center py-12">
+                        <Video className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                        <p className="text-gray-400">No meetings yet</p>
+                        <p className="text-gray-500 text-sm mt-1">Create your first meeting to get started</p>
+                    </div>
+                ) : (
+                    <div className="space-y-3">
+                        {recentMeetings.map((meeting) => (
+                            <div
+                                key={meeting.code}
+                                className="flex items-center justify-between p-4 bg-black/30 rounded-xl border border-white/10 hover:border-purple-500/30 transition-all group"
+                            >
+                                <div className="flex-1">
+                                    <h4 className="font-bold text-sm mb-1">{meeting.title}</h4>
+                                    <div className="flex items-center gap-3 text-xs text-gray-400">
+                                        <span className="font-mono">{meeting.code}</span>
+                                        <span>•</span>
+                                        <span>{meeting.participantCount} participant{meeting.participantCount !== 1 ? 's' : ''}</span>
+                                        <span>•</span>
+                                        <span className={`px-2 py-0.5 rounded-full ${
+                                            meeting.status === 'active' 
+                                                ? 'bg-green-500/20 text-green-400'
+                                                : 'bg-gray-500/20 text-gray-400'
+                                        }`}>
+                                            {meeting.status}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => copyCode(meeting.code)}
+                                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                                        title="Copy code"
+                                    >
+                                        {copied ? (
+                                            <Check className="w-4 h-4 text-green-400" />
+                                        ) : (
+                                            <Copy className="w-4 h-4 text-gray-400" />
+                                        )}
+                                    </button>
+                                    <button
+                                        onClick={() => navigate(`/meet/${meeting.code}`)}
+                                        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium text-sm transition-colors"
+                                    >
+                                        Join
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default MeetingLobby;
