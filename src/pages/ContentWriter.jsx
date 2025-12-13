@@ -183,34 +183,57 @@ const ContentWriter = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white pb-20 md:pb-0">
             {/* Header */}
             <div className="border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-6 py-4">
+                <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-2xl font-bold flex items-center gap-2">
-                                <Wand2 className="w-6 h-6 text-purple-400" />
+                            <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+                                <Wand2 className="w-5 h-5 md:w-6 md:h-6 text-purple-400" />
                                 AI Content Writer
                             </h1>
-                            <p className="text-sm text-gray-400 mt-1">
-                                Intelligent writing assistant with pre-writing analysis
+                            <p className="text-xs md:text-sm text-gray-400 mt-1">
+                                Intelligent writing assistant
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-6 py-8">
-                <div className="grid lg:grid-cols-3 gap-8">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-8">
+                <div className="grid lg:grid-cols-3 gap-4 md:gap-8">
                     {/* Left Panel - Controls */}
-                    <div className="lg:col-span-1 space-y-6">
-                        {/* Mode Selector */}
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                    <div className="lg:col-span-1 space-y-4 md:space-y-6">
+                        {/* Mode Selector - Horizontal on mobile, vertical on desktop */}
+                        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
                                 Writing Mode
                             </h3>
-                            <div className="space-y-2">
+                            {/* Mobile: Horizontal scroll */}
+                            <div className="flex lg:hidden gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+                                {MODES.map((mode) => {
+                                    const Icon = mode.icon;
+                                    return (
+                                        <button
+                                            key={mode.id}
+                                            onClick={() => setSelectedMode(mode)}
+                                            className={`flex-shrink-0 p-3 rounded-lg transition-all ${
+                                                selectedMode.id === mode.id
+                                                    ? `bg-gradient-to-r ${mode.color} shadow-lg`
+                                                    : 'bg-white/5 active:bg-white/10'
+                                            }`}
+                                        >
+                                            <div className="flex flex-col items-center gap-1 min-w-[80px]">
+                                                <Icon className="w-5 h-5" />
+                                                <div className="text-xs font-semibold text-center">{mode.label.split(' ')[0]}</div>
+                                            </div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            {/* Desktop: Vertical */}
+                            <div className="hidden lg:block space-y-2">
                                 {MODES.map((mode) => {
                                     const Icon = mode.icon;
                                     return (
@@ -237,27 +260,27 @@ const ContentWriter = () => {
                         </div>
 
                         {/* Settings */}
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
                                 Settings
                             </h3>
-                            <div className="space-y-4">
+                            <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
                                 <div>
-                                    <label className="text-sm text-gray-400 mb-2 block">Tone</label>
+                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Tone</label>
                                     <select
                                         value={tone}
                                         onChange={(e) => setTone(e.target.value)}
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2"
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2 text-sm md:text-base"
                                     >
                                         {TONES.map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-sm text-gray-400 mb-2 block">Length</label>
+                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Length</label>
                                     <select
                                         value={length}
                                         onChange={(e) => setLength(e.target.value)}
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2"
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2 text-sm md:text-base"
                                     >
                                         {LENGTHS.map(l => <option key={l} value={l}>{l}</option>)}
                                     </select>
@@ -267,8 +290,8 @@ const ContentWriter = () => {
 
                         {/* Feedback Panel */}
                         {feedback && (
-                            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                            <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                                <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
                                     Quality Metrics
                                 </h3>
                                 <div className="space-y-3">
@@ -282,21 +305,21 @@ const ContentWriter = () => {
                     </div>
 
                     {/* Right Panel - Editor */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="lg:col-span-2 space-y-4 md:space-y-6">
                         {/* Input Section */}
-                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
                                 Input
                             </h3>
-                            <div className="space-y-4">
+                            <div className="space-y-3 md:space-y-4">
                                 <div>
-                                    <label className="text-sm text-gray-400 mb-2 block">Topic *</label>
+                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Topic *</label>
                                     <input
                                         type="text"
                                         value={topic}
                                         onChange={(e) => setTopic(e.target.value)}
                                         placeholder="Enter your topic..."
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500"
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
                                     />
                                 </div>
 
@@ -332,13 +355,13 @@ const ContentWriter = () => {
                                 </AnimatePresence>
 
                                 <div>
-                                    <label className="text-sm text-gray-400 mb-2 block">Keywords (optional)</label>
+                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Keywords (optional)</label>
                                     <input
                                         type="text"
                                         value={keywords}
                                         onChange={(e) => setKeywords(e.target.value)}
                                         placeholder="AI, machine learning, technology..."
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500"
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
                                     />
                                 </div>
 
@@ -358,10 +381,10 @@ const ContentWriter = () => {
                                 <button
                                     onClick={handleGenerate}
                                     disabled={loading || !topic.trim()}
-                                    className={`w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
+                                    className={`w-full py-3 md:py-3.5 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-sm md:text-base ${
                                         loading || !topic.trim()
                                             ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                            : `bg-gradient-to-r ${selectedMode.color} hover:shadow-lg`
+                                            : `bg-gradient-to-r ${selectedMode.color} hover:shadow-lg active:scale-95`
                                     }`}
                                 >
                                     {loading ? (
@@ -393,33 +416,33 @@ const ContentWriter = () => {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm"
+                                className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm"
                             >
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">
+                                <div className="flex items-center justify-between mb-3 md:mb-4">
+                                    <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider">
                                         Generated Content
                                     </h3>
                                     <div className="flex gap-2">
                                         <button
                                             onClick={copyToClipboard}
-                                            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
                                             title="Copy"
                                         >
                                             <Copy className="w-4 h-4" />
                                         </button>
                                         <button
                                             onClick={downloadDoc}
-                                            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
                                             title="Download"
                                         >
                                             <Download className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
-                                <div className="bg-black/20 border border-white/10 rounded-xl p-6 max-h-[600px] overflow-y-auto">
-                                    <div className="prose prose-invert max-w-none">
+                                <div className="bg-black/20 border border-white/10 rounded-xl p-4 md:p-6 max-h-[400px] md:max-h-[600px] overflow-y-auto">
+                                    <div className="prose prose-invert max-w-none text-sm md:text-base">
                                         {generatedContent.split('\n').map((paragraph, idx) => (
-                                            <p key={idx} className="mb-4 leading-relaxed">
+                                            <p key={idx} className="mb-3 md:mb-4 leading-relaxed">
                                                 {paragraph}
                                             </p>
                                         ))}
@@ -629,11 +652,11 @@ const RefinementActions = ({ onRefine, loading, mode }) => {
     ];
 
     return (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
                 Smart Refinements
             </h3>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2 md:gap-3">
                 {actions.map(action => {
                     const Icon = action.icon;
                     return (
@@ -641,10 +664,10 @@ const RefinementActions = ({ onRefine, loading, mode }) => {
                             key={action.id}
                             onClick={() => onRefine(action.id)}
                             disabled={loading}
-                            className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2 text-sm"
+                            className="px-3 md:px-4 py-2.5 md:py-3 bg-white/5 active:bg-white/10 md:hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center gap-2 text-xs md:text-sm font-medium disabled:opacity-50"
                         >
-                            <Icon className="w-4 h-4" />
-                            {action.label}
+                            <Icon className="w-4 h-4 flex-shrink-0" />
+                            <span className="truncate">{action.label}</span>
                         </button>
                     );
                 })}
