@@ -4,7 +4,7 @@ import {
     FileText, Sparkles, BookOpen, Briefcase, Wand2, 
     Copy, Download, Loader2, AlertCircle, CheckCircle,
     ChevronDown, ChevronUp, Lightbulb, Target, Beaker,
-    Zap, TrendingUp
+    Zap, TrendingUp, ArrowRight
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { 
@@ -16,6 +16,7 @@ import {
     refineContent,
     saveWriterToHistory
 } from '../services/api';
+import BeforeAfterComparison from '../components/BeforeAfterComparison';
 
 const MODES = [
     { id: 'blog', label: 'Blog Writing', icon: FileText, description: 'SEO-friendly, conversational blog posts', color: 'from-purple-600 to-pink-600' },
@@ -56,6 +57,14 @@ const ContentWriter = () => {
         refinement: false
     });
     const [appliedRefinements, setAppliedRefinements] = useState([]);
+    
+    // Before/After Comparison state
+    const [showComparison, setShowComparison] = useState(false);
+    const [comparisonData, setComparisonData] = useState({
+        original: '',
+        refined: '',
+        metrics: null
+    });
 
     // Auto-analyze topic (debounced)
     useEffect(() => {
@@ -113,6 +122,10 @@ const ContentWriter = () => {
     const handleRefineContent = async (action) => {
         if (!generatedContent) return;
         
+        // Save the original content before refinement
+        const originalContent = generatedContent;
+        const originalAiRisk = feedback?.aiDetectionRisk || 0;
+        
         setLoading(true);
         try {
             const { data } = await refineContent({
@@ -133,6 +146,25 @@ const ContentWriter = () => {
             const refinementLabel = actionLabels[action] || action;
             const updatedRefinements = [...appliedRefinements, refinementLabel];
             setAppliedRefinements(updatedRefinements);
+            
+            // Set AI feedback for refined content
+            if (data.aiDetectionRisk !== undefined) {
+                setFeedback({
+                    ...feedback,
+                    aiDetectionRisk: data.aiDetectionRisk
+                });
+            }
+            
+            // Update comparison data
+            setComparisonData({
+                original: originalContent,
+                refined: data.refinedContent,
+                metrics: {
+                    aiRiskBefore: originalAiRisk,
+                    aiRiskAfter: data.aiDetectionRisk || 0,
+                    refinements: updatedRefinements
+                }
+            });
             
             toast.success('Content refined!');
             
@@ -468,6 +500,19 @@ const ContentWriter = () => {
                                         >
                                             <Download className="w-4 h-4" />
                                         </button>
+                                        {comparisonData.original && comparisonData.refined && (
+                                            <button
+                                                onClick={() => setShowComparison(true)}
+                                                className="p-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-lg transition-all flex items-center gap-1 px-3"
+                                                title="View Before vs After"
+                                            >
+                                                <ArrowRight className="w-4 h-4" />
+                                                <span className="text-xs font-semibold">Compare</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                            <Download className="w-4 h-4" />
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="bg-black/20 border border-white/10 rounded-xl p-4 max-h-[400px] overflow-y-auto">
@@ -734,6 +779,18 @@ const ContentWriter = () => {
                 </div>
             </div>
             </div>
+
+            {/* Before/After Comparison Modal */}
+            <AnimatePresence>
+                {showComparison && (
+                    <BeforeAfterComparison
+                        original={comparisonData.original}
+                        refined={comparisonData.refined}
+                        metrics={comparisonData.metrics}
+                        onClose={() => setShowComparison(false)}
+                    />
+                )}
+            </AnimatePresence>
         </div>
     );
 };
