@@ -510,6 +510,8 @@ const ContentWriter = () => {
                                                 <span className="text-xs font-semibold">Compare</span>
                                             </button>
                                         )}
+                                    </div>
+                                </div>
                                 <div className="bg-black/20 border border-white/10 rounded-xl p-4 max-h-[400px] overflow-y-auto">
                                     <div className="prose prose-invert max-w-none text-sm">
                                         {generatedContent.split('\n').map((paragraph, idx) => (
