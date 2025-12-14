@@ -19,6 +19,7 @@ import {
 } from '../services/api';
 import BeforeAfterComparison from '../components/BeforeAfterComparison';
 import SupervisorFeedback from '../components/SupervisorFeedback';
+import PresetSelector from '../components/PresetSelector';
 
 const MODES = [
     { id: 'blog', label: 'Blog Writing', icon: FileText, description: 'SEO-friendly, conversational blog posts', color: 'from-purple-600 to-pink-600' },
@@ -72,6 +73,9 @@ const ContentWriter = () => {
     const [showSupervisor, setShowSupervisor] = useState(false);
     const [supervisorFeedback, setSupervisorFeedback] = useState(null);
     const [supervisorLoading, setSupervisorLoading] = useState(false);
+    
+    // Presets state
+    const [showPresets, setShowPresets] = useState(false);
 
     // Auto-analyze topic (debounced)
     useEffect(() => {
@@ -221,6 +225,12 @@ const ContentWriter = () => {
         } finally {
             setSupervisorLoading(false);
         }
+    };
+
+    const handlePresetContent = (content, preset) => {
+        setGeneratedContent(content);
+        setShowPresets(false);
+        toast.success(`${preset.name} generated!`);
     };
 
     const handleGenerate = async () => {
@@ -413,6 +423,34 @@ const ContentWriter = () => {
                                 Input
                             </h3>
                             <div className="space-y-3">
+                                {/* Quick Start Presets Button */}
+                                <button
+                                    onClick={() => setShowPresets(!showPresets)}
+                                    className="w-full py-2.5 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20"
+                                >
+                                    <Sparkles className="w-4 h-4" />
+                                    <span className="text-sm font-semibold">
+                                        {showPresets ? 'Hide' : 'Quick Start Presets'}
+                                    </span>
+                                </button>
+
+                                {/* Preset Selector */}
+                                <AnimatePresence>
+                                    {showPresets && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                        >
+                                            <PresetSelector
+                                                topic={topic}
+                                                onContentGenerated={handlePresetContent}
+                                                onClose={() => setShowPresets(false)}
+                                            />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
                                 <div>
                                     <label className="text-xs text-gray-400 mb-2 block">Topic *</label>
                                     <input
@@ -681,6 +719,34 @@ const ContentWriter = () => {
                                 Input
                             </h3>
                             <div className="space-y-3 md:space-y-4">
+                                {/* Quick Start Presets Button - Desktop */}
+                                <button
+                                    onClick={() => setShowPresets(!showPresets)}
+                                    className="w-full py-2.5 md:py-3 px-4 md:px-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20"
+                                >
+                                    <Sparkles className="w-4 h-4 md:w-5 md:h-5" />
+                                    <span className="text-sm md:text-base font-semibold">
+                                        {showPresets ? 'Hide' : 'Quick Start Presets'}
+                                    </span>
+                                </button>
+
+                                {/* Preset Selector - Desktop */}
+                                <AnimatePresence>
+                                    {showPresets && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                        >
+                                            <PresetSelector
+                                                topic={topic}
+                                                onContentGenerated={handlePresetContent}
+                                                onClose={() => setShowPresets(false)}
+                                            />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
                                 <div>
                                     <label className="text-xs md:text-sm text-gray-400 mb-2 block">Topic *</label>
                                     <input

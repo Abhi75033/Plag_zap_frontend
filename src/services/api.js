@@ -161,4 +161,8 @@ export const explainSentences = (data) => api.post('/explainability/analyze', da
 // Supervisor Feedback (academic grading and feedback)
 export const getSupervisorFeedback = (data) => api.post('/supervisor/feedback', data);
 
+// Writing Presets (quick-start templates)
+export const getPresets = () => api.get('/presets/list');
+export const generateFromPreset = (data) => api.post('/presets/generate', data);
+
 export default api;
