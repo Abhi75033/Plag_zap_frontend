@@ -554,65 +554,65 @@ const Analyzer = () => {
                       </div>
 
                       {/* Tab Bar */}
-                      <div className="flex flex-wrap gap-1 relative z-10 w-full justify-center sm:justify-start">
+                      <div className="flex gap-1.5 overflow-x-auto scrollbar-hide relative z-10 w-full pb-1">
                           <button
                             onClick={() => setViewMode('highlight')}
-                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
-                                viewMode === 'highlight' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[90px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'highlight' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
                             }`}
                           >
-                            <Zap className="w-3.5 h-3.5" />
-                            <span className="truncate">Highlight</span>
+                            <Zap className="w-4 h-4" />
+                            <span className="hidden sm:inline truncate">Highlight</span>
                           </button>
                           
                           <button
                             onClick={() => setViewMode('comparison')}
-                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
-                                viewMode === 'comparison' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[110px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'comparison' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
                             }`}
                           >
-                            <Columns className="w-3.5 h-3.5" />
-                            <span className="truncate">Comparison</span>
+                            <Columns className="w-4 h-4" />
+                            <span className="hidden sm:inline truncate">Comparison</span>
                           </button>
                           
                           <button
                             onClick={() => setViewMode('grammar')}
-                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
-                                viewMode === 'grammar' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[95px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'grammar' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
                             }`}
                           >
-                            <Wand2 className="w-3.5 h-3.5" />
-                            <span className="truncate">Grammar</span>
+                            <Wand2 className="w-4 h-4" />
+                            <span className="hidden sm:inline truncate">Grammar</span>
                           </button>
                           
                           <button
                             onClick={() => setViewMode('explainability')}
-                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
-                                viewMode === 'explainability' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[90px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'explainability' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
                             }`}
                           >
-                            <Lightbulb className="w-3.5 h-3.5" />
-                            <span className="truncate">Explain</span>
+                            <Lightbulb className="w-4 h-4" />
+                            <span className="hidden sm:inline truncate">Explain</span>
                           </button>
                           
                           <button
                             onClick={() => setViewMode('dictionary')}
-                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
-                                viewMode === 'dictionary' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[75px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'dictionary' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
                             }`}
                           >
-                            <BookOpen className="w-3.5 h-3.5" />
-                            <span className="truncate">Dict</span>
+                            <BookOpen className="w-4 h-4" />
+                            <span className="hidden sm:inline truncate">Dict</span>
                           </button>
                           
                           <button
                             onClick={() => setViewMode('novelty')}
-                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
-                                viewMode === 'novelty' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[90px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'novelty' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
                             }`}
                           >
-                            <Sparkles className="w-3.5 h-3.5" />
-                            <span className="truncate">Novelty</span>
+                            <Sparkles className="w-4 h-4" />
+                            <span className="hidden sm:inline truncate">Novelty</span>
                           </button>
                       </div>
                   </div>
