@@ -386,6 +386,77 @@ const Dashboard = () => {
           </motion.div>
         )}
 
+        {/* AI Writer Intelligence Stats */}
+        {history.filter(h => h.mode).length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.48 }}
+            className="mb-8 bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6"
+          >
+            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-purple-400" />
+              AI Writer Insights
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Recent Writing Modes */}
+              <div className="bg-white/5 rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-gray-400 mb-3">Recent Modes</h3>
+                <div className="space-y-2">
+                  {[...new Set(history.filter(h => h.mode).map(h => h.mode).slice(0, 3))].map((mode, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                      <span className="text-sm capitalize">{mode}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Average AI Risk */}
+              <div className="bg-white/5 rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-gray-400 mb-3">Avg. AI Risk</h3>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold text-green-400">
+                    {history.filter(h => h.aiRiskAfter > 0).length > 0
+                      ? Math.round(
+                          history.filter(h => h.aiRiskAfter > 0)
+                            .reduce((sum, h) => sum + h.aiRiskAfter, 0) /
+                          history.filter(h => h.aiRiskAfter > 0).length
+                        )
+                      : 0}%
+                  </span>
+                  <span className="text-xs text-gray-500">after refinement</span>
+                </div>
+              </div>
+
+              {/* Common Refinements */}
+              <div className="bg-white/5 rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-gray-400 mb-3">Top Refinements</h3>
+                <div className="flex flex-wrap gap-1">
+                  {(() => {
+                    const refinementCounts = history
+                      .flatMap(h => h.refinements || [])
+                      .reduce((acc, ref) => {
+                        acc[ref] = (acc[ref] || 0) + 1;
+                        return acc;
+                      }, {});
+                    
+                    return Object.entries(refinementCounts)
+                      .sort((a, b) => b[1] - a[1])
+                      .slice(0, 3)
+                      .map(([ref]) => (
+                        <span key={ref} className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded">
+                          {ref}
+                        </span>
+                      ));
+                  })()}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Recent Activity */}
