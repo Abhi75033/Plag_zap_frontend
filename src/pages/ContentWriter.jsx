@@ -68,10 +68,13 @@ const ContentWriter = () => {
 
     // Auto-analyze topic (debounced)
     useEffect(() => {
+        console.log('[INTELLIGENCE] useEffect fired - topic:', topic, 'length:', topic.trim().length);
         const timer = setTimeout(() => {
             if (topic.trim().length > 10) {
+                console.log('[INTELLIGENCE] Triggering handleAnalyzeTopic');
                 handleAnalyzeTopic();
             } else {
+                console.log('[INTELLIGENCE] Topic too short, clearing intelligence');
                 setIntelligence(prev => ({ ...prev, analysis: null, titles: [], angles: null }));
             }
         }, 1000);
@@ -80,9 +83,11 @@ const ContentWriter = () => {
     }, [topic, selectedMode.id]);
 
     const handleAnalyzeTopic = async () => {
+        console.log('[INTELLIGENCE] handleAnalyzeTopic called');
         setIntelligenceLoading(prev => ({ ...prev, analysis: true, titles: true, angles: true }));
         
         try {
+            console.log('[INTELLIGENCE] Calling APIs...');
             // Run all pre-writing intelligence in parallel
             const [analysisRes, titlesRes, anglesRes] = await Promise.all([
                 analyzeTopic({ topic: topic.trim(), mode: selectedMode.id }),
@@ -90,14 +95,21 @@ const ContentWriter = () => {
                 suggestAngles({ topic: topic.trim(), mode: selectedMode.id })
             ]);
 
+            console.log('[INTELLIGENCE] API responses:', {
+                analysis: analysisRes.data,
+                titles: titlesRes.data.titles,
+                angles: anglesRes.data
+            });
+
             setIntelligence(prev => ({
                 ...prev,
                 analysis: analysisRes.data,
                 titles: titlesRes.data.titles || [],
                 angles: anglesRes.data
             }));
+            console.log('[INTELLIGENCE] State updated successfully');
         } catch (error) {
-            console.error('Intelligence error:', error);
+            console.error('[INTELLIGENCE] Error:', error);
         } finally {
             setIntelligenceLoading({ analysis: false, titles: false, angles: false, research: false });
         }
