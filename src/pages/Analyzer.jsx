@@ -11,7 +11,7 @@ import AnalysisReport from '../components/pdf/AnalysisReport';
 import { checkPlagiarism, checkGrammar, extractUrl } from '../services/api';
 import { useAppContext } from '../context/AppContext';
 import { getUsage } from '../services/api';
-import { FileText, Sparkles, AlertTriangle, CheckCircle, Upload, ArrowRight, Download, Columns, X, RefreshCw, Wand2, Link as LinkIcon, Zap, Loader2, Crown, AlertCircle, Clock, Globe, BookOpen, Lock } from 'lucide-react';
+import { FileText, Sparkles, AlertTriangle, CheckCircle, Upload, ArrowRight, Download, Columns, X, RefreshCw, Wand2, Link as LinkIcon, Zap, Loader2, Crown, AlertCircle, Clock, Globe, BookOpen, Lock, Lightbulb } from 'lucide-react';
 // import { downloadReport } from '../utils/pdfGenerator'; // Use new PDF renderer
 import AnimatedTextarea from '../components/ui/AnimatedTextarea';
 import HighlightTextBlock from '../components/ui/HighlightTextBlock';
