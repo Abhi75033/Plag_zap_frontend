@@ -513,8 +513,12 @@ const Analyzer = () => {
                             className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg shadow-lg h-full absolute"
                             initial={false}
                             animate={{
-                                x: viewMode === 'highlight' ? '0%' : viewMode === 'comparison' ? '100%' : viewMode === 'grammar' ? '200%' : '300%',
-                                width: '25%',
+                                x: viewMode === 'highlight' ? '0%' : 
+                                   viewMode === 'comparison' ? '100%' : 
+                                   viewMode === 'grammar' ? '200%' : 
+                                   viewMode === 'explainability' ? '300%' : 
+                                   '400%',
+                                width: '20%',
                                 opacity: 1
                             }}
                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
