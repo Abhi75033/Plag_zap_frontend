@@ -759,6 +759,16 @@ const ContentWriter = () => {
                                         >
                                             <Download className="w-4 h-4" />
                                         </button>
+                                        {comparisonData.original && comparisonData.refined && (
+                                            <button
+                                                onClick={() => setShowComparison(true)}
+                                                className="p-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-lg transition-all flex items-center gap-1 px-3"
+                                                title="View Before vs After"
+                                            >
+                                                <ArrowRight className="w-4 h-4" />
+                                                <span className="text-xs font-semibold">Compare</span>
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="bg-black/20 border border-white/10 rounded-xl p-4 md:p-6 max-h-[400px] md:max-h-[600px] overflow-y-auto">
