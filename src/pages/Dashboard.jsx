@@ -387,17 +387,18 @@ const Dashboard = () => {
         )}
 
         {/* AI Writer Intelligence Stats */}
-        {history.filter(h => h.mode).length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.48 }}
-            className="mb-8 bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6"
-          >
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-400" />
-              AI Writer Insights
-            </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.48 }}
+          className="mb-8 bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6"
+        >
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-purple-400" />
+            AI Writer Insights
+          </h2>
+          
+          {history.filter(h => h.mode).length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Recent Writing Modes */}
               <div className="bg-white/5 rounded-xl p-4">
@@ -441,20 +442,36 @@ const Dashboard = () => {
                         return acc;
                       }, {});
                     
-                    return Object.entries(refinementCounts)
+                    const top3 = Object.entries(refinementCounts)
                       .sort((a, b) => b[1] - a[1])
-                      .slice(0, 3)
-                      .map(([ref]) => (
-                        <span key={ref} className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded">
-                          {ref}
-                        </span>
-                      ));
+                      .slice(0, 3);
+                    
+                    return top3.length > 0 ? top3.map(([ref]) => (
+                      <span key={ref} className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded">
+                        {ref}
+                      </span>
+                    )) : (
+                      <span className="text-xs text-gray-500">No refinements yet</span>
+                    );
                   })()}
                 </div>
               </div>
             </div>
-          </motion.div>
-        )}
+          ) : (
+            <div className="text-center py-8 bg-white/5 rounded-xl">
+              <Sparkles className="h-12 w-12 text-gray-600 mx-auto mb-4" />
+              <p className="text-gray-400 mb-2">No AI Writer content yet</p>
+              <p className="text-sm text-gray-500 mb-4">Generate content in AI Writer to see insights here</p>
+              <Link
+                to="/writer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors text-sm"
+              >
+                <Sparkles className="h-4 w-4" />
+                Try AI Writer
+              </Link>
+            </div>
+          )}
+        </motion.div>
 
 
         {/* Main Content Grid */}
