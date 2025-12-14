@@ -51,7 +51,19 @@ const History = () => {
       <h1 className="text-4xl font-bold mb-12 text-center">Analysis History</h1>
 
       {loading ? (
-        <div className="text-center text-gray-500">Loading history...</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6 animate-pulse">
+              <div className="h-32 bg-white/10 rounded-xl mb-4"></div>
+              <div className="h-4 bg-white/10 rounded mb-2 w-3/4"></div>
+              <div className="h-3 bg-white/10 rounded mb-2 w-1/2"></div>
+              <div className="flex gap-2 mt-3">
+                <div className="h-6 bg-white/10 rounded w-16"></div>
+                <div className="h-6 bg-white/10 rounded w-20"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : history.length === 0 ? (
         <div className="text-center text-gray-500 py-12">
           <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
@@ -89,16 +101,16 @@ const History = () => {
                   )}
 
                   {/* AI Risk Before/After */}
-                  {(item.aiRiskBefore !== undefined || item.aiRiskAfter !== undefined) && (
+                  {(item.aiRiskBefore > 0 || item.aiRiskAfter > 0) && (
                     <div className="flex items-center gap-2 text-xs">
-                      {item.aiRiskBefore !== undefined && (
+                      {item.aiRiskBefore > 0 && (
                         <span className="text-red-400">
                           Before: {item.aiRiskBefore}%
                         </span>
                       )}
-                      {item.aiRiskAfter !== undefined && (
+                      {item.aiRiskAfter > 0 && (
                         <>
-                          <span className="text-gray-500">→</span>
+                          {item.aiRiskBefore > 0 && <span className="text-gray-500">→</span>}
                           <span className="text-green-400">
                             After: {item.aiRiskAfter}%
                           </span>
