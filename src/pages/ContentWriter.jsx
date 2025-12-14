@@ -301,7 +301,7 @@ const ContentWriter = () => {
     };
 
     return (
-        <div className="min-h-screen relative text-white pb-20 md:pb-0">
+        <div className="min-h-screen relative text-white pb-20 md:pb-0 pt-16">
             {/* Animated Background */}
             <div className="fixed inset-0 bg-black overflow-hidden">
                 {/* Base gradient */}
@@ -321,7 +321,7 @@ const ContentWriter = () => {
             {/* Content */}
             <div className="relative z-10">
             {/* Header */}
-            <div className="border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
+            <div className="border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4">
                     <div className="flex items-center justify-between">
                         <div>
