@@ -522,7 +522,7 @@ const Analyzer = () => {
                       </div>
 
                       {/* Buttons */}
-                      <div className="grid grid-cols-4 gap-1 relative z-10 w-full sm:w-[480px]">
+                      <div className="grid grid-cols-5 gap-1 relative z-10 w-full sm:w-[600px]">
                           <button
                             onClick={() => setViewMode('highlight')}
                             className={`px- 2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
