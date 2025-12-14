@@ -553,11 +553,11 @@ const Analyzer = () => {
                          />
                       </div>
 
-                      {/* Buttons */}
-                      <div className="grid grid-cols-5 gap-1 relative z-10 w-full sm:w-[600px]">
+                      {/* Tab Bar */}
+                      <div className="flex flex-wrap gap-1 relative z-10 w-full justify-center sm:justify-start">
                           <button
                             onClick={() => setViewMode('highlight')}
-                            className={`px- 2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
                                 viewMode === 'highlight' ? 'text-white' : 'text-gray-400 hover:text-white'
                             }`}
                           >
@@ -567,7 +567,7 @@ const Analyzer = () => {
                           
                           <button
                             onClick={() => setViewMode('comparison')}
-                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
                                 viewMode === 'comparison' ? 'text-white' : 'text-gray-400 hover:text-white'
                             }`}
                           >
@@ -577,7 +577,7 @@ const Analyzer = () => {
                           
                           <button
                             onClick={() => setViewMode('grammar')}
-                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
                                 viewMode === 'grammar' ? 'text-white' : 'text-gray-400 hover:text-white'
                             }`}
                           >
@@ -587,7 +587,7 @@ const Analyzer = () => {
                           
                           <button
                             onClick={() => setViewMode('explainability')}
-                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
                                 viewMode === 'explainability' ? 'text-white' : 'text-gray-400 hover:text-white'
                             }`}
                           >
@@ -597,7 +597,7 @@ const Analyzer = () => {
                           
                           <button
                             onClick={() => setViewMode('dictionary')}
-                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
                                 viewMode === 'dictionary' ? 'text-white' : 'text-gray-400 hover:text-white'
                             }`}
                           >
@@ -607,7 +607,7 @@ const Analyzer = () => {
                           
                           <button
                             onClick={() => setViewMode('novelty')}
-                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                            className={`px-1.5 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1 ${
                                 viewMode === 'novelty' ? 'text-white' : 'text-gray-400 hover:text-white'
                             }`}
                           >
