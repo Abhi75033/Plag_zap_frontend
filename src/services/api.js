@@ -152,4 +152,8 @@ export const sendPromotionalEmail = (emailData) => api.post('/admin/emails/promo
 // Admin Price Management
 export const getAdminPrices = () => api.get('/admin/prices');
 
+// AI Writer History
+export const saveWriterToHistory = (data) => api.post('/writer/save-to-history', data);
+
 export default api;
+

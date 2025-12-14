@@ -13,7 +13,8 @@ import {
     generateTitles, 
     suggestAngles,
     buildResearch,
-    refineContent 
+    refineContent,
+    saveWriterToHistory
 } from '../services/api';
 
 const MODES = [
@@ -54,6 +55,7 @@ const ContentWriter = () => {
         research: false,
         refinement: false
     });
+    const [appliedRefinements, setAppliedRefinements] = useState([]);
 
     // Auto-analyze topic (debounced)
     useEffect(() => {
@@ -119,7 +121,32 @@ const ContentWriter = () => {
                 mode: selectedMode.id
             });
             setGeneratedContent(data.refinedContent);
+            
+            // Track the refinement
+            const actionLabels = {
+                'reduceAI': 'Reduce AI',
+                'improveTone': 'Improve Tone',
+                'improveReadability': 'Improve Readability',
+                'makeAcademic': 'Make Academic',
+                'makeConversational': 'Make Conversational'
+            };
+            const refinementLabel = actionLabels[action] || action;
+            const updatedRefinements = [...appliedRefinements, refinementLabel];
+            setAppliedRefinements(updatedRefinements);
+            
             toast.success('Content refined!');
+            
+            // Save refined version to history
+            try {
+                await saveWriterToHistory({
+                    originalText: data.refinedContent,
+                    mode: selectedMode.id,
+                    refinements: updatedRefinements,
+                    aiRiskAfter: feedback?.aiDetectionRisk || null
+                });
+            } catch (historyError) {
+                console.error('Failed to save to history:', historyError);
+            }
         } catch (error) {
             console.error('Refinement error:', error);
             toast.error('Failed to refine content');
@@ -137,6 +164,7 @@ const ContentWriter = () => {
         setLoading(true);
         setGeneratedContent('');
         setFeedback(null);
+        setAppliedRefinements([]); // Reset refinements for new content
 
         try {
             const { data } = await generateContent({
@@ -155,6 +183,18 @@ const ContentWriter = () => {
                 toneMatch: data.toneMatch || 90
             });
             toast.success('Content generated successfully!');
+            
+            // Save to history
+            try {
+                await saveWriterToHistory({
+                    originalText: data.content,
+                    mode: selectedMode.id,
+                    aiRiskBefore: data.aiDetectionRisk || null
+                });
+            } catch (historyError) {
+                console.error('Failed to save to history:', historyError);
+                // Don't show error to user, history save is secondary
+            }
         } catch (error) {
             console.error('Content generation error:', error);
             toast.error(error.response?.data?.error || 'Failed to generate content');
