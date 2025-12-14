@@ -78,7 +78,47 @@ const History = () => {
                     <Calendar className="w-3 h-3" />
                     {new Date(item.createdAt).toLocaleDateString()}
                   </div>
-                  <div className="flex items-center justify-between">
+                  
+                  {/* Mode Badge */}
+                  {item.mode && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded">
+                        {item.mode}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* AI Risk Before/After */}
+                  {(item.aiRiskBefore !== undefined || item.aiRiskAfter !== undefined) && (
+                    <div className="flex items-center gap-2 text-xs">
+                      {item.aiRiskBefore !== undefined && (
+                        <span className="text-red-400">
+                          Before: {item.aiRiskBefore}%
+                        </span>
+                      )}
+                      {item.aiRiskAfter !== undefined && (
+                        <>
+                          <span className="text-gray-500">→</span>
+                          <span className="text-green-400">
+                            After: {item.aiRiskAfter}%
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Refinements Applied */}
+                  {item.refinements && item.refinements.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {item.refinements.map((ref, idx) => (
+                        <span key={idx} className="text-xs px-1.5 py-0.5 bg-green-500/20 text-green-400 rounded">
+                          {ref}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between mt-1">
                     <span className={`text-sm font-bold ${
                       item.overallScore > 50 ? 'text-red-400' : 'text-green-400'
                     }`}>
