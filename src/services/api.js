@@ -165,4 +165,7 @@ export const getSupervisorFeedback = (data) => api.post('/supervisor/feedback', 
 export const getPresets = () => api.get('/presets/list');
 export const generateFromPreset = (data) => api.post('/presets/generate', data);
 
+// Research Gap & Novelty Analysis (originality assessment)
+export const analyzeNovelty = (data) => api.post('/novelty/analyze', data);
+
 export default api;

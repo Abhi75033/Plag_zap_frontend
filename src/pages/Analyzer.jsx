@@ -21,7 +21,8 @@ import TeamDictionary from '../components/TeamDictionary';
 import ExplainabilityView from '../components/ExplainabilityView';
 
 import AnalysisResultsPanel from '../components/ui/AnalysisResultsPanel';
-import { explainSentences } from '../services/api';
+import { explainSentences, analyzeNovelty } from '../services/api';
+import NoveltyAnalysis from '../components/NoveltyAnalysis';
 
 const Analyzer = () => {
   const navigate = useNavigate();
@@ -30,10 +31,14 @@ const Analyzer = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [grammarResult, setGrammarResult] = useState(null);
-  const [viewMode, setViewMode] = useState('highlight'); // 'highlight', 'comparison', 'grammar', 'explainability', 'dictionary'
+  const [viewMode, setViewMode] = useState('highlight'); // 'highlight', 'comparison', 'grammar', 'explainability', 'dictionary', 'novelty'
   const { addToHistory } = useAppContext();
   const [usage, setUsage] = useState(null);
   const [citationSource, setCitationSource] = useState(null); // State for citation modal
+  
+  // Novelty Analysis State
+  const [noveltyAnalysis, setNoveltyAnalysis] = useState(null);
+  const [noveltyLoading, setNoveltyLoading] = useState(false);
 
   // Check if user has an active subscription (considers paused/suspended status)
   const isPaidUser = user?.hasActiveSubscription === true;
@@ -104,17 +109,40 @@ const Analyzer = () => {
     }
   };
   // Load usage stats
+  const loadUsage = async () => {
+    try {
+      const { data } = await getUsage();
+      setUsage(data);
+    } catch (error) {
+      console.error('Failed to load usage:', error);
+    }
+  };
+
   useEffect(() => {
-    const loadUsage = async () => {
-      try {
-        const { data } = await getUsage();
-        setUsage(data);
-      } catch (error) {
-        console.error('Failed to load usage:', error);
+    if (user) {
+      loadUsage();
+    }
+  }, [user]);
+
+  // Auto-trigger novelty analysis when switching to novelty tab
+  useEffect(() => {
+    const handleNoveltyAnalysis = async () => {
+      if (viewMode === 'novelty' && result && !noveltyAnalysis && !noveltyLoading) {
+        setNoveltyLoading(true);
+        try {
+          const { data } = await analyzeNovelty({ text, topic: '' });
+          setNoveltyAnalysis(data.analysis);
+        } catch (error) {
+          console.error('Novelty analysis error:', error);
+          toast.error('Failed to analyze novelty');
+        } finally {
+          setNoveltyLoading(false);
+        }
       }
     };
-    loadUsage();
-  }, [result]);
+    
+    handleNoveltyAnalysis();
+  }, [viewMode, result]);
 
   const handleAnalyze = async () => {
     if (!text.trim()) {
@@ -576,6 +604,16 @@ const Analyzer = () => {
                             <BookOpen className="w-3.5 h-3.5" />
                             <span className="truncate">Dict</span>
                           </button>
+                          
+                          <button
+                            onClick={() => setViewMode('novelty')}
+                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'novelty' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            }`}
+                          >
+                            <Sparkles className="w-3.5 h-3.5" />
+                            <span className="truncate">Novelty</span>
+                          </button>
                       </div>
                   </div>
               </div>
@@ -616,6 +654,12 @@ const Analyzer = () => {
                 />
               )}
               {viewMode === 'dictionary' && <TeamDictionary />}
+              {viewMode === 'novelty' && (
+                <NoveltyAnalysis
+                  analysis={noveltyAnalysis}
+                  loading={noveltyLoading}
+                />
+              )}
             </motion.div>
           )}
         </div>
