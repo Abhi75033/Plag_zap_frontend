@@ -5,22 +5,25 @@ import toast from 'react-hot-toast';
 import AnimatedTextarea from '../components/ui/AnimatedTextarea';
 import FileUploaderCard from '../components/ui/FileUploaderCard';
 import HighlightTextBlock from '../components/ui/HighlightTextBlock';
-import ScoreGauge from '../components/ui/ScoreGauge';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import AnalysisReport from '../components/pdf/AnalysisReport';
+
 import { checkPlagiarism, checkGrammar, extractUrl } from '../services/api';
 import { useAppContext } from '../context/AppContext';
 import { getUsage } from '../services/api';
 import { FileText, Sparkles, AlertTriangle, CheckCircle, Upload, ArrowRight, Download, Columns, X, RefreshCw, Wand2, Link as LinkIcon, Zap, Loader2, Crown, AlertCircle, Clock, Globe, BookOpen, Lock } from 'lucide-react';
 // import { downloadReport } from '../utils/pdfGenerator'; // Use new PDF renderer
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import AnalysisReport from '../components/pdf/AnalysisReport';
-
+import AnimatedTextarea from '../components/ui/AnimatedTextarea';
+import HighlightTextBlock from '../components/ui/HighlightTextBlock';
 import ComparisonView from '../components/ui/ComparisonView';
-import CitationGenerator from '../components/ui/CitationGenerator';
+import FileUploaderCard from '../components/ui/FileUploaderCard';
 import GrammarView from '../components/ui/GrammarView';
 import PromoBanner from '../components/ui/PromoBanner';
 import TeamDictionary from '../components/TeamDictionary';
+import ExplainabilityView from '../components/ExplainabilityView';
 
 import AnalysisResultsPanel from '../components/ui/AnalysisResultsPanel';
+import { explainSentences } from '../services/api';
 
 const Analyzer = () => {
   const navigate = useNavigate();
@@ -29,7 +32,7 @@ const Analyzer = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [grammarResult, setGrammarResult] = useState(null);
-  const [viewMode, setViewMode] = useState('highlight'); // 'highlight', 'comparison', 'grammar', 'dictionary'
+  const [viewMode, setViewMode] = useState('highlight'); // 'highlight', 'comparison', 'grammar', 'explainability', 'dictionary'
   const { addToHistory } = useAppContext();
   const [usage, setUsage] = useState(null);
   const [citationSource, setCitationSource] = useState(null); // State for citation modal
@@ -553,6 +556,16 @@ const Analyzer = () => {
                           </button>
                           
                           <button
+                            onClick={() => setViewMode('explainability')}
+                            className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                                viewMode === 'explainability' ? 'text-white' : 'text-gray-400 hover:text-white'
+                            }`}
+                          >
+                            <Lightbulb className="w-3.5 h-3.5" />
+                            <span className="truncate">Explain</span>
+                          </button>
+                          
+                          <button
                             onClick={() => setViewMode('dictionary')}
                             className={`px-2 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 ${
                                 viewMode === 'dictionary' ? 'text-white' : 'text-gray-400 hover:text-white'
@@ -588,6 +601,15 @@ const Analyzer = () => {
                     checkGrammar(newText).then(res => {
                       setGrammarResult(res.data);
                     }).catch(() => {});
+                  }}
+                />
+              )}
+              {viewMode === 'explainability' && (
+                <ExplainabilityView
+                  text={text}
+                  onAnalyze={async (text) => {
+                    const response = await explainSentences(text);
+                    return response.data;
                   }}
                 />
               )}

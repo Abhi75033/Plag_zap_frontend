@@ -155,5 +155,9 @@ export const getAdminPrices = () => api.get('/admin/prices');
 // AI Writer History
 export const saveWriterToHistory = (data) => api.post('/writer/save-to-history', data);
 
+// Explainability (sentence-level AI explanation)
+export const explainSentences = (text) => api.post('/explainability/analyze', { text });
+
 export default api;
+
 
