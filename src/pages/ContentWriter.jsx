@@ -4,7 +4,7 @@ import {
     FileText, Sparkles, BookOpen, Briefcase, Wand2, 
     Copy, Download, Loader2, AlertCircle, CheckCircle,
     ChevronDown, ChevronUp, Lightbulb, Target, Beaker,
-    Zap, TrendingUp, ArrowRight
+    Zap, TrendingUp, ArrowRight, Award
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { 
@@ -14,9 +14,11 @@ import {
     suggestAngles,
     buildResearch,
     refineContent,
-    saveWriterToHistory
+    saveWriterToHistory,
+    getSupervisorFeedback
 } from '../services/api';
 import BeforeAfterComparison from '../components/BeforeAfterComparison';
+import SupervisorFeedback from '../components/SupervisorFeedback';
 
 const MODES = [
     { id: 'blog', label: 'Blog Writing', icon: FileText, description: 'SEO-friendly, conversational blog posts', color: 'from-purple-600 to-pink-600' },
@@ -65,6 +67,11 @@ const ContentWriter = () => {
         refined: '',
         metrics: null
     });
+    
+    // Supervisor Feedback state
+    const [showSupervisor, setShowSupervisor] = useState(false);
+    const [supervisorFeedback, setSupervisorFeedback] = useState(null);
+    const [supervisorLoading, setSupervisorLoading] = useState(false);
 
     // Auto-analyze topic (debounced)
     useEffect(() => {
@@ -196,6 +203,23 @@ const ContentWriter = () => {
             toast.error('Failed to refine content');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleGetSupervisorFeedback = async () => {
+        if (!generatedContent) return;
+        
+        setSupervisorLoading(true);
+        try {
+            const { data } = await getSupervisorFeedback({ text: generatedContent });
+            setSupervisorFeedback(data.feedback);
+            setShowSupervisor(true);
+            toast.success('Supervisor feedback ready!');
+        } catch (error) {
+            console.error('Supervisor feedback error:', error);
+            toast.error('Failed to get supervisor feedback');
+        } finally {
+            setSupervisorLoading(false);
         }
     };
 
@@ -522,6 +546,17 @@ const ContentWriter = () => {
                                                 <span className="text-xs font-semibold">Compare</span>
                                             </button>
                                         )}
+                                        <button
+                                            onClick={handleGetSupervisorFeedback}
+                                            disabled={supervisorLoading}
+                                            className="p-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg transition-all flex items-center gap-1 px-3 disabled:opacity-50"
+                                            title="Get Supervisor Feedback"
+                                        >
+                                            <Award className="w-4 h-4" />
+                                            <span className="text-xs font-semibold">
+                                                {supervisorLoading ? 'Loading...' : 'Supervisor'}
+                                            </span>
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="bg-black/20 border border-white/10 rounded-xl p-4 max-h-[400px] overflow-y-auto">
@@ -781,6 +816,17 @@ const ContentWriter = () => {
                                                 <span className="text-xs font-semibold">Compare</span>
                                             </button>
                                         )}
+                                        <button
+                                            onClick={handleGetSupervisorFeedback}
+                                            disabled={supervisorLoading}
+                                            className="p-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg transition-all flex items-center gap-1 px-3 disabled:opacity-50"
+                                            title="Get Supervisor Feedback"
+                                        >
+                                            <Award className="w-4 h-4" />
+                                            <span className="text-xs font-semibold">
+                                                {supervisorLoading ? 'Loading...' : 'Supervisor'}
+                                            </span>
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="bg-black/20 border border-white/10 rounded-xl p-4 md:p-6 max-h-[400px] md:max-h-[600px] overflow-y-auto">
@@ -807,6 +853,16 @@ const ContentWriter = () => {
                         refined={comparisonData.refined}
                         metrics={comparisonData.metrics}
                         onClose={() => setShowComparison(false)}
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* Supervisor Feedback Modal */}
+            <AnimatePresence>
+                {showSupervisor && supervisorFeedback && (
+                    <SupervisorFeedback
+                        feedback={supervisorFeedback}
+                        onClose={() => setShowSupervisor(false)}
                     />
                 )}
             </AnimatePresence>
