@@ -14,6 +14,7 @@ import { getUsage } from '../services/api';
 import { FileText, Sparkles, AlertTriangle, CheckCircle, Upload, ArrowRight, Download, Columns, X, RefreshCw, Wand2, Link as LinkIcon, Zap, Loader2, Crown, AlertCircle, Clock, Globe, BookOpen, Lock, Lightbulb } from 'lucide-react';
 // import { downloadReport } from '../utils/pdfGenerator'; // Use new PDF renderer
 import ComparisonView from '../components/ui/ComparisonView';
+import CitationGenerator from '../components/ui/CitationGenerator';
 import GrammarView from '../components/ui/GrammarView';
 import PromoBanner from '../components/ui/PromoBanner';
 import TeamDictionary from '../components/TeamDictionary';
