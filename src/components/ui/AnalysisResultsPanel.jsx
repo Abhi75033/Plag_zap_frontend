@@ -24,13 +24,13 @@ const AnalysisResultsPanel = ({ result, text, user, handleRewrite, setCitationSo
         <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -z-10 group-hover:bg-purple-500/20 transition-all duration-700"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -z-10 group-hover:bg-blue-500/20 transition-all duration-700"></div>
 
-        <h3 className="text-xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Analysis Results</h3>
+        <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Analysis Results</h3>
         
         {/* Main Score Card with Donut */}
-        <div className="mb-8 p-6 bg-gradient-to-br from-white/5 to-white/0 rounded-2xl border border-white/10 shadow-inner relative overflow-hidden flex flex-col items-center">
+        <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-br from-white/5 to-white/0 rounded-xl sm:rounded-2xl border border-white/10 shadow-inner relative overflow-hidden flex flex-col items-center">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 translate-x-[-200%] group-hover:animate-shine" />
             
-            <div className="mb-6 relative z-10 transition-transform duration-500 hover:scale-105">
+            <div className="mb-4 sm:mb-6 relative z-10 transition-transform duration-500 hover:scale-105">
                 <StatsDonut 
                     plagiarized={plagiarizedCount} 
                     paraphrased={paraphrasedCount} 
@@ -38,26 +38,26 @@ const AnalysisResultsPanel = ({ result, text, user, handleRewrite, setCitationSo
                 />
             </div>
             
-            <p className="text-xs text-gray-400 italic mt-2 leading-relaxed opacity-80 text-center max-w-xs">{result.aiReason}</p>
+            <p className="text-xs sm:text-sm text-gray-300 italic mt-2 sm:mt-3 leading-relaxed text-center max-w-xs sm:max-w-md px-2">{result.aiReason}</p>
             
-            <div className="mt-6 w-full">
+            <div className="mt-4 sm:mt-6 w-full">
                 <button
                     onClick={handleRewrite}
-                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-sm font-bold text-white transition-all shadow-lg hover:shadow-purple-500/25 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 active:translate-y-0"
+                    className="w-full py-3 sm:py-4 px-4 sm:px-5 rounded-lg sm:rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-sm sm:text-base font-bold text-white transition-all shadow-lg sm:shadow-xl hover:shadow-purple-500/40 flex items-center justify-center gap-2 sm:gap-2.5 transform hover:-translate-y-1 hover:scale-[1.02] active:translate-y-0 active:scale-100"
                 >
-                    <Sparkles className="h-4 w-4 animate-pulse" />
-                    Make Content Unique
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
+                    <span className="truncate">Make Content Unique</span>
                 </button>
-                <div className="mt-3 flex items-start gap-2 p-2.5 bg-orange-500/5 border border-orange-500/10 rounded-lg">
-                    <span className="text-base">⚠️</span>
-                    <p className="text-[10px] text-orange-200/70 leading-tight">
+                <div className="mt-3 sm:mt-4 flex items-start gap-2 sm:gap-2.5 p-2.5 sm:p-3.5 bg-yellow-500/10 border border-yellow-500/30 rounded-lg sm:rounded-xl">
+                    <span className="text-base sm:text-lg flex-shrink-0">⚠️</span>
+                    <p className="text-[10px] sm:text-xs text-yellow-200/90 leading-relaxed font-medium">
                         AI rewrites may vary. Always review the output for accuracy and tone.
                     </p>
                 </div>
             </div>
         </div>
 
-        <div className="flex justify-center mb-8 transform scale-95">
+        <div className="flex justify-center mb-6 sm:mb-8 transform scale-90 sm:scale-95">
             <ScoreGauge score={result.overallScore} />
         </div>
         

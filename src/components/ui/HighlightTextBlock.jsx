@@ -18,18 +18,18 @@ const HighlightTextBlock = ({ highlights }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className={cn(
-          "p-6 rounded-xl bg-background/50 backdrop-blur-sm border border-white/10 leading-relaxed text-lg transition-all duration-500",
-          !isExpanded && shouldTruncate ? "max-h-80 overflow-hidden relative" : ""
+          "p-8 rounded-2xl bg-gradient-to-br from-gray-900/50 to-black/30 backdrop-blur-lg border border-white/10 leading-loose text-base text-gray-100 transition-all duration-500 shadow-xl",
+          !isExpanded && shouldTruncate ? "max-h-96 overflow-hidden relative" : ""
         )}
       >
         {highlights.map((chunk, index) => (
           <span
             key={index}
             className={cn(
-              "transition-colors duration-300 px-1 rounded",
-              chunk.type === 'plagiarized' && "bg-red-500/20 text-red-200 border-b-2 border-red-500",
-              chunk.type === 'paraphrased' && "bg-orange-500/20 text-orange-200 border-b-2 border-orange-500",
-              chunk.type === 'safe' && "text-foreground"
+              "transition-all duration-300 rounded-md px-1.5 py-0.5",
+              chunk.type === 'plagiarized' && "bg-red-500/15 text-red-100 border-l-4 border-red-400/60 pl-2 shadow-sm",
+              chunk.type === 'paraphrased' && "bg-amber-500/15 text-amber-100 border-l-4 border-amber-400/60 pl-2 shadow-sm",
+              chunk.type === 'safe' && "text-gray-200"
             )}
             title={chunk.source ? `Source: ${chunk.source}` : ''}
           >
@@ -39,7 +39,7 @@ const HighlightTextBlock = ({ highlights }) => {
         
         {/* Gradient Overlay for truncated state */}
         {!isExpanded && shouldTruncate && (
-            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none rounded-b-xl" />
+            <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent pointer-events-none rounded-b-2xl" />
         )}
       </motion.div>
 

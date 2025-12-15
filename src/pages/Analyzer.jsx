@@ -497,14 +497,25 @@ const Analyzer = () => {
             )}
           </div>
           
-          <div className="flex gap-2 sm:gap-4">
-            <div className="flex-1 flex items-center justify-end">
+          <div className="flex gap-2 sm:gap-4 mt-4 sm:mt-6">
+            <div className="flex-1 flex items-center justify-center">
               <button
                 onClick={handleAnalyze}
                 disabled={loading || !text}
-                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 px-4 sm:px-8 rounded-lg sm:rounded-xl text-sm sm:text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="group w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:via-indigo-500 hover:to-blue-500 text-white font-bold py-3 sm:py-4 md:py-5 px-6 sm:px-8 md:px-12 rounded-xl sm:rounded-2xl text-sm sm:text-base md:text-xl transition-all shadow-xl sm:shadow-2xl shadow-purple-500/20 sm:shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 sm:gap-3 hover:scale-[1.02] sm:hover:scale-105 active:scale-95 disabled:hover:scale-100 relative overflow-hidden"
               >
-                {loading ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <><span className="hidden sm:inline">Run Plagiarism Check</span><span className="sm:hidden">Check Plagiarism</span></>}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 animate-spin relative z-10" />
+                    <span className="relative z-10 text-sm sm:text-base md:text-lg">Analyzing...</span>
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" />
+                    <span className="relative z-10 text-sm sm:text-base md:text-lg">Run Plagiarism Check</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -517,8 +528,9 @@ const Analyzer = () => {
               className="mt-8"
             >
 
-              <div className="mb-6">
-                  <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Analysis Result</h3>
+              <div className="mb-6 sm:mb-8 md:mb-10">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400 mb-2">Analysis Result</h3>
+                  <div className="h-0.5 sm:h-1 w-24 sm:w-32 bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-500 rounded-full"></div>
               </div>
 
               {/* Mobile: Results Panel rendered here (above text) */}
@@ -532,87 +544,176 @@ const Analyzer = () => {
                  />
               </div>
 
-              <div className="mb-6 flex justify-end">
-                  <div className="w-full sm:w-auto p-1.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 flex items-center p-[4px] relative">
-                      {/* Animated Background Pill for Active State */}
-                      <div className="absolute inset-0 p-[4px] pointer-events-none">
-                         <motion.div
-                            layoutId="activeTab"
-                            className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg shadow-lg h-full absolute"
-                            initial={false}
-                            animate={{
-                                x: viewMode === 'highlight' ? '0%' : 
-                                   viewMode === 'comparison' ? '100%' : 
-                                   viewMode === 'grammar' ? '200%' : 
-                                   viewMode === 'explainability' ? '300%' : 
-                                   '400%',
-                                width: '20%',
-                                opacity: 1
-                            }}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                         />
-                      </div>
-
-                      {/* Tab Bar */}
-                      <div className="flex gap-1.5 overflow-x-auto scrollbar-hide relative z-10 w-full pb-1">
+              {/* Tab Bar - Fully Responsive */}
+              <div className="mb-6 sm:mb-8">
+                  {/* Desktop: Centered Tab Bar */}
+                  <div className="hidden md:flex justify-center">
+                      <div className="inline-flex items-center gap-1.5 p-2 rounded-2xl bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-xl border border-white/20 shadow-2xl">
                           <button
                             onClick={() => setViewMode('highlight')}
-                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[90px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
-                                viewMode === 'highlight' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                                viewMode === 'highlight' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
                             }`}
                           >
-                            <Zap className="w-4 h-4" />
-                            <span className="hidden sm:inline truncate">Highlight</span>
+                            <Zap className={`transition-all duration-300 ${viewMode === 'highlight' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
+                            <span className="font-bold tracking-wide">Highlight</span>
+                            {viewMode === 'highlight' && (
+                              <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                            )}
                           </button>
                           
                           <button
                             onClick={() => setViewMode('comparison')}
-                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[110px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
-                                viewMode === 'comparison' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                                viewMode === 'comparison' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
                             }`}
                           >
-                            <Columns className="w-4 h-4" />
-                            <span className="hidden sm:inline truncate">Comparison</span>
+                            <Columns className={`transition-all duration-300 ${viewMode === 'comparison' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
+                            <span className="font-bold tracking-wide">Comparison</span>
+                            {viewMode === 'comparison' && (
+                              <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                            )}
                           </button>
                           
                           <button
                             onClick={() => setViewMode('grammar')}
-                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[95px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
-                                viewMode === 'grammar' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                                viewMode === 'grammar' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
                             }`}
                           >
-                            <Wand2 className="w-4 h-4" />
-                            <span className="hidden sm:inline truncate">Grammar</span>
+                            <Wand2 className={`transition-all duration-300 ${viewMode === 'grammar' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
+                            <span className="font-bold tracking-wide">Grammar</span>
+                            {viewMode === 'grammar' && (
+                              <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                            )}
                           </button>
                           
                           <button
                             onClick={() => setViewMode('explainability')}
-                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[90px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
-                                viewMode === 'explainability' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                                viewMode === 'explainability' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
                             }`}
                           >
-                            <Lightbulb className="w-4 h-4" />
-                            <span className="hidden sm:inline truncate">Explain</span>
+                            <Lightbulb className={`transition-all duration-300 ${viewMode === 'explainability' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
+                            <span className="font-bold tracking-wide">Explain</span>
+                            {viewMode === 'explainability' && (
+                              <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                            )}
                           </button>
                           
                           <button
                             onClick={() => setViewMode('dictionary')}
-                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[75px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
-                                viewMode === 'dictionary' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                                viewMode === 'dictionary' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
                             }`}
                           >
-                            <BookOpen className="w-4 h-4" />
-                            <span className="hidden sm:inline truncate">Dict</span>
+                            <BookOpen className={`transition-all duration-300 ${viewMode === 'dictionary' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
+                            <span className="font-bold tracking-wide">Dictionary</span>
+                            {viewMode === 'dictionary' && (
+                              <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                            )}
                           </button>
                           
                           <button
                             onClick={() => setViewMode('novelty')}
-                            className={`flex-shrink-0 min-w-[60px] sm:min-w-[90px] px-2 py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
-                                viewMode === 'novelty' ? 'text-white bg-purple-600' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                            className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                                viewMode === 'novelty' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
+                            }`}
+                          >
+                            <Sparkles className={`transition-all duration-300 ${viewMode === 'novelty' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
+                            <span className="font-bold tracking-wide">Novelty</span>
+                            {viewMode === 'novelty' && (
+                              <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
+                            )}
+                          </button>
+                      </div>
+                  </div>
+
+                  {/* Mobile & Tablet: Horizontal Scrolling Tabs */}
+                  <div className="md:hidden w-full overflow-x-auto scrollbar-hide -mx-2 px-2">
+                      <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-xl border border-white/20 shadow-xl min-w-max">
+                          <button
+                            onClick={() => setViewMode('highlight')}
+                            className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
+                                viewMode === 'highlight' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                            }`}
+                          >
+                            <Zap className="w-4 h-4" />
+                            <span className="font-bold">Highlight</span>
+                          </button>
+                          
+                          <button
+                            onClick={() => setViewMode('comparison')}
+                            className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
+                                viewMode === 'comparison' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                            }`}
+                          >
+                            <Columns className="w-4 h-4" />
+                            <span className="font-bold">Compare</span>
+                          </button>
+                          
+                          <button
+                            onClick={() => setViewMode('grammar')}
+                            className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
+                                viewMode === 'grammar' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                            }`}
+                          >
+                            <Wand2 className="w-4 h-4" />
+                            <span className="font-bold">Grammar</span>
+                          </button>
+                          
+                          <button
+                            onClick={() => setViewMode('explainability')}
+                            className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
+                                viewMode === 'explainability' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                            }`}
+                          >
+                            <Lightbulb className="w-4 h-4" />
+                            <span className="font-bold">Explain</span>
+                          </button>
+                          
+                          <button
+                            onClick={() => setViewMode('dictionary')}
+                            className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
+                                viewMode === 'dictionary' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                            }`}
+                          >
+                            <BookOpen className="w-4 h-4" />
+                            <span className="font-bold">Dict</span>
+                          </button>
+                          
+                          <button
+                            onClick={() => setViewMode('novelty')}
+                            className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
+                                viewMode === 'novelty' 
+                                  ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
+                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
                             }`}
                           >
                             <Sparkles className="w-4 h-4" />
-                            <span className="hidden sm:inline truncate">Novelty</span>
+                            <span className="font-bold">Novelty</span>
                           </button>
                       </div>
                   </div>
