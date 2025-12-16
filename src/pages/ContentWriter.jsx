@@ -20,6 +20,7 @@ import {
 import BeforeAfterComparison from '../components/BeforeAfterComparison';
 import SupervisorFeedback from '../components/SupervisorFeedback';
 import PresetSelector from '../components/PresetSelector';
+import rewardsAPI from '../services/rewards';
 
 const MODES = [
     { id: 'blog', label: 'Blog Writing', icon: FileText, description: 'SEO-friendly, conversational blog posts', color: 'from-purple-600 to-pink-600' },
@@ -272,6 +273,13 @@ const ContentWriter = () => {
             } catch (historyError) {
                 console.error('Failed to save to history:', historyError);
                 // Don't show error to user, history save is secondary
+            }
+            
+            // Track activity for rewards system (non-blocking)
+            try {
+                await rewardsAPI.trackActivity('generate');
+            } catch (error) {
+                console.warn('Failed to track activity:', error);
             }
         } catch (error) {
             console.error('Content generation error:', error);

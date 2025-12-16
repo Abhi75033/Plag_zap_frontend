@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hcaptcha/react-hcaptcha": "^1.17.1",
     "@react-pdf/renderer": "^4.3.1",
     "@stripe/stripe-js": "^8.5.3",
     "axios": "^1.13.2",
     "buffer": "^6.0.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
+    "hcaptcha": "^0.2.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.4",
     "lucide-react": "^0.555.0",

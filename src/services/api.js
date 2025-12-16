@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
+    // Use local server for development (rewards system is only on local for now)
+    baseURL: 'http://localhost:5001/api',
+    // Production: baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
 });
 
 // Add auth token to requests
@@ -17,6 +19,12 @@ api.interceptors.request.use((config) => {
 export const register = (userData) => api.post('/auth/register', userData);
 export const login = (credentials) => api.post('/auth/login', credentials);
 export const getCurrentUser = () => api.get('/auth/me');
+
+// Email Verification APIs
+export const verifyEmail = (data) => api.post('/auth/verify-email', data);
+export const resendVerification = () => api.post('/auth/resend-verification');
+export const getVerificationStatus = () => api.get('/auth/verification-status');
+
 
 // Subscription APIs
 export const getSubscriptionPlans = () => api.get('/subscriptions/plans');

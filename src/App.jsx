@@ -17,10 +17,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import DownloadExtension from './pages/DownloadExtension';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminSecurityDashboard from './pages/AdminSecurityDashboard'; // Phase 4
 import TeamDashboard from './pages/TeamDashboard';
 import VideoMeeting from './pages/VideoMeeting'; // Video meeting import
 import AdminRoute from './components/AdminRoute';
 import ApiDocs from './pages/ApiDocs';
+import Rewards from './pages/Rewards'; // Phase 1: Rewards system
 import ErrorBoundary from './components/ErrorBoundary';
 
 // Static pages
@@ -38,6 +40,7 @@ import Features from './pages/Features';
 import Shipping from './pages/Shipping';
 import Refunds from './pages/Refunds';
 import AuthCallback from './pages/AuthCallback';
+import VerifyEmail from './pages/VerifyEmail'; // Phase 3: Email verification
 
 function App() {
   return (
@@ -76,6 +79,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/auth-callback" element={<AuthCallback />} />
+            <Route path="/verify-email" element={<VerifyEmail />} /> {/* Phase 3: Email verification */}
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-cancelled" element={<PaymentCancelled />} />
@@ -160,6 +164,22 @@ function App() {
                 <AdminRoute>
                   <AdminDashboard />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/security"
+              element={
+                <AdminRoute>
+                  <AdminSecurityDashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/rewards"
+              element={
+                <ProtectedRoute>
+                  <Rewards />
+                </ProtectedRoute>
               }
             />
           </Routes>

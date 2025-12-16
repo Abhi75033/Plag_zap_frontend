@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
-import { Sparkles, LayoutDashboard, History, Menu, X, LogOut, Key, Shield, Users, User, Moon, Sun, Home, CreditCard, BarChart3 } from 'lucide-react';
+import { Sparkles, LayoutDashboard, History, Menu, X, LogOut, Key, Shield, Users, User, Moon, Sun, Home, CreditCard, BarChart3, Gift } from 'lucide-react';
 
 const NavLink = ({ to, children, onClick }) => (
   <Link
@@ -66,6 +66,7 @@ const Navbar = () => {
                 {user && <NavLink to="/dashboard">Dashboard</NavLink>}
                 {user && <NavLink to="/analyzer">Analyzer</NavLink>}
                 {user && <NavLink to="/writer">AI Writer</NavLink>}
+                {user && <NavLink to="/rewards">Rewards</NavLink>}
                 {user && <NavLink to="/history">History</NavLink>}
                 {user && <NavLink to="/team">Team</NavLink>}
                 {user?.role === 'admin' && <NavLink to="/admin">Admin</NavLink>}
@@ -190,6 +191,9 @@ const Navbar = () => {
                 </MobileNavLink>
                 <MobileNavLink to="/writer" icon={Sparkles} onClick={closeMobileMenu}>
                   AI Writer
+                </MobileNavLink>
+                <MobileNavLink to="/rewards" icon={Gift} onClick={closeMobileMenu}>
+                  Rewards
                 </MobileNavLink>
                 <MobileNavLink to="/history" icon={History} onClick={closeMobileMenu}>
                   History

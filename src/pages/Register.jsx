@@ -3,18 +3,57 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useAppContext } from '../context/AppContext';
-import { Mail, Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, AlertCircle, Eye, EyeOff, Gift } from 'lucide-react';
 import PromotionalModal from '../components/ui/PromotionalModal';
 import api from '../services/api'; // Use centralized api client
+import referralAPI from '../services/referrals'; // Phase 2: Referrals
 
 const Register = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', referralCode: '' }); // Phase 2: Added referralCode
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [promoModal, setPromoModal] = useState({ isOpen: false, promo: null });
+  const [referralValidation, setReferralValidation] = useState({ status: null, message: '' }); // Phase 2
   const { register } = useAppContext();
   const navigate = useNavigate();
+
+  // Phase 2: Check URL for referral code
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get('ref');
+    if (refCode) {
+      setFormData(prev => ({ ...prev, referralCode: refCode.toUpperCase() }));
+      validateReferralCode(refCode);
+    }
+  }, []);
+
+  // Phase 2: Validate referral code
+  const validateReferralCode = async (code) => {
+    if (!code || code.length < 6) {
+      setReferralValidation({ status: null, message: '' });
+      return;
+    }
+
+    try {
+      const response = await referralAPI.validateCode(code);
+      if (response.valid) {
+        setReferralValidation({ 
+          status: 'valid', 
+          message: `✓ Valid code from ${response.referrerName}! You'll get 25 bonus coins.` 
+        });
+      } else {
+        setReferralValidation({ 
+          status: 'invalid', 
+          message: response.reason === 'MONTHLY_LIMIT_REACHED' 
+            ? 'This referral code has reached its monthly limit' 
+            : 'Invalid referral code' 
+        });
+      }
+    } catch (err) {
+      setReferralValidation({ status: 'invalid', message: 'Could not validate code' });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,6 +168,39 @@ const Register = () => {
                 </button>
               </div>
               <p className="mt-1 text-xs text-gray-400">At least 6 characters</p>
+            </div>
+
+            {/* Phase 2: Referral Code (Optional) */}
+            <div>
+              <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                <Gift className="h-4 w-4 text-emerald-400" />
+                Referral Code <span className="text-xs text-gray-500">(Optional)</span>
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={formData.referralCode}
+                  onChange={(e) => {
+                    const code = e.target.value.toUpperCase();
+                    setFormData({ ...formData, referralCode: code });
+                    if (code.length >= 6) {
+                      validateReferralCode(code);
+                    } else {
+                      setReferralValidation({ status: null, message: '' });
+                    }
+                  }}
+                  className="w-full px-4 py-3 bg-background/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 uppercase tracking-widest font-mono"
+                  placeholder="ABCD1234"
+                  maxLength={8}
+                />
+              </div>
+              {referralValidation.status && (
+                <p className={`mt-2 text-xs ${
+                  referralValidation.status === 'valid' ? 'text-emerald-400' : 'text-red-400'
+                }`}>
+                  {referralValidation.message}
+                </p>
+              )}
             </div>
 
             <button

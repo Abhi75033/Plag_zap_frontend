@@ -22,7 +22,6 @@ import {
   Check,
   AlertTriangle,
   Gift,
-  Users,
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { getUsage, getHistory, getApiKeyHistory, revokeApiKey, getGamificationStats, cancelSubscription } from '../services/api';
@@ -31,7 +30,6 @@ import referralAPI from '../services/referrals';
 import WebhooksManager from '../components/ui/WebhooksManager';
 import StreakBadges from '../components/ui/StreakBadges';
 import PromoBanner from '../components/ui/PromoBanner';
-import ReferralBanner from '../components/ui/ReferralBanner';
 
 const Dashboard = () => {
   const { user, logout } = useAppContext();
@@ -208,7 +206,7 @@ const Dashboard = () => {
     <div className="min-h-screen pt-24 px-4 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Referral Code Banner - Top Section */}
-        {referralCode?.code && (
+        {referralData?.code && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -224,11 +222,11 @@ const Dashboard = () => {
                   <h3 className="text-sm font-medium text-gray-300">Your Referral Code</h3>
                   <div className="flex items-center gap-3 mt-1">
                     <code className="text-2xl font-bold font-mono text-emerald-400 tracking-widest">
-                      {referralCode.code}
+                      {referralData.code}
                     </code>
                     <button
                       onClick={() => {
-                        navigator.clipboard.writeText(referralCode.shareLink);
+                        navigator.clipboard.writeText(referralData.shareLink);
                         toast.success('Referral link copied!');
                       }}
                       className="p-2 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 transition-colors"
@@ -350,6 +348,15 @@ const Dashboard = () => {
               {user?.subscriptionTier !== 'free' && (
                 <button
                   onClick={async () => {
+                    if (!confirm('Are you sure you want to cancel your subscription? You will be downgraded to the free plan.')) return;
+                    try {
+                      await cancelSubscription();
+                      toast.success('Subscription cancelled successfully');
+                      window.location.reload();
+                    } catch (error) {
+                      toast.error('Failed to cancel subscription');
+                    }
+                  }}
                     if (!confirm('Are you sure you want to cancel your subscription? You will be downgraded to the free plan.')) return;
                     try {
                       await cancelSubscription();

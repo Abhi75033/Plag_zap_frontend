@@ -9,6 +9,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import AnalysisReport from '../components/pdf/AnalysisReport';
 
 import { checkPlagiarism, checkGrammar, extractUrl } from '../services/api';
+import rewardsAPI from '../services/rewards';
 import { useAppContext } from '../context/AppContext';
 import { getUsage } from '../services/api';
 import { FileText, Sparkles, AlertTriangle, CheckCircle, Upload, ArrowRight, Download, Columns, X, RefreshCw, Wand2, Link as LinkIcon, Zap, Loader2, Crown, AlertCircle, Clock, Globe, BookOpen, Lock, Lightbulb } from 'lucide-react';
@@ -176,6 +177,14 @@ const Analyzer = () => {
       }
       
       addToHistory({ ...data, originalText: text, createdAt: new Date() });
+      
+      // Track activity for rewards system (non-blocking)
+      try {
+        await rewardsAPI.trackActivity('analyze');
+      } catch (error) {
+        // Silent fail - don't break the user flow
+        console.warn('Failed to track activity:', error);
+      }
       
       // Show success toast with usage info
       if (data.usage) {
