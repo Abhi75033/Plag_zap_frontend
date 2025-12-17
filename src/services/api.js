@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
     // Use local server for development (rewards system is only on local for now)
-    baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
+    baseURL: 'http://localhost:5001/api',
     // Production: baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
 });
 
@@ -18,11 +18,21 @@ api.interceptors.request.use((config) => {
 // Auth APIs
 export const register = (userData) => api.post('/auth/register', userData);
 export const login = (credentials) => api.post('/auth/login', credentials);
-export const getCurrentUser = () => api.get('/auth/me');
+// Get current user (for verification status)
+export const getCurrentUser = async () => {
+    const response = await api.get('/auth/me');
+    return response.data; // Return user data directly
+};
 
-// Email Verification APIs
-export const verifyEmail = (data) => api.post('/auth/verify-email', data);
-export const resendVerification = () => api.post('/auth/resend-verification');
+// Resend verification email
+export const resendVerification = async () => {
+    return await api.post('/auth/resend-verification');
+};
+
+// Verify email with token
+export const verifyEmail = async ({ token }) => {
+    return await api.post('/auth/verify-email', { token });
+};
 export const getVerificationStatus = () => api.get('/auth/verification-status');
 
 

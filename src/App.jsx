@@ -23,6 +23,8 @@ import VideoMeeting from './pages/VideoMeeting'; // Video meeting import
 import AdminRoute from './components/AdminRoute';
 import ApiDocs from './pages/ApiDocs';
 import Rewards from './pages/Rewards'; // Phase 1: Rewards system
+import Achievements from './pages/Achievements'; // Phase 5: Achievements
+import Leaderboard from './pages/Leaderboard'; // Phase 5: Leaderboard
 import ErrorBoundary from './components/ErrorBoundary';
 
 // Static pages
@@ -179,6 +181,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Rewards />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/achievements"
+              element={
+                <ProtectedRoute>
+                  <Achievements />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/leaderboard"
+              element={
+                <ProtectedRoute>
+                  <Leaderboard />
                 </ProtectedRoute>
               }
             />

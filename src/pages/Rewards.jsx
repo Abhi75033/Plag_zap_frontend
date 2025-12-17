@@ -54,12 +54,6 @@ const Rewards = () => {
         }
     };
 
-    useEffect(() => {
-        fetchRewardsData();
-        fetchReferralData(); // Phase 2
-        fetchUserData(); // Phase 3
-    }, []);
-
     // Phase 2: Fetch referral data
     const fetchReferralData = async () => {
         try {
@@ -86,20 +80,38 @@ const Rewards = () => {
         }
     };
 
-    // Phase 3: Fetch user data for verification banner
+    // Phase 3: Fetch user data (for email verification status)
     const fetchUserData = async () => {
         try {
-            const response = await getCurrentUser();
-            setUser(response.data);
+            const userData = await getCurrentUser();
+            setUser(userData); // getCurrentUser now returns data directly
         } catch (err) {
             console.error('Failed to fetch user data:', err);
             // Non-critical
         }
     };
 
+    useEffect(() => {
+        const loadAllData = async () => {
+            setLoading(true);
+            await Promise.all([
+                fetchRewardsData(),
+                fetchReferralData(),
+                fetchUserData()
+            ]);
+            setLoading(false);
+        };
+        loadAllData();
+    }, []);
+
     const handleRefresh = async () => {
         setRefreshing(true);
-        await fetchRewardsData();
+        await Promise.all([
+            fetchRewardsData(),
+            fetchReferralData(),
+            fetchUserData() // Also refresh user data on manual refresh
+        ]);
+        setRefreshing(false);
     };
 
     const handleClaimMilestone = async (days) => {
