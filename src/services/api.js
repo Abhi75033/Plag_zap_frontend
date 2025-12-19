@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
     // Use local server for development (rewards system is only on local for now)
-    baseURL: 'http://localhost:5001/api',
+    baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
     // Production: baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
 });
 
