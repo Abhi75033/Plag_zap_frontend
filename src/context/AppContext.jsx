@@ -17,8 +17,9 @@ export const AppProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const { data } = await getCurrentUser();
-          setUser(data);
+          // getCurrentUser already returns data directly (not wrapped)
+          const userData = await getCurrentUser();
+          setUser(userData);
         } catch (error) {
           console.error('Failed to load user:', error);
           localStorage.removeItem('token');
@@ -78,6 +79,7 @@ export const AppProvider = ({ children }) => {
         history,
         addToHistory,
         user,
+        setUser, // Export setUser for AuthCallback
         login,
         register,
         logout,

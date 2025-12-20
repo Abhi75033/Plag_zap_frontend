@@ -43,6 +43,8 @@ import Shipping from './pages/Shipping';
 import Refunds from './pages/Refunds';
 import AuthCallback from './pages/AuthCallback';
 import VerifyEmail from './pages/VerifyEmail'; // Phase 3: Email verification
+import ForgotPassword from './pages/ForgotPassword'; // Forgot Password
+import ResetPassword from './pages/ResetPassword'; // Reset Password
 
 function App() {
   return (
@@ -82,6 +84,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/auth-callback" element={<AuthCallback />} />
             <Route path="/verify-email" element={<VerifyEmail />} /> {/* Phase 3: Email verification */}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-cancelled" element={<PaymentCancelled />} />
