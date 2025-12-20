@@ -10,9 +10,10 @@ const AdminRoute = ({ children }) => {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        const { data } = await getCurrentUser();
+        // getCurrentUser already returns data directly (not wrapped)
+        const userData = await getCurrentUser();
         // Check if role is admin
-        if (data && data.role === 'admin') {
+        if (userData && userData.role === 'admin') {
             setIsAdmin(true);
         } else {
             setIsAdmin(false);
