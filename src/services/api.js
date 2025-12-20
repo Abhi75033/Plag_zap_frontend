@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // Use local server for development (rewards system is only on local for now)
     baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
-    // Production: baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
 });
 
 // Add auth token to requests

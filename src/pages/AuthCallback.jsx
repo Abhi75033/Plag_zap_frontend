@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { getCurrentUser } from '../services/api';
+import { useAppContext } from '../context/AppContext';
 
 const AuthCallback = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { setUser } = useAppContext();
 
   useEffect(() => {
     const handleAuth = async () => {
@@ -27,16 +29,25 @@ const AuthCallback = () => {
 
       if (token) {
         try {
-          // Save token
+          // Save token to localStorage
           localStorage.setItem('token', token);
+          console.log('Token saved to localStorage');
           
-          // Fetch user data using the existing API method
+          // Fetch user data to verify token and update context
           console.log('Fetching user data...');
-          await getCurrentUser();
+          const userData = await getCurrentUser();
+          console.log('User data received:', userData);
+          
+          // Update app context with user data
+          if (setUser) {
+            setUser(userData);
+            console.log('User context updated');
+          }
           
           toast.success('Welcome! 👋');
-          // Force page reload to update context
-          window.location.href = '/analyzer';
+          
+          // Navigate to analyzer (context is already updated)
+          navigate('/analyzer');
         } catch (error) {
           console.error('Error fetching user:', error);
           toast.error('Failed to complete authentication');
@@ -51,14 +62,14 @@ const AuthCallback = () => {
     };
 
     handleAuth();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, setUser]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-950">
       <div className="text-center">
         <div className="animate-spin h-12 w-12 border-b-2 border-purple-500 rounded-full mx-auto mb-4"></div>
-        <p className="text-gray-400">Completing authentication...</p>
-        <p className="text-xs text-gray-500 mt-2">Please wait while we log you in</p>
+        <p className="text-white font-medium text-lg">Completing authentication...</p>
+        <p className="text-gray-400 text-sm mt-2">Please wait while we log you in</p>
       </div>
     </div>
   );
