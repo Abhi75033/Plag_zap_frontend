@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://plagzapbackend-production.up.railway.app//api',
+    baseURL: 'https://plagzapbackend-production.up.railway.app/api',
 });
 
 // Add auth token to requests
