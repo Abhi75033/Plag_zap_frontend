@@ -142,7 +142,7 @@ const VideoConnect = ({ teamId, user }) => {
             if (!stream) setStream(currentStream);
             originalStreamRef.current = currentStream; // Store original stream
             
-            socketRef.current = io.connect('https://plagzap-backend-8yxx.onrender.com');
+            socketRef.current = io.connect('https://plagzapbackend-production.up.railway.app');
             
             socketRef.current.emit('join-room', roomToJoin, user.id);
             setMeetingCode(roomToJoin);
