@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://plagzap-backend-8yxx.onrender.com/api',
+    baseURL: 'Plagzap-env.eba-72ppypmc.ap-south-1.elasticbeanstalk.com/api',
 });
 
 // Add auth token to requests
