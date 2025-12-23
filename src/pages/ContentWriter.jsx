@@ -21,6 +21,8 @@ import BeforeAfterComparison from '../components/BeforeAfterComparison';
 import SupervisorFeedback from '../components/SupervisorFeedback';
 import PresetSelector from '../components/PresetSelector';
 import rewardsAPI from '../services/rewards';
+import LoginPromptModal from '../components/ui/LoginPromptModal';
+import { useAppContext } from '../context/AppContext';
 
 const MODES = [
     { id: 'blog', label: 'Blog Writing', icon: FileText, description: 'SEO-friendly, conversational blog posts', color: 'from-purple-600 to-pink-600' },
@@ -77,6 +79,10 @@ const ContentWriter = () => {
     
     // Presets state
     const [showPresets, setShowPresets] = useState(false);
+    
+    // Freemium tracking for anonymous users
+    const { user } = useAppContext();
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     // Auto-analyze topic (debounced)
     useEffect(() => {
@@ -146,9 +152,15 @@ const ContentWriter = () => {
     const handleRefineContent = async (action) => {
         if (!generatedContent) return;
         
+        // Freemium check: Block "reduceAI" (humanize) for anonymous users
+        if (!user && action === 'reduceAI') {
+            setShowLoginModal(true);
+            return;
+        }
+        
         // Save the original content before refinement
         const originalContent = generatedContent;
-        const originalAiRisk = feedback?.aiDetectionRisk || 0;
+        const originalAiRisk = feedback?. aiDetectionRisk || 0;
         
         setLoading(true);
         try {
@@ -918,6 +930,13 @@ const ContentWriter = () => {
                 </div>
             </div>
             </div>
+
+            {/* LoginPromp tModal for Anonymous Users */}
+            <LoginPromptModal
+                isOpen={showLoginModal}
+                onClose={() => setShowLoginModal(false)}
+                feature="humanizer"
+            />
 
             {/* Before/After Comparison Modal */}
             <AnimatePresence>

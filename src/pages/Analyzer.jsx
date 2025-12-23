@@ -24,6 +24,8 @@ import ExplainabilityView from '../components/ExplainabilityView';
 import AnalysisResultsPanel from '../components/ui/AnalysisResultsPanel';
 import { explainSentences, analyzeNovelty } from '../services/api';
 import NoveltyAnalysis from '../components/NoveltyAnalysis';
+import LoginPromptModal from '../components/ui/LoginPromptModal';
+import { canUseAnalyzer, incrementAnalyzerCount, getUsageStats } from '../utils/freemiumTracker';
 
 const Analyzer = () => {
   const navigate = useNavigate();
@@ -40,6 +42,10 @@ const Analyzer = () => {
   // Novelty Analysis State
   const [noveltyAnalysis, setNoveltyAnalysis] = useState(null);
   const [noveltyLoading, setNoveltyLoading] = useState(false);
+
+  // Freemium tracking for anonymous users
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [freemiumStats, setFreemiumStats] = useState(getUsageStats());
 
   // Check if user has an active subscription (considers paused/suspended status)
   const isPaidUser = user?.hasActiveSubscription === true;
@@ -150,6 +156,14 @@ const Analyzer = () => {
       toast.error('Please enter some text to analyze');
       return;
     }
+
+    // Freemium check for anonymous users
+    if (!user) {
+      if (!canUseAnalyzer()) {
+        setShowLoginModal(true);
+        return;
+      }
+    }
     
     // Check word limit for free users
     const wordCount = text.trim().split(/\s+/).length;
@@ -177,6 +191,12 @@ const Analyzer = () => {
       }
       
       addToHistory({ ...data, originalText: text, createdAt: new Date() });
+      
+      // Track usage for anonymous users
+      if (!user) {
+        incrementAnalyzerCount();
+        setFreemiumStats(getUsageStats());
+      }
       
       // Track activity for rewards system (non-blocking)
       try {
@@ -349,6 +369,35 @@ const Analyzer = () => {
     <div className="min-h-screen pt-20 sm:pt-24 px-2 sm:px-4 pb-6 sm:pb-10 max-w-6xl mx-auto">
       {/* Promotional Banner - only for free users */}
       {!isPaidUser && <PromoBanner />}
+      
+      {/* Freemium Usage Banner - for anonymous users */}
+      {!user && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 sm:mb-6 bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30 rounded-xl p-4 backdrop-blur-sm"
+        >
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-purple-400" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white">Free Trial</h3>
+                <p className="text-xs text-gray-400">
+                  {freemiumStats.remaining} of {freemiumStats.limit} free analyses remaining
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => navigate('/login')}
+              className="text-xs sm:text-sm bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg font-semibold transition-colors border border-white/20"
+            >
+              Sign in for unlimited access
+            </button>
+          </div>
+        </motion.div>
+      )}
       
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-start">
         {/* Input Section */}
@@ -819,6 +868,13 @@ const Analyzer = () => {
         </div>
       </div>
       
+      {/* Login Prompt Modal for Anonymous Users */}
+      <LoginPromptModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        feature="analyzer"
+      />
+
       {/* Citation Modal */}
       <CitationGenerator 
         source={citationSource} 

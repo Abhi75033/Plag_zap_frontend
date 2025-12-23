@@ -114,14 +114,6 @@ function App() {
             <Route path="/team" element={<ProtectedRoute><TeamDashboard /></ProtectedRoute>} />
             <Route path="/meet/:code" element={<ProtectedRoute><VideoMeeting /></ProtectedRoute>} />
             <Route
-              path="/analyzer"
-              element={
-                <ProtectedRoute>
-                  <Analyzer />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/rewrite-results"
               element={
                 <ProtectedRoute>
