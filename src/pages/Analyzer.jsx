@@ -318,6 +318,12 @@ const Analyzer = () => {
   };
 
   const handleRewrite = () => {
+    // Freemium check: Block rewriting for anonymous users
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+    
     console.log('Fix Plagiarism clicked', { text, resultId: result?.id });
     if (!text) {
         toast.error('No text to fix!');

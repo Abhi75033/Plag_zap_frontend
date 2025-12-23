@@ -152,8 +152,8 @@ const ContentWriter = () => {
     const handleRefineContent = async (action) => {
         if (!generatedContent) return;
         
-        // Freemium check: Block "reduceAI" (humanize) for anonymous users
-        if (!user && action === 'reduceAI') {
+        // Freemium check: Block ALL refinements for anonymous users
+        if (!user) {
             setShowLoginModal(true);
             return;
         }
@@ -935,7 +935,7 @@ const ContentWriter = () => {
             <LoginPromptModal
                 isOpen={showLoginModal}
                 onClose={() => setShowLoginModal(false)}
-                feature="humanizer"
+                feature="writer"
             />
 
             {/* Before/After Comparison Modal */}
