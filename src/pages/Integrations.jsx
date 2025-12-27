@@ -68,6 +68,14 @@ const Integrations = () => {
       link: 'https://zapier.com'
     },
     { 
+      icon: <Plug className="h-8 w-8" />,
+      name: 'Webhooks',
+      desc: 'Get real-time notifications when events happen in your PlagZap account.',
+      status: 'available',
+      color: 'purple',
+      link: '/webhooks'
+    },
+    { 
       icon: <Code className="h-8 w-8" />,
       name: 'REST API',
       desc: 'Build custom integrations with our comprehensive REST API.',

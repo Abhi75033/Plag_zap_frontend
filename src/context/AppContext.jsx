@@ -19,6 +19,10 @@ export const AppProvider = ({ children }) => {
         try {
           // getCurrentUser already returns data directly (not wrapped)
           const userData = await getCurrentUser();
+          console.log('[AppContext] User loaded:', { 
+            email: userData.email, 
+            emailVerified: userData.emailVerified 
+          });
           setUser(userData);
         } catch (error) {
           console.error('Failed to load user:', error);
@@ -68,6 +72,10 @@ export const AppProvider = ({ children }) => {
   };
 
   const updateUser = (userData) => {
+    console.log('[AppContext] Updating user:', { 
+      oldEmailVerified: user?.emailVerified, 
+      newEmailVerified: userData?.emailVerified 
+    });
     setUser({ ...user, ...userData });
   };
 

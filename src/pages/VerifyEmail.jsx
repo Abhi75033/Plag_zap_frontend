@@ -3,10 +3,12 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
+import { useAppContext } from '../context/AppContext';
 
 const VerifyEmail = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const { updateUser } = useAppContext();
     const [status, setStatus] = useState('verifying');
     const [message, setMessage] = useState('');
     
@@ -31,6 +33,12 @@ const VerifyEmail = () => {
                 setMessage(response.data.message || 'Email verified successfully!');
                 toast.success('Email verified! You can now access all features.');
                 
+                // Update user context with verified user data
+                if (response.data.user) {
+                    console.log('[VerifyEmail] Updating user context with verified data:', response.data.user);
+                    updateUser(response.data.user);
+                }
+                
                 // Redirect to dashboard after 3 seconds
                 setTimeout(() => {
                     navigate('/dashboard');
@@ -43,7 +51,7 @@ const VerifyEmail = () => {
                 setMessage(errorMsg);
                 toast.error(errorMsg);
             });
-    }, [searchParams, navigate]);
+    }, [searchParams, navigate, updateUser]);
     
     console.log('[VerifyEmail] Rendering with status:', status);
     

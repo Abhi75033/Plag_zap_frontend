@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, AlertCircle, Loader2, CheckCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, AlertCircle, Loader2 } from 'lucide-react';
 import { resendVerification } from '../services/api';
+import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 
-const EmailVerificationBanner = ({ user, onVerified }) => {
+const EmailVerificationBanner = () => {
+    const { user } = useAppContext(); // Get user from AppContext
     const [resending, setResending] = useState(false);
     const [cooldown, setCooldown] = useState(0);
+    
+    // Debug: Log user data when it changes
+    console.log('[EmailVerificationBanner] User data:', {
+        userExists: !!user,
+        email: user?.email,
+        emailVerified: user?.emailVerified
+    });
     
     const handleResend = async () => {
         setResending(true);
@@ -30,8 +39,9 @@ const EmailVerificationBanner = ({ user, onVerified }) => {
         }
     };
     
-    // Don't show banner if email is verified
-    if (user?.emailVerified) return null;
+    // Don't show banner if email is verified or user is not loaded
+    console.log('[EmailVerificationBanner] Should show?', !user || user.emailVerified ? 'NO' : 'YES');
+    if (!user || user.emailVerified) return null;
     
     return (
         <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl p-4 mb-6 backdrop-blur-sm">

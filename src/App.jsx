@@ -22,6 +22,7 @@ import TeamDashboard from './pages/TeamDashboard';
 import VideoMeeting from './pages/VideoMeeting'; // Video meeting import
 import AdminRoute from './components/AdminRoute';
 import ApiDocs from './pages/ApiDocs';
+import Webhooks from './pages/Webhooks';
 import Rewards from './pages/Rewards'; // Phase 1: Rewards system
 import Achievements from './pages/Achievements'; // Phase 5: Achievements
 import Leaderboard from './pages/Leaderboard'; // Phase 5: Leaderboard
@@ -107,6 +108,7 @@ function App() {
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/refunds" element={<Refunds />} />
             <Route path="/api-docs" element={<ApiDocs />} />
+            <Route path="/webhooks" element={<ProtectedRoute><Webhooks /></ProtectedRoute>} />
             
             {/* Protected routes */}
             <Route path="/pricing" element={<ProtectedRoute><Pricing /></ProtectedRoute>} />

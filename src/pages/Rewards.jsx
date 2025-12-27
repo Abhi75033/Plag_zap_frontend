@@ -207,7 +207,7 @@ const Rewards = () => {
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Phase 3: Email Verification Banner */}
-                <EmailVerificationBanner user={user} onVerified={() => fetchUserData()} />
+                <EmailVerificationBanner />
                 
                 {/* Top Row: Streak & Coins */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
