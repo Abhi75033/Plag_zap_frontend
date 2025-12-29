@@ -702,6 +702,7 @@ const Footer = () => {
     Company: [
       { name: 'About', path: '/about' },
       { name: 'Blog', path: '/blog' },
+      { name: 'News', path: '/news' },
       { name: 'Careers', path: '/careers' },
       { name: 'Contact', path: '/contact' },
     ],

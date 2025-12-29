@@ -130,10 +130,10 @@ const StatsDonut = ({ plagiarized, paraphrased, unique, size = 180, strokeWidth 
             transition={{ delay: 1.2, type: "spring" }}
             className="text-center"
           >
-              <div className="text-3xl font-black text-white">
+              <div className="text-3xl font-black text-foreground">
                   {Math.round((plagiarizedPercent + paraphrasedPercent) * 100)}%
               </div>
-              <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">
+              <div className="text-[10px] uppercase tracking-widest text-[var(--muted-foreground)] font-bold">
                   AI Probability
               </div>
           </motion.div>

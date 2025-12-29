@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { Sparkles, LayoutDashboard, History, Menu, X, LogOut, Key, Shield, Users, User, Moon, Sun, Home, CreditCard, BarChart3, Gift } from 'lucide-react';
+import NotificationBell from '../NotificationBell';
 
 const NavLink = ({ to, children, onClick }) => (
   <Link
     to={to}
     onClick={onClick}
-    className="text-gray-300 hover:text-white transition-colors font-medium text-sm xl:text-base"
+    className="text-[var(--nav-link)] hover:text-[var(--nav-link-hover)] transition-colors font-medium text-sm xl:text-base"
   >
     {children}
   </Link>
@@ -17,9 +18,9 @@ const MobileNavLink = ({ to, children, icon: Icon, onClick }) => (
   <Link
     to={to}
     onClick={onClick}
-    className="flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3.5 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all touch-manipulation"
+    className="flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3.5 text-[var(--nav-link)] hover:text-[var(--nav-link-hover)] hover:bg-[var(--accent)] rounded-lg transition-all touch-manipulation"
   >
-    {Icon && <Icon className="h-5 w-5 text-gray-400 flex-shrink-0" />}
+    {Icon && <Icon className="h-5 w-5 text-[var(--muted-foreground)] flex-shrink-0" />}
     <span className="font-medium text-sm sm:text-base">{children}</span>
   </Link>
 );
@@ -50,7 +51,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/10">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-[var(--border)]">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-4 xl:px-8">
           <div className="flex justify-between items-center h-14 sm:h-16">
             {/* Logo - Responsive sizing */}
@@ -80,9 +81,9 @@ const Navbar = () => {
                 {user ? (
                   <>
                     {/* User Info - Hidden on small screens, visible on larger screens */}
-                    <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 px-2 xl:px-3 py-1.5 bg-background/50 border border-white/10 rounded-lg">
-                      <User className="h-4 w-4 text-gray-400" />
-                      <span className="text-xs xl:text-sm max-w-[80px] xl:max-w-[120px] truncate">{user.name}</span>
+                    <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 px-2 xl:px-3 py-1.5 bg-background/50 border border-[var(--border)] rounded-lg">
+                      <User className="h-4 w-4 text-[var(--muted-foreground)]" />
+                      <span className="text-foreground text-xs xl:text-sm max-w-[80px] xl:max-w-[120px] truncate">{user.name}</span>
                     </div>
                     {/* Logout button - Hidden on mobile, visible on desktop */}
                     <button
@@ -98,7 +99,7 @@ const Navbar = () => {
                     {/* Login/Signup - Hidden on mobile/tablet, visible on desktop */}
                     <Link
                       to="/login"
-                      className="hidden lg:block px-2.5 xl:px-4 py-1.5 xl:py-2 text-gray-300 hover:text-white transition-colors text-xs xl:text-sm"
+                      className="hidden lg:block px-2.5 xl:px-4 py-1.5 xl:py-2 text-[var(--nav-link)] hover:text-[var(--nav-link-hover)] transition-colors text-xs xl:text-sm"
                     >
                       Login
                     </Link>
@@ -111,26 +112,29 @@ const Navbar = () => {
                   </>
                 )}
 
+                {/* Notification Bell - Show for logged-in users */}
+                {user && <NotificationBell />}
+
                 {/* Theme Toggle - Always visible, responsive sizing */}
                 <button
                   onClick={toggleTheme}
-                  className="p-1.5 sm:p-2 rounded-lg bg-background/50 border border-white/10 hover:bg-background transition-colors flex-shrink-0"
+                  className="p-1.5 sm:p-2 rounded-lg bg-background/50 border border-[var(--border)] hover:bg-background transition-colors flex-shrink-0"
                   aria-label="Toggle theme"
                 >
                   {theme === 'dark' ? (
-                    <Sun className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                   ) : (
-                    <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <Moon className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                   )}
                 </button>
 
                 {/* Mobile Menu Button - Visible on mobile/tablet, hidden on desktop */}
                 <button
                   onClick={() => setIsMobileMenuOpen(true)}
-                  className="lg:hidden p-1.5 sm:p-2 rounded-lg bg-background/50 border border-white/10 hover:bg-background transition-colors flex-shrink-0"
+                  className="lg:hidden p-1.5 sm:p-2 rounded-lg bg-background/50 border border-[var(--border)] hover:bg-background transition-colors flex-shrink-0"
                   aria-label="Open menu"
                 >
-                  <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <Menu className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                 </button>
               </div>
             </div>
@@ -148,34 +152,34 @@ const Navbar = () => {
 
       {/* Mobile Slide-out Menu */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-96 sm:max-w-[85vw] bg-background border-l border-white/10 shadow-2xl transform transition-transform duration-300 ease-out lg:hidden ${
+        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-96 sm:max-w-[85vw] bg-[var(--menu-bg)] border-l border-[var(--menu-border)] shadow-2xl transform transition-transform duration-300 ease-out lg:hidden ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-white/10">
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-[var(--menu-border)]">
           <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             ⚡ PlagZap
           </span>
           <button
             onClick={closeMobileMenu}
-            className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+            className="p-2 rounded-lg hover:bg-[var(--accent)] transition-colors"
             aria-label="Close menu"
           >
-            <X className="h-5 w-5 text-gray-400" />
+            <X className="h-5 w-5 text-[var(--muted-foreground)]" />
           </button>
         </div>
 
         {/* User Info (if logged in) */}
         {user && (
-          <div className="px-4 sm:px-5 py-4 sm:py-5 border-b border-white/10">
+          <div className="px-4 sm:px-5 py-4 sm:py-5 border-b border-[var(--menu-border)]">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
                 <User className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-medium text-white text-sm sm:text-base truncate">{user.name}</p>
-                <p className="text-xs sm:text-sm text-gray-400 truncate">{user.email}</p>
+                <p className="font-medium text-foreground text-sm sm:text-base truncate">{user.name}</p>
+                <p className="text-xs sm:text-sm text-[var(--muted-foreground)] truncate">{user.email}</p>
               </div>
             </div>
           </div>
@@ -224,23 +228,23 @@ const Navbar = () => {
           </div>
 
           {/* Divider */}
-          <div className="my-3 sm:my-4 border-t border-white/10" />
+          <div className="my-3 sm:my-4 border-t border-[var(--menu-border)]" />
 
           {/* Theme Toggle in Mobile Menu */}
           <button
             onClick={() => {
               toggleTheme();
             }}
-            className="flex items-center gap-3 w-full px-3 sm:px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all touch-manipulation"
+            className="flex items-center gap-3 w-full px-3 sm:px-4 py-3 text-[var(--nav-link)] hover:text-[var(--nav-link-hover)] hover:bg-[var(--accent)] rounded-lg transition-all touch-manipulation"
           >
             {theme === 'dark' ? (
               <>
-                <Sun className="h-5 w-5 text-gray-400" />
+                <Sun className="h-5 w-5 text-[var(--muted-foreground)]" />
                 <span className="font-medium">Light Mode</span>
               </>
             ) : (
               <>
-                <Moon className="h-5 w-5 text-gray-400" />
+                <Moon className="h-5 w-5 text-[var(--muted-foreground)]" />
                 <span className="font-medium">Dark Mode</span>
               </>
             )}
@@ -248,7 +252,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Footer */}
-        <div className="p-3 sm:p-4 border-t border-white/10">
+        <div className="p-3 sm:p-4 border-t border-[var(--menu-border)]">
           {user ? (
             <button
               onClick={() => {
@@ -265,7 +269,7 @@ const Navbar = () => {
               <Link
                 to="/login"
                 onClick={closeMobileMenu}
-                className="block w-full px-4 py-3 sm:py-3.5 text-center text-gray-300 hover:text-white border border-white/10 rounded-lg hover:bg-white/5 transition-all text-sm sm:text-base touch-manipulation"
+                className="block w-full px-4 py-3 sm:py-3.5 text-center text-[var(--nav-link)] hover:text-[var(--nav-link-hover)] border border-[var(--border)] rounded-lg hover:bg-[var(--accent)] transition-all text-sm sm:text-base touch-manipulation"
               >
                 Login
               </Link>

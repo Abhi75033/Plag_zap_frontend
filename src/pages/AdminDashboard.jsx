@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { getAdminStats, getAdminUsers, deleteUser, getAllFeedbacks, updateFeedbackStatus, deleteFeedback, grantUserSubscription, updateUserSubscriptionStatus, revokeUserSubscription } from '../services/api';
-import { Users, DollarSign, Crown, Trash2, ArrowLeft, ArrowRight, MessageSquare, Check, Pause, X, Star, Gift, Play, Ban, XCircle, Ticket, Mail } from 'lucide-react';
+import { Users, DollarSign, Crown, Trash2, ArrowLeft, ArrowRight, MessageSquare, Check, Pause, X, Star, Gift, Play, Ban, XCircle, Ticket, Mail, FileText, Newspaper, Bell, Briefcase } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import CouponManager from '../components/admin/CouponManager';
 import PromotionalEmailForm from '../components/admin/PromotionalEmailForm';
 import PriceManager from '../components/admin/PriceManager';
 import PromoBannerSettings from '../components/admin/PromoBannerSettings';
+import BlogManager from '../components/admin/BlogManager';
+import NewsManager from '../components/admin/NewsManager';
+import NotificationManager from '../components/admin/NotificationManager';
+import JobsManager from '../components/admin/JobsManager';
+import ContactManager from '../components/admin/ContactManager';
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
     <div className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
@@ -327,6 +332,51 @@ const AdminDashboard = () => {
                     <Ticket className="w-4 h-4" />
                     Coupons & Emails
                 </button>
+                <button
+                    onClick={() => setActiveTab('blog')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                        activeTab === 'blog' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                >
+                    <FileText className="w-4 h-4" />
+                    Blog
+                </button>
+                <button
+                    onClick={() => setActiveTab('news')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                        activeTab === 'news' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                >
+                    <Newspaper className="w-4 h-4" />
+                    News
+                </button>
+                <button
+                    onClick={() => setActiveTab('notifications')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                        activeTab === 'notifications' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                >
+                    <Bell className="w-4 h-4" />
+                    Notifications
+                </button>
+                <button
+                    onClick={() => setActiveTab('careers')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                        activeTab === 'careers' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                >
+                    <Briefcase className="w-4 h-4" />
+                    Careers
+                </button>
+                <button
+                    onClick={() => setActiveTab('contact')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                        activeTab === 'contact' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                >
+                    <Mail className="w-4 h-4" />
+                    Contact Us
+                </button>
             </div>
 
             {activeTab === 'users' ? (
@@ -577,7 +627,22 @@ const AdminDashboard = () => {
                 </div>
             )}
 
-            {/* Grant Subscription Modal */}
+            {/* Blog Management Tab */}
+            {activeTab === 'blog' && <BlogManager />}
+
+            {/* News Management Tab */}
+            {activeTab === 'news' && <NewsManager />}
+
+            {/* Notifications Tab */}
+            {activeTab === 'notifications' && <NotificationManager />}
+
+            {/* Careers Management Tab */}
+            {activeTab === 'careers' && <JobsManager />}
+
+            {/* Contact Us Management Tab */}
+            {activeTab === 'contact' && <ContactManager />}
+
+            {/* Grant Subscription Modal  */}
             <AnimatePresence>
                 {grantModalUser && (
                     <GrantSubscriptionModal

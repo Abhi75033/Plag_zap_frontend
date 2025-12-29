@@ -21,7 +21,7 @@ const ScoreGauge = ({ score }) => {
           stroke="currentColor"
           strokeWidth="8"
           fill="transparent"
-          className="text-gray-700 opacity-20"
+          className="text-[var(--muted-foreground)] opacity-20"
         />
         <motion.circle
           cx="64"
@@ -38,8 +38,8 @@ const ScoreGauge = ({ score }) => {
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span className="text-2xl font-bold">{score}%</span>
-        <span className="text-xs text-gray-500">Plagiarism</span>
+        <span className="text-2xl font-bold text-foreground">{score}%</span>
+        <span className="text-xs text-[var(--muted-foreground)]">Plagiarism</span>
       </div>
     </div>
   );

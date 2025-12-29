@@ -177,7 +177,7 @@ const Dashboard = () => {
       case 'revoked':
         return 'bg-red-500/20 text-red-400';
       default:
-        return 'bg-gray-500/20 text-gray-400';
+        return 'bg-gray-500/20 text-[var(--muted-foreground)]';
     }
   };
 
@@ -221,7 +221,7 @@ const Dashboard = () => {
                   <Gift className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-gray-300">Your Referral Code</h3>
+                  <h3 className="text-sm font-medium text-[var(--muted-foreground)]">Your Referral Code</h3>
                   <div className="flex items-center gap-3 mt-1">
                     <code className="text-2xl font-bold font-mono text-emerald-400 tracking-widest">
                       {referralCode.code}
@@ -266,7 +266,7 @@ const Dashboard = () => {
               <h1 className="text-3xl md:text-4xl font-bold mb-2">
                 Welcome back, <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">{user?.name || 'User'}</span>
               </h1>
-              <p className="text-gray-400">
+              <p className="text-[var(--muted-foreground)]">
                 Here's an overview of your plagiarism checking activity
               </p>
             </div>
@@ -300,13 +300,13 @@ const Dashboard = () => {
                   {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_EXPIRED' && '⌛ Your Subscription has Expired'}
                   {!['SUBSCRIPTION_PAUSED', 'SUBSCRIPTION_SUSPENDED', 'SUBSCRIPTION_EXPIRED'].includes(user?.canPerformAnalysis?.reason) && '⚠️ Your Subscription is On Hold'}
                 </h4>
-                <p className="text-sm text-gray-300 mb-2">
+                <p className="text-sm text-[var(--muted-foreground)] mb-2">
                   {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_PAUSED' && 'Your membership is currently paused. Premium features are temporarily unavailable.'}
                   {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_SUSPENDED' && 'Your membership has been suspended. Please contact support for assistance.'}
                   {user?.canPerformAnalysis?.reason === 'SUBSCRIPTION_EXPIRED' && 'Your subscription has expired. Renew now to continue using premium features.'}
                   {!['SUBSCRIPTION_PAUSED', 'SUBSCRIPTION_SUSPENDED', 'SUBSCRIPTION_EXPIRED'].includes(user?.canPerformAnalysis?.reason) && 'Your membership is on hold. Premium features are temporarily unavailable.'}
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-[var(--muted-foreground)]">
                   For assistance, contact us at: <a href="mailto:abhishekyadav1112.21@gmail.com" className="text-yellow-400 hover:underline">abhishekyadav1112.21@gmail.com</a>
                 </p>
               </div>
@@ -323,7 +323,7 @@ const Dashboard = () => {
             transition={{ delay: 0.1 }}
             className={`relative overflow-hidden bg-gradient-to-br ${getTierColor(user?.subscriptionTier)} p-6 rounded-2xl shadow-xl`}
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--secondary)] rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-4">
                 {getTierIcon(user?.subscriptionTier)}
@@ -372,9 +372,9 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-background/50 backdrop-blur-md border border-white/10 p-6 rounded-2xl"
+            className="bg-background/50 backdrop-blur-md border border-[var(--border)] p-6 rounded-2xl"
           >
-            <div className="flex items-center gap-2 text-gray-400 mb-4">
+            <div className="flex items-center gap-2 text-[var(--muted-foreground)] mb-4">
               <BarChart3 className="h-5 w-5" />
               <span className="text-sm font-medium">Usage</span>
             </div>
@@ -382,11 +382,11 @@ const Dashboard = () => {
               <span className="text-3xl font-bold">
                 {usage?.usedToday || usage?.totalUsed || 0}
               </span>
-              <span className="text-gray-400">
+              <span className="text-[var(--muted-foreground)]">
                 {' '}/ {usage?.dailyLimit || usage?.totalLimit || 5}
               </span>
             </div>
-            <div className="w-full bg-white/10 rounded-full h-2 mb-2">
+            <div className="w-full bg-[var(--secondary)] rounded-full h-2 mb-2">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${getUsagePercentage()}%` }}
@@ -400,7 +400,7 @@ const Dashboard = () => {
                 }`}
               ></motion.div>
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-[var(--muted-foreground)]">
               {user?.subscriptionTier === 'free' ? 'Total' : 'Daily'} limit
             </p>
           </motion.div>
@@ -410,14 +410,14 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-background/50 backdrop-blur-md border border-white/10 p-6 rounded-2xl"
+            className="bg-background/50 backdrop-blur-md border border-[var(--border)] p-6 rounded-2xl"
           >
-            <div className="flex items-center gap-2 text-gray-400 mb-4">
+            <div className="flex items-center gap-2 text-[var(--muted-foreground)] mb-4">
               <FileText className="h-5 w-5" />
               <span className="text-sm font-medium">Total Analyses</span>
             </div>
             <h3 className="text-3xl font-bold mb-1">{usage?.totalUsed || history.length || 0}</h3>
-            <p className="text-sm text-gray-500">Documents checked</p>
+            <p className="text-sm text-[var(--muted-foreground)]">Documents checked</p>
           </motion.div>
 
           {/* Member Since Card */}
@@ -425,16 +425,16 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-background/50 backdrop-blur-md border border-white/10 p-6 rounded-2xl"
+            className="bg-background/50 backdrop-blur-md border border-[var(--border)] p-6 rounded-2xl"
           >
-            <div className="flex items-center gap-2 text-gray-400 mb-4">
+            <div className="flex items-center gap-2 text-[var(--muted-foreground)] mb-4">
               <Calendar className="h-5 w-5" />
               <span className="text-sm font-medium">Member Since</span>
             </div>
             <h3 className="text-3xl font-bold mb-1">
               {user?.createdAt ? formatDate(user.createdAt) : 'Today'}
             </h3>
-            <p className="text-sm text-gray-500">Account created</p>
+            <p className="text-sm text-[var(--muted-foreground)]">Account created</p>
           </motion.div>
         </div>
 
@@ -444,7 +444,7 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="mb-8 bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6"
+            className="mb-8 bg-background/50 backdrop-blur-md border border-[var(--border)] rounded-2xl p-6"
           >
             <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
               <span className="text-2xl">🔥</span>
@@ -483,7 +483,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Coins */}
               <div className="bg-black/20 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                <div className="flex items-center gap-2 text-gray-400 mb-2">
+                <div className="flex items-center gap-2 text-[var(--muted-foreground)] mb-2">
                   <Sparkles className="h-4 w-4 text-yellow-400" />
                   <span className="text-xs font-medium">Coins</span>
                 </div>
@@ -491,13 +491,13 @@ const Dashboard = () => {
                   <span className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-400">
                     {rewards.coins}
                   </span>
-                  <span className="text-sm text-gray-400">earned</span>
+                  <span className="text-sm text-[var(--muted-foreground)]">earned</span>
                 </div>
               </div>
 
               {/* Current Streak */}
               <div className="bg-black/20 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                <div className="flex items-center gap-2 text-gray-400 mb-2">
+                <div className="flex items-center gap-2 text-[var(--muted-foreground)] mb-2">
                   <span className="text-lg">🔥</span>
                   <span className="text-xs font-medium">Current Streak</span>
                 </div>
@@ -505,13 +505,13 @@ const Dashboard = () => {
                   <span className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-400">
                     {rewards.streak.current}
                   </span>
-                  <span className="text-sm text-gray-400">days</span>
+                  <span className="text-sm text-[var(--muted-foreground)]">days</span>
                 </div>
               </div>
 
               {/* Available Rewards */}
               <div className="bg-black/20 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                <div className="flex items-center gap-2 text-gray-400 mb-2">
+                <div className="flex items-center gap-2 text-[var(--muted-foreground)] mb-2">
                   <Crown className="h-4 w-4 text-purple-400" />
                   <span className="text-xs font-medium">Milestones</span>
                 </div>
@@ -519,7 +519,7 @@ const Dashboard = () => {
                   <span className="text-3xl font-extrabold text-purple-400">
                     {rewards.streak.availableMilestones.length}
                   </span>
-                  <span className="text-sm text-gray-400">to claim</span>
+                  <span className="text-sm text-[var(--muted-foreground)]">to claim</span>
                 </div>
               </div>
             </div>
@@ -542,7 +542,7 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.48 }}
-          className="mb-8 bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6"
+          className="mb-8 bg-background/50 backdrop-blur-md border border-[var(--border)] rounded-2xl p-6"
         >
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-purple-400" />
@@ -552,8 +552,8 @@ const Dashboard = () => {
           {history.filter(h => h.mode).length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Recent Writing Modes */}
-              <div className="bg-white/5 rounded-xl p-4">
-                <h3 className="text-sm font-semibold text-gray-400 mb-3">Recent Modes</h3>
+              <div className="bg-[var(--accent)] rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-[var(--muted-foreground)] mb-3">Recent Modes</h3>
                 <div className="space-y-2">
                   {[...new Set(history.filter(h => h.mode).map(h => h.mode).slice(0, 3))].map((mode, idx) => (
                     <div key={idx} className="flex items-center gap-2">
@@ -565,8 +565,8 @@ const Dashboard = () => {
               </div>
 
               {/* Average AI Risk */}
-              <div className="bg-white/5 rounded-xl p-4">
-                <h3 className="text-sm font-semibold text-gray-400 mb-3">Avg. AI Risk</h3>
+              <div className="bg-[var(--accent)] rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-[var(--muted-foreground)] mb-3">Avg. AI Risk</h3>
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold text-green-400">
                     {history.filter(h => h.aiRiskAfter > 0).length > 0
@@ -577,13 +577,13 @@ const Dashboard = () => {
                         )
                       : 0}%
                   </span>
-                  <span className="text-xs text-gray-500">after refinement</span>
+                  <span className="text-xs text-[var(--muted-foreground)]">after refinement</span>
                 </div>
               </div>
 
               {/* Common Refinements */}
-              <div className="bg-white/5 rounded-xl p-4">
-                <h3 className="text-sm font-semibold text-gray-400 mb-3">Top Refinements</h3>
+              <div className="bg-[var(--accent)] rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-[var(--muted-foreground)] mb-3">Top Refinements</h3>
                 <div className="flex flex-wrap gap-1">
                   {(() => {
                     const refinementCounts = history
@@ -602,17 +602,17 @@ const Dashboard = () => {
                         {ref}
                       </span>
                     )) : (
-                      <span className="text-xs text-gray-500">No refinements yet</span>
+                      <span className="text-xs text-[var(--muted-foreground)]">No refinements yet</span>
                     );
                   })()}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-center py-8 bg-white/5 rounded-xl">
+            <div className="text-center py-8 bg-[var(--accent)] rounded-xl">
               <Sparkles className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 mb-2">No AI Writer content yet</p>
-              <p className="text-sm text-gray-500 mb-4">Generate content in AI Writer to see insights here</p>
+              <p className="text-[var(--muted-foreground)] mb-2">No AI Writer content yet</p>
+              <p className="text-sm text-[var(--muted-foreground)] mb-4">Generate content in AI Writer to see insights here</p>
               <Link
                 to="/writer"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors text-sm"
@@ -632,7 +632,7 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="lg:col-span-2 bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6"
+            className="lg:col-span-2 bg-background/50 backdrop-blur-md border border-[var(--border)] rounded-2xl p-6"
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold flex items-center gap-2">
@@ -655,7 +655,7 @@ const Dashboard = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
-                    className="flex items-center gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors group"
+                    className="flex items-center gap-4 p-4 bg-[var(--accent)] rounded-xl hover:bg-[var(--secondary)] transition-colors group"
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center ${
@@ -674,7 +674,7 @@ const Dashboard = () => {
                       <p className="text-sm font-medium truncate">
                         {item.originalText?.substring(0, 60)}...
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-[var(--muted-foreground)]">
                         {formatDate(item.createdAt)}
                       </p>
                     </div>
@@ -686,7 +686,7 @@ const Dashboard = () => {
                       >
                         {item.overallScore}%
                       </p>
-                      <p className="text-xs text-gray-500">similarity</p>
+                      <p className="text-xs text-[var(--muted-foreground)]">similarity</p>
                     </div>
                   </motion.div>
                 ))}
@@ -694,7 +694,7 @@ const Dashboard = () => {
             ) : (
               <div className="text-center py-12">
                 <FileText className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 mb-4">No analyses yet</p>
+                <p className="text-[var(--muted-foreground)] mb-4">No analyses yet</p>
                 <Link
                   to="/analyzer"
                   className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
@@ -714,7 +714,7 @@ const Dashboard = () => {
             className="space-y-6"
           >
             {/* Quick Actions */}
-            <div className="bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl">
+            <div className="bg-background/50 backdrop-blur-md border border-[var(--border)] rounded-2xl p-6 shadow-xl">
               <div className="flex items-center gap-2 mb-6">
                 <Zap className="h-5 w-5 text-yellow-500" />
                 <h3 className="text-lg font-bold">Quick Actions</h3>
@@ -723,7 +723,7 @@ const Dashboard = () => {
               <div className="space-y-3">
                 <Link 
                   to="/analyzer" 
-                  className="w-full group flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-xl transition-all"
+                  className="w-full group flex items-center justify-between p-4 bg-[var(--accent)] hover:bg-[var(--secondary)] border border-white/5 hover:border-[var(--primary)] rounded-xl transition-all"
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-purple-500/20 rounded-lg group-hover:bg-purple-500/30 transition-colors">
@@ -731,15 +731,15 @@ const Dashboard = () => {
                     </div>
                     <div className="text-left">
                       <div className="font-semibold">Check Plagiarism</div>
-                      <div className="text-xs text-gray-400">Analyze your text</div>
+                      <div className="text-xs text-[var(--muted-foreground)]">Analyze your text</div>
                     </div>
                   </div>
-                  <ArrowUpRight className="h-4 w-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <ArrowUpRight className="h-4 w-4 text-[var(--muted-foreground)] group-hover:text-foreground transition-colors" />
                 </Link>
 
                 <Link 
                   to="/extension" 
-                  className="w-full group flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-xl transition-all"
+                  className="w-full group flex items-center justify-between p-4 bg-[var(--accent)] hover:bg-[var(--secondary)] border border-white/5 hover:border-[var(--primary)] rounded-xl transition-all"
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-500/20 rounded-lg group-hover:bg-blue-500/30 transition-colors">
@@ -747,15 +747,15 @@ const Dashboard = () => {
                     </div>
                     <div className="text-left">
                       <div className="font-semibold">Chrome Extension</div>
-                      <div className="text-xs text-gray-400">Install for browser</div>
+                      <div className="text-xs text-[var(--muted-foreground)]">Install for browser</div>
                     </div>
                   </div>
-                  <ArrowUpRight className="h-4 w-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <ArrowUpRight className="h-4 w-4 text-[var(--muted-foreground)] group-hover:text-foreground transition-colors" />
                 </Link>
 
                 <Link 
                   to="/pricing" 
-                  className="w-full group flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-xl transition-all"
+                  className="w-full group flex items-center justify-between p-4 bg-[var(--accent)] hover:bg-[var(--secondary)] border border-white/5 hover:border-[var(--primary)] rounded-xl transition-all"
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-green-500/20 rounded-lg group-hover:bg-green-500/30 transition-colors">
@@ -763,16 +763,16 @@ const Dashboard = () => {
                     </div>
                     <div className="text-left">
                       <div className="font-semibold">Manage Subscription</div>
-                      <div className="text-xs text-gray-400">Upgrade or renew</div>
+                      <div className="text-xs text-[var(--muted-foreground)]">Upgrade or renew</div>
                     </div>
                   </div>
-                  <ArrowUpRight className="h-4 w-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <ArrowUpRight className="h-4 w-4 text-[var(--muted-foreground)] group-hover:text-foreground transition-colors" />
                 </Link>
               </div>
             </div>
 
             {/* Account Info */}
-            <div className="bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+            <div className="bg-background/50 backdrop-blur-md border border-[var(--border)] rounded-2xl p-6">
               <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Shield className="h-5 w-5 text-green-400" />
                 Account Info
@@ -784,20 +784,20 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <p className="font-medium">{user?.name || 'User'}</p>
-                    <p className="text-sm text-gray-500">{user?.email}</p>
+                    <p className="text-sm text-[var(--muted-foreground)]">{user?.email}</p>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 space-y-2">
+                <div className="pt-4 border-t border-[var(--border)] space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Status</span>
+                    <span className="text-[var(--muted-foreground)]">Status</span>
                     <span className="flex items-center gap-1 text-green-400">
                       <span className="w-2 h-2 bg-green-400 rounded-full"></span>
                       Active
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Plan</span>
+                    <span className="text-[var(--muted-foreground)]">Plan</span>
                     <span className="capitalize">{user?.subscriptionTier || 'Free'}</span>
                   </div>
                 </div>
@@ -822,7 +822,7 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="mt-8 bg-background/50 backdrop-blur-md border border-white/10 rounded-2xl p-6"
+          className="mt-8 bg-background/50 backdrop-blur-md border border-[var(--border)] rounded-2xl p-6"
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold flex items-center gap-2">
@@ -841,7 +841,7 @@ const Dashboard = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-sm text-gray-400 border-b border-white/10">
+                  <tr className="text-left text-sm text-[var(--muted-foreground)] border-b border-[var(--border)]">
                     <th className="pb-3 font-medium">API Key</th>
                     <th className="pb-3 font-medium">Created</th>
                     <th className="pb-3 font-medium">Expires</th>
@@ -864,28 +864,28 @@ const Dashboard = () => {
                       >
                         <td className="py-4">
                           <div className="flex items-center gap-2">
-                            <code className="text-cyan-400 font-mono bg-white/5 px-2 py-1 rounded">
+                            <code className="text-cyan-400 font-mono bg-[var(--accent)] px-2 py-1 rounded">
                               {keyEntry.key}
                             </code>
                             <button
                               onClick={() => handleCopyKey(keyEntry.key)}
-                              className="p-1.5 hover:bg-white/10 rounded transition-colors"
+                              className="p-1.5 hover:bg-[var(--secondary)] rounded transition-colors"
                               title="Copy key"
                             >
                               {copied === keyEntry.key ? (
                                 <Check className="h-4 w-4 text-green-400" />
                               ) : (
-                                <Copy className="h-4 w-4 text-gray-400" />
+                                <Copy className="h-4 w-4 text-[var(--muted-foreground)]" />
                               )}
                             </button>
                           </div>
                         </td>
-                        <td className="py-4 text-gray-400">
+                        <td className="py-4 text-[var(--muted-foreground)]">
                           {formatDateTime(keyEntry.createdAt)}
                         </td>
                         <td className="py-4">
                           <div className="flex items-center gap-2">
-                            <span className={isExpired ? 'text-red-400' : 'text-gray-400'}>
+                            <span className={isExpired ? 'text-red-400' : 'text-[var(--muted-foreground)]'}>
                               {formatDateTime(keyEntry.expiresAt)}
                             </span>
                             {keyEntry.status === 'active' && !isExpired && daysRemaining <= 2 && (
@@ -908,7 +908,7 @@ const Dashboard = () => {
                               className="p-2 hover:bg-red-500/20 rounded-lg transition-colors group"
                               title="Revoke key"
                             >
-                              <Trash2 className="h-4 w-4 text-gray-400 group-hover:text-red-400" />
+                              <Trash2 className="h-4 w-4 text-[var(--muted-foreground)] group-hover:text-red-400" />
                             </button>
                           )}
                         </td>
@@ -921,7 +921,7 @@ const Dashboard = () => {
           ) : (
             <div className="text-center py-8">
               <Key className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 mb-4">No API keys generated yet</p>
+              <p className="text-[var(--muted-foreground)] mb-4">No API keys generated yet</p>
               <Link
                 to="/integrations"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 rounded-lg hover:bg-cyan-700 transition-colors"

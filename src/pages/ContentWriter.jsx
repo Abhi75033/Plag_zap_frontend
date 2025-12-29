@@ -341,7 +341,7 @@ const ContentWriter = () => {
             {/* Content */}
             <div className="relative z-10">
             {/* Header */}
-            <div className="border-b border-white/10 bg-black/40 backdrop-blur-xl sticky top-0 z-40">
+            <div className="border-b border-[var(--border)] bg-black/40 backdrop-blur-xl sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4">
                     <div className="flex items-center justify-between">
                         <div>
@@ -349,7 +349,7 @@ const ContentWriter = () => {
                                 <Wand2 className="w-5 h-5 md:w-6 md:h-6 text-purple-400" />
                                 AI Content Writer
                             </h1>
-                            <p className="text-xs md:text-sm text-gray-400 mt-1">
+                            <p className="text-xs md:text-sm text-[var(--muted-foreground)] mt-1">
                                 Intelligent writing assistant
                             </p>
                         </div>
@@ -364,8 +364,8 @@ const ContentWriter = () => {
                     {/* MOBILE: Input Section First - Desktop: Right Panel */}
                     <div className="lg:hidden space-y-4">
                         {/* Mode Selector - Mobile */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
-                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                        <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl p-4 backdrop-blur-sm">
+                            <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3">
                                 Writing Mode
                             </h3>
                             <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
@@ -378,7 +378,7 @@ const ContentWriter = () => {
                                             className={`flex-shrink-0 p-3 rounded-lg transition-all ${
                                                 selectedMode.id === mode.id
                                                     ? `bg-gradient-to-r ${mode.color} shadow-lg`
-                                                    : 'bg-white/5 active:bg-white/10'
+                                                    : 'bg-[var(--accent)] active:bg-[var(--secondary)]'
                                             }`}
                                         >
                                             <div className="flex flex-col items-center gap-1 min-w-[70px]">
@@ -392,28 +392,28 @@ const ContentWriter = () => {
                         </div>
 
                         {/* Settings - Mobile */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
-                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                        <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl p-4 backdrop-blur-sm">
+                            <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3">
                                 Settings
                             </h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-xs text-gray-400 mb-1.5 block">Tone</label>
+                                    <label className="text-xs text-[var(--muted-foreground)] mb-1.5 block">Tone</label>
                                     <select
                                         value={tone}
                                         onChange={(e) => setTone(e.target.value)}
-                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-2.5 py-2 text-sm appearance-none"
+                                        className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-2.5 py-2 text-sm appearance-none"
                                         style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%239CA3AF\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '2.5rem' }}
                                     >
                                         {TONES.map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs text-gray-400 mb-1.5 block">Length</label>
+                                    <label className="text-xs text-[var(--muted-foreground)] mb-1.5 block">Length</label>
                                     <select
                                         value={length}
                                         onChange={(e) => setLength(e.target.value)}
-                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-2.5 py-2 text-xs appearance-none truncate"
+                                        className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-2.5 py-2 text-xs appearance-none truncate"
                                         style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%239CA3AF\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '2.5rem' }}
                                     >
                                         {LENGTHS.map(l => <option key={l} value={l}>{l}</option>)}
@@ -424,8 +424,8 @@ const ContentWriter = () => {
 
                          {/* Quality Metrics - Mobile */}
                         {feedback && (
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
-                                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                            <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl p-4 backdrop-blur-sm">
+                                <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3">
                                     Quality Metrics
                                 </h3>
                                 <div className="space-y-3">
@@ -438,8 +438,8 @@ const ContentWriter = () => {
                         )}
 
                         {/* Input Section */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm">
-                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                        <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl p-4 backdrop-blur-sm">
+                            <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3">
                                 Input
                             </h3>
                             <div className="space-y-3">
@@ -472,13 +472,13 @@ const ContentWriter = () => {
                                 </AnimatePresence>
 
                                 <div>
-                                    <label className="text-xs text-gray-400 mb-2 block">Topic *</label>
+                                    <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Topic *</label>
                                     <input
                                         type="text"
                                         value={topic}
                                         onChange={(e) => setTopic(e.target.value)}
                                         placeholder="Enter your topic..."
-                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                        className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                                     />
                                 </div>
 
@@ -514,13 +514,13 @@ const ContentWriter = () => {
                                 </AnimatePresence>
 
                                 <div>
-                                    <label className="text-xs text-gray-400 mb-2 block">Keywords (optional)</label>
+                                    <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
                                     <input
                                         type="text"
                                         value={keywords}
                                         onChange={(e) => setKeywords(e.target.value)}
                                         placeholder="AI, machine learning..."
-                                        className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                        className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                                     />
                                 </div>
 
@@ -542,7 +542,7 @@ const ContentWriter = () => {
                                     disabled={loading || !topic.trim()}
                                     className={`w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-sm ${
                                         loading || !topic.trim()
-                                            ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-gray-700 text-[var(--muted-foreground)] cursor-not-allowed'
                                             : `bg-gradient-to-r ${selectedMode.color} active:scale-95`
                                     }`}
                                 >
@@ -575,22 +575,22 @@ const ContentWriter = () => {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm"
+                                className="bg-[var(--accent)] border border-[var(--border)] rounded-xl p-4 backdrop-blur-sm"
                             >
                                 <div className="flex items-center justify-between mb-3">
-                                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                    <h3 className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider">
                                         Generated Content
                                     </h3>
                                     <div className="flex gap-2">
                                         <button
                                             onClick={copyToClipboard}
-                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
+                                            className="p-2 bg-[var(--secondary)] active:bg-white/20 rounded-lg transition-colors"
                                         >
                                             <Copy className="w-4 h-4" />
                                         </button>
                                         <button
                                             onClick={downloadDoc}
-                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
+                                            className="p-2 bg-[var(--secondary)] active:bg-white/20 rounded-lg transition-colors"
                                         >
                                             <Download className="w-4 h-4" />
                                         </button>
@@ -617,7 +617,7 @@ const ContentWriter = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="bg-black/20 border border-white/10 rounded-xl p-4 max-h-[400px] overflow-y-auto">
+                                <div className="bg-black/20 border border-[var(--border)] rounded-xl p-4 max-h-[400px] overflow-y-auto">
                                     <div className="prose prose-invert max-w-none text-sm">
                                         {generatedContent.split('\n').map((paragraph, idx) => (
                                             <p key={idx} className="mb-3 leading-relaxed">
@@ -633,8 +633,8 @@ const ContentWriter = () => {
                     {/* Left Panel - Controls (Hidden on Mobile, Visible on Desktop) */}
                     <div className="hidden lg:block lg:col-span-1 space-y-4 md:space-y-6">
                         {/* Mode Selector */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
-                            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
+                        <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                            <h3 className="text-xs md:text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3 md:mb-4">
                                 Writing Mode
                             </h3>
                             {/* Mobile: Horizontal scroll */}
@@ -648,7 +648,7 @@ const ContentWriter = () => {
                                             className={`flex-shrink-0 p-3 rounded-lg transition-all ${
                                                 selectedMode.id === mode.id
                                                     ? `bg-gradient-to-r ${mode.color} shadow-lg`
-                                                    : 'bg-white/5 active:bg-white/10'
+                                                    : 'bg-[var(--accent)] active:bg-[var(--secondary)]'
                                             }`}
                                         >
                                             <div className="flex flex-col items-center gap-1 min-w-[80px]">
@@ -670,14 +670,14 @@ const ContentWriter = () => {
                                             className={`w-full p-4 rounded-xl transition-all text-left ${
                                                 selectedMode.id === mode.id
                                                     ? `bg-gradient-to-r ${mode.color} shadow-lg`
-                                                    : 'bg-white/5 hover:bg-white/10'
+                                                    : 'bg-[var(--accent)] hover:bg-[var(--secondary)]'
                                             }`}
                                         >
                                             <div className="flex items-center gap-3">
                                                 <Icon className="w-5 h-5" />
                                                 <div>
                                                     <div className="font-semibold">{mode.label}</div>
-                                                    <div className="text-xs text-gray-400">{mode.description}</div>
+                                                    <div className="text-xs text-[var(--muted-foreground)]">{mode.description}</div>
                                                 </div>
                                             </div>
                                         </button>
@@ -687,27 +687,27 @@ const ContentWriter = () => {
                         </div>
 
                         {/* Settings */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
-                            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
+                        <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                            <h3 className="text-xs md:text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3 md:mb-4">
                                 Settings
                             </h3>
                             <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
                                 <div>
-                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Tone</label>
+                                    <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Tone</label>
                                     <select
                                         value={tone}
                                         onChange={(e) => setTone(e.target.value)}
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2 text-sm md:text-base"
+                                        className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2 text-sm md:text-base"
                                     >
                                         {TONES.map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Length</label>
+                                    <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Length</label>
                                     <select
                                         value={length}
                                         onChange={(e) => setLength(e.target.value)}
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2 text-sm md:text-base"
+                                        className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2 text-sm md:text-base"
                                     >
                                         {LENGTHS.map(l => <option key={l} value={l}>{l}</option>)}
                                     </select>
@@ -717,8 +717,8 @@ const ContentWriter = () => {
 
                         {/* Feedback Panel */}
                         {feedback && (
-                            <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
-                                <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
+                            <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                                <h3 className="text-xs md:text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3 md:mb-4">
                                     Quality Metrics
                                 </h3>
                                 <div className="space-y-3">
@@ -734,8 +734,8 @@ const ContentWriter = () => {
                     {/* Right Panel - Editor (Hidden on Mobile, Visible on Desktop) */}
                     <div className="hidden lg:block lg:col-span-2 space-y-4 md:space-y-6">
                         {/* Input Section */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
-                            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
+                        <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+                            <h3 className="text-xs md:text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3 md:mb-4">
                                 Input
                             </h3>
                             <div className="space-y-3 md:space-y-4">
@@ -768,13 +768,13 @@ const ContentWriter = () => {
                                 </AnimatePresence>
 
                                 <div>
-                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Topic *</label>
+                                    <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Topic *</label>
                                     <input
                                         type="text"
                                         value={topic}
                                         onChange={(e) => setTopic(e.target.value)}
                                         placeholder="Enter your topic..."
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                        className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
                                     />
                                 </div>
 
@@ -810,13 +810,13 @@ const ContentWriter = () => {
                                 </AnimatePresence>
 
                                 <div>
-                                    <label className="text-xs md:text-sm text-gray-400 mb-2 block">Keywords (optional)</label>
+                                    <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
                                     <input
                                         type="text"
                                         value={keywords}
                                         onChange={(e) => setKeywords(e.target.value)}
                                         placeholder="AI, machine learning, technology..."
-                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                        className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
                                     />
                                 </div>
 
@@ -838,7 +838,7 @@ const ContentWriter = () => {
                                     disabled={loading || !topic.trim()}
                                     className={`w-full py-3 md:py-3.5 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-sm md:text-base ${
                                         loading || !topic.trim()
-                                            ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-gray-700 text-[var(--muted-foreground)] cursor-not-allowed'
                                             : `bg-gradient-to-r ${selectedMode.color} hover:shadow-lg active:scale-95`
                                     }`}
                                 >
@@ -871,23 +871,23 @@ const ContentWriter = () => {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm"
+                                className="bg-[var(--accent)] border border-[var(--border)] rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm"
                             >
                                 <div className="flex items-center justify-between mb-3 md:mb-4">
-                                    <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider">
+                                    <h3 className="text-xs md:text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider">
                                         Generated Content
                                     </h3>
                                     <div className="flex gap-2">
                                         <button
                                             onClick={copyToClipboard}
-                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
+                                            className="p-2 bg-[var(--secondary)] active:bg-white/20 rounded-lg transition-colors"
                                             title="Copy"
                                         >
                                             <Copy className="w-4 h-4" />
                                         </button>
                                         <button
                                             onClick={downloadDoc}
-                                            className="p-2 bg-white/10 active:bg-white/20 rounded-lg transition-colors"
+                                            className="p-2 bg-[var(--secondary)] active:bg-white/20 rounded-lg transition-colors"
                                             title="Download"
                                         >
                                             <Download className="w-4 h-4" />
@@ -915,7 +915,7 @@ const ContentWriter = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="bg-black/20 border border-white/10 rounded-xl p-4 md:p-6 max-h-[400px] md:max-h-[600px] overflow-y-auto">
+                                <div className="bg-black/20 border border-[var(--border)] rounded-xl p-4 md:p-6 max-h-[400px] md:max-h-[600px] overflow-y-auto">
                                     <div className="prose prose-invert max-w-none text-sm md:text-base">
                                         {generatedContent.split('\n').map((paragraph, idx) => (
                                             <p key={idx} className="mb-3 md:mb-4 leading-relaxed">
@@ -977,19 +977,19 @@ const TopicInsight = ({ analysis, loading }) => (
                 <h4 className="text-xs md:text-sm font-semibold text-purple-300 mb-2">Topic Insight</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">
                     <div className="flex items-baseline gap-2">
-                        <span className="text-gray-400 flex-shrink-0">Domain:</span>
+                        <span className="text-[var(--muted-foreground)] flex-shrink-0">Domain:</span>
                         <span className="text-white font-medium truncate">{analysis.domain}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-gray-400 flex-shrink-0">Intent:</span>
+                        <span className="text-[var(--muted-foreground)] flex-shrink-0">Intent:</span>
                         <span className="text-white font-medium truncate">{analysis.intent}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-gray-400 flex-shrink-0">Complexity:</span>
+                        <span className="text-[var(--muted-foreground)] flex-shrink-0">Complexity:</span>
                         <span className="text-white font-medium truncate">{analysis.complexity}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-gray-400 flex-shrink-0">Best Mode:</span>
+                        <span className="text-[var(--muted-foreground)] flex-shrink-0">Best Mode:</span>
                         <span className="text-white font-medium truncate">{analysis.recommendedMode}</span>
                     </div>
                 </div>
@@ -1006,11 +1006,11 @@ const SuggestedTitles = ({ titles, onSelect, loading }) => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-white/5 border border-white/10 rounded-lg overflow-hidden"
+            className="bg-[var(--accent)] border border-[var(--border)] rounded-lg overflow-hidden"
         >
             <button
                 onClick={() => setExpanded(!expanded)}
-                className="w-full px-3 md:px-4 py-2.5 md:py-3 flex items-center justify-between active:bg-white/5 md:hover:bg-white/5 transition-colors"
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 flex items-center justify-between active:bg-[var(--accent)] md:hover:bg-[var(--accent)] transition-colors"
             >
                 <div className="flex items-center gap-2">
                     <Target className="w-4 h-4 text-blue-400 flex-shrink-0" />
@@ -1024,7 +1024,7 @@ const SuggestedTitles = ({ titles, onSelect, loading }) => {
                         initial={{ height: 0 }}
                         animate={{ height: 'auto' }}
                         exit={{ height: 0 }}
-                        className="border-t border-white/10"
+                        className="border-t border-[var(--border)]"
                     >
                         <div className="p-3 md:p-4 space-y-2">
                             {titles.map((title, idx) => (
@@ -1035,7 +1035,7 @@ const SuggestedTitles = ({ titles, onSelect, loading }) => {
                                         setExpanded(false);
                                         toast.success('Title applied!');
                                     }}
-                                    className="w-full text-left px-3 py-2 rounded-lg bg-white/5 active:bg-white/10 md:hover:bg-white/10 transition-colors text-xs md:text-sm leading-relaxed break-words"
+                                    className="w-full text-left px-3 py-2 rounded-lg bg-[var(--accent)] active:bg-[var(--secondary)] md:hover:bg-[var(--secondary)] transition-colors text-xs md:text-sm leading-relaxed break-words"
                                 >
                                     {title}
                                 </button>
@@ -1060,15 +1060,15 @@ const AngleSuggestions = ({ angles, loading }) => (
             <div className="flex-1 space-y-2 text-xs md:text-sm min-w-0">
                 <div>
                     <span className="text-green-300 font-semibold">Best Angle:</span>
-                    <p className="text-gray-300 mt-1 leading-relaxed break-words">{angles.angle}</p>
+                    <p className="text-[var(--muted-foreground)] mt-1 leading-relaxed break-words">{angles.angle}</p>
                 </div>
                 <div>
                     <span className="text-green-300 font-semibold">Focus On:</span>
-                    <p className="text-gray-300 mt-1 leading-relaxed break-words">{angles.focus}</p>
+                    <p className="text-[var(--muted-foreground)] mt-1 leading-relaxed break-words">{angles.focus}</p>
                 </div>
                 <div>
                     <span className="text-green-300 font-semibold">Avoid:</span>
-                    <p className="text-gray-300 mt-1 leading-relaxed break-words">{angles.avoid}</p>
+                    <p className="text-[var(--muted-foreground)] mt-1 leading-relaxed break-words">{angles.avoid}</p>
                 </div>
             </div>
         </div>
@@ -1109,7 +1109,7 @@ const ResearchBuilder = ({ topic, mode, research, loading, onBuild, expanded, on
                 >
                     <div>
                         <h4 className="text-blue-300 font-semibold mb-2">Research Gap</h4>
-                        <div className="space-y-1 text-gray-300">
+                        <div className="space-y-1 text-[var(--muted-foreground)]">
                             <p><strong>Existing Focus:</strong> {research.researchGap.existingFocus}</p>
                             <p><strong>Under-Explored:</strong> {research.researchGap.underExplored}</p>
                             <p><strong>Your Fit:</strong> {research.researchGap.yourFit}</p>
@@ -1117,24 +1117,24 @@ const ResearchBuilder = ({ topic, mode, research, loading, onBuild, expanded, on
                     </div>
                     <div>
                         <h4 className="text-blue-300 font-semibold mb-2">Problem Statement</h4>
-                        <p className="text-gray-300">{research.problemStatement}</p>
+                        <p className="text-[var(--muted-foreground)]">{research.problemStatement}</p>
                     </div>
                     <div>
                         <h4 className="text-blue-300 font-semibold mb-2">Objectives</h4>
-                        <ul className="list-disc list-inside text-gray-300 space-y-1">
+                        <ul className="list-disc list-inside text-[var(--muted-foreground)] space-y-1">
                             {research.objectives.map((obj, idx) => <li key={idx}>{obj}</li>)}
                         </ul>
                     </div>
                     <div>
                         <h4 className="text-blue-300 font-semibold mb-2">Research Questions</h4>
-                        <p className="text-gray-300 mb-2"><strong>Primary:</strong> {research.researchQuestions.primary}</p>
-                        <ul className="list-disc list-inside text-gray-300 space-y-1">
+                        <p className="text-[var(--muted-foreground)] mb-2"><strong>Primary:</strong> {research.researchQuestions.primary}</p>
+                        <ul className="list-disc list-inside text-[var(--muted-foreground)] space-y-1">
                             {research.researchQuestions.secondary.map((q, idx) => <li key={idx}>{q}</li>)}
                         </ul>
                     </div>
                     <div>
                         <h4 className="text-blue-300 font-semibold mb-2">Methodology</h4>
-                        <div className="space-y-1 text-gray-300">
+                        <div className="space-y-1 text-[var(--muted-foreground)]">
                             <p><strong>Type:</strong> {research.methodology.type}</p>
                             <p><strong>Datasets:</strong> {research.methodology.datasets}</p>
                             <p><strong>Metrics:</strong> {research.methodology.metrics}</p>
@@ -1158,8 +1158,8 @@ const RefinementActions = ({ onRefine, loading, mode }) => {
     ];
 
     return (
-        <div className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
-            <h3 className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 md:mb-4">
+        <div className="bg-[var(--accent)] border border-[var(--border)] rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-sm">
+            <h3 className="text-xs md:text-sm font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-3 md:mb-4">
                 Smart Refinements
             </h3>
             <div className="grid grid-cols-2 gap-2 md:gap-3">
@@ -1170,7 +1170,7 @@ const RefinementActions = ({ onRefine, loading, mode }) => {
                             key={action.id}
                             onClick={() => onRefine(action.id)}
                             disabled={loading}
-                            className="px-3 md:px-4 py-2.5 md:py-3 bg-white/5 active:bg-white/10 md:hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center gap-2 text-xs md:text-sm font-medium disabled:opacity-50"
+                            className="px-3 md:px-4 py-2.5 md:py-3 bg-[var(--accent)] active:bg-[var(--secondary)] md:hover:bg-[var(--secondary)] rounded-lg transition-colors flex items-center justify-center gap-2 text-xs md:text-sm font-medium disabled:opacity-50"
                         >
                             <Icon className="w-4 h-4 flex-shrink-0" />
                             <span className="truncate">{action.label}</span>
@@ -1198,10 +1198,10 @@ const MetricBar = ({ label, value, max, invert }) => {
     return (
         <div>
             <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-400">{label}</span>
+                <span className="text-[var(--muted-foreground)]">{label}</span>
                 <span className="font-bold">{value}%</span>
             </div>
-            <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-[var(--secondary)] rounded-full h-2 overflow-hidden">
                 <div
                     className={`h-full ${getColor()} transition-all duration-500`}
                     style={{ width: `${percentage}%` }}

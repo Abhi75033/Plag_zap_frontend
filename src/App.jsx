@@ -34,6 +34,8 @@ import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import News from './pages/News';
 import Careers from './pages/Careers';
 import Security from './pages/Security';
 import GDPR from './pages/GDPR';
@@ -46,6 +48,7 @@ import AuthCallback from './pages/AuthCallback';
 import VerifyEmail from './pages/VerifyEmail'; // Phase 3: Email verification
 import ForgotPassword from './pages/ForgotPassword'; // Forgot Password
 import ResetPassword from './pages/ResetPassword'; // Reset Password
+import MyApplications from './pages/MyApplications'; // Job applications tracking
 
 function App() {
   return (
@@ -97,6 +100,8 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/news" element={<News />} />
             <Route path="/analyzer" element={<Analyzer />} />
             <Route path="/writer" element={<ContentWriter />} />
             <Route path="/careers" element={<Careers />} />
@@ -131,6 +136,15 @@ function App() {
                   <ErrorBoundary>
                     <VideoMeeting />
                   </ErrorBoundary>
+                </ProtectedRoute>
+              } 
+            />
+            {/* My Job Applications */}
+            <Route 
+              path="/my-applications" 
+              element={
+                <ProtectedRoute>
+                  <MyApplications />
                 </ProtectedRoute>
               } 
             />

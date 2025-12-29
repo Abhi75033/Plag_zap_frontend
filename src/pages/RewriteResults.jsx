@@ -175,7 +175,7 @@ const RewriteResults = () => {
     <div className="min-h-screen pt-24 px-4 pb-10 max-w-7xl mx-auto">
       <button
         onClick={() => navigate('/analyzer')}
-        className="mb-8 flex items-center gap-2 text-gray-500 hover:text-white transition-colors"
+        className="mb-8 flex items-center gap-2 text-[var(--muted-foreground)] hover:text-white transition-colors"
       >
         <ArrowLeft className="w-5 h-5" /> Back to Analyzer
       </button>
@@ -190,15 +190,15 @@ const RewriteResults = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <h2 className="text-xl font-bold mb-4 text-gray-400">Original Content</h2>
+          <h2 className="text-xl font-bold mb-4 text-[var(--muted-foreground)]">Original Content</h2>
           <div className="relative">
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Paste your AI-generated or robotic text here to humanize it..."
-              className="w-full h-[500px] p-6 rounded-2xl bg-background/30 border border-white/10 text-lg leading-relaxed text-gray-300 resize-none focus:outline-none focus:border-blue-500/50 transition-colors"
+              className="w-full h-[500px] p-6 rounded-2xl bg-background/30 border border-[var(--border)] text-lg leading-relaxed text-gray-300 resize-none focus:outline-none focus:border-blue-500/50 transition-colors"
             />
-            <div className="absolute bottom-4 right-4 text-sm text-gray-500">
+            <div className="absolute bottom-4 right-4 text-sm text-[var(--muted-foreground)]">
               {text.split(/\s+/).filter(Boolean).length} words
             </div>
           </div>
@@ -232,7 +232,7 @@ const RewriteResults = () => {
               <div className="flex gap-2">
                 <button
                   onClick={handleCopy}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-gray-400 transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--accent)] hover:bg-white/10 text-sm text-[var(--muted-foreground)] transition-colors"
                 >
                   {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                   {copied ? 'Copied!' : 'Copy'}
@@ -242,7 +242,7 @@ const RewriteResults = () => {
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     isPaidUser 
                       ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white'
-                      : 'bg-gray-700/50 text-gray-400 hover:bg-gray-600/50'
+                      : 'bg-gray-700/50 text-[var(--muted-foreground)] hover:bg-gray-600/50'
                   }`}
                   title={!isPaidUser ? 'Upgrade to download PDF' : 'Download as PDF'}
                 >
@@ -254,9 +254,9 @@ const RewriteResults = () => {
           </div>
           
           {loading ? (
-            <div className="h-[500px] flex flex-col items-center justify-center rounded-2xl bg-background/30 border border-white/10">
+            <div className="h-[500px] flex flex-col items-center justify-center rounded-2xl bg-background/30 border border-[var(--border)]">
               <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />
-              <p className="text-gray-400 animate-pulse">Humanizing your content...</p>
+              <p className="text-[var(--muted-foreground)] animate-pulse">Humanizing your content...</p>
               <p className="text-sm text-gray-600 mt-2">This may take a few seconds</p>
             </div>
           ) : hasRewritten ? (
@@ -267,9 +267,9 @@ const RewriteResults = () => {
               onAction={handleAction}
             />
           ) : (
-            <div className="h-[500px] flex flex-col items-center justify-center rounded-2xl bg-background/30 border border-white/10 border-dashed">
+            <div className="h-[500px] flex flex-col items-center justify-center rounded-2xl bg-background/30 border border-[var(--border)] border-dashed">
               <Wand2 className="w-16 h-16 text-gray-700 mb-4" />
-              <p className="text-gray-500 text-center px-8">
+              <p className="text-[var(--muted-foreground)] text-center px-8">
                 Enter your text on the left and click "Humanize Text" to transform AI-generated content into natural, human-like writing.
               </p>
             </div>

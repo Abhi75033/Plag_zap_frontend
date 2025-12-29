@@ -230,7 +230,7 @@ const Analyzer = () => {
                 <Crown className="h-5 w-5 text-yellow-500" />
                 <span className="font-bold">Free Limit Reached!</span>
               </div>
-              <p className="text-sm text-gray-300">You have used all 5 free analyses.</p>
+              <p className="text-sm text-[var(--muted-foreground)]">You have used all 5 free analyses.</p>
               <button
                 onClick={() => {
                   toast.dismiss(t.id);
@@ -250,10 +250,10 @@ const Analyzer = () => {
                 <Clock className="h-5 w-5 text-orange-500" />
                 <span className="font-bold">Daily Limit Reached!</span>
               </div>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-[var(--muted-foreground)]">
                 You have used all {limit} analyses for today.
               </p>
-              <p className="text-xs text-gray-400">Come back tomorrow or upgrade your plan!</p>
+              <p className="text-xs text-[var(--muted-foreground)]">Come back tomorrow or upgrade your plan!</p>
             </div>
           ), { duration: 5000, icon: '⏰' });
           
@@ -264,7 +264,7 @@ const Analyzer = () => {
                 <AlertCircle className="h-5 w-5 text-red-500" />
                 <span className="font-bold">Subscription Expired</span>
               </div>
-              <p className="text-sm text-gray-300">Please renew to continue using PlagZap.</p>
+              <p className="text-sm text-[var(--muted-foreground)]">Please renew to continue using PlagZap.</p>
               <button
                 onClick={() => {
                   toast.dismiss(t.id);
@@ -284,8 +284,8 @@ const Analyzer = () => {
                 <AlertCircle className="h-5 w-5 text-yellow-500" />
                 <span className="font-bold">Subscription Paused</span>
               </div>
-              <p className="text-sm text-gray-300">Your membership is currently on hold.</p>
-              <p className="text-xs text-gray-400">Contact support to resume your subscription.</p>
+              <p className="text-sm text-[var(--muted-foreground)]">Your membership is currently on hold.</p>
+              <p className="text-xs text-[var(--muted-foreground)]">Contact support to resume your subscription.</p>
             </div>
           ), { duration: 6000, icon: '⏸️' });
           
@@ -296,8 +296,8 @@ const Analyzer = () => {
                 <AlertCircle className="h-5 w-5 text-red-500" />
                 <span className="font-bold">Subscription Suspended</span>
               </div>
-              <p className="text-sm text-gray-300">Your membership has been suspended.</p>
-              <p className="text-xs text-gray-400">Please contact support for assistance.</p>
+              <p className="text-sm text-[var(--muted-foreground)]">Your membership has been suspended.</p>
+              <p className="text-xs text-[var(--muted-foreground)]">Please contact support for assistance.</p>
             </div>
           ), { duration: 6000, icon: '🚫' });
           
@@ -356,7 +356,7 @@ const Analyzer = () => {
     
     if (subscriptionTier === 'free') {
       return (
-        <div className="flex items-center gap-2 text-sm text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
           <Zap className="h-4 w-4" />
           <span>{remaining} of {limit} free checks remaining</span>
         </div>
@@ -364,7 +364,7 @@ const Analyzer = () => {
     }
     
     return (
-      <div className="flex items-center gap-2 text-sm text-gray-400">
+      <div className="flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
         <Clock className="h-4 w-4" />
         <span>{remaining !== null ? `${remaining}/${limit}` : 'Unlimited'} daily checks remaining</span>
       </div>
@@ -390,14 +390,14 @@ const Analyzer = () => {
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white">Free Trial</h3>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-[var(--muted-foreground)]">
                   {freemiumStats.remaining} of {freemiumStats.limit} free analyses remaining
                 </p>
               </div>
             </div>
             <button
               onClick={() => navigate('/login')}
-              className="text-xs sm:text-sm bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg font-semibold transition-colors border border-white/20"
+              className="text-xs sm:text-sm bg-[var(--secondary)] hover:bg-white/20 px-4 py-2 rounded-lg font-semibold transition-colors border border-[var(--primary)]"
             >
               Sign in for unlimited access
             </button>
@@ -413,15 +413,15 @@ const Analyzer = () => {
             {renderUsageInfo()}
           </div>
           
-          <div className="bg-background/50 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl relative overflow-hidden">
+          <div className="bg-background/50 backdrop-blur-md border border-[var(--border)] rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-xl relative overflow-hidden">
             {/* Input Type Tabs */}
-            <div className="flex items-center gap-1 sm:gap-2 mb-4 bg-black/20 p-1 rounded-lg w-full sm:w-fit overflow-x-auto">
+            <div className="flex items-center gap-1 sm:gap-2 mb-4 bg-[var(--accent)] p-1 rounded-lg w-full sm:w-fit overflow-x-auto">
               <button
                 onClick={() => setInputType('text')}
                 className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                   inputType === 'text' 
                     ? 'bg-purple-600 text-white shadow-lg' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--accent)]'
                 }`}
               >
                 <div className="flex items-center gap-1.5 sm:gap-2">
@@ -441,7 +441,7 @@ const Analyzer = () => {
                   inputType === 'file' 
                     ? 'bg-purple-600 text-white shadow-lg' 
                     : isPaidUser 
-                      ? 'text-gray-400 hover:text-white hover:bg-white/5'
+                      ? 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--accent)]'
                       : 'text-gray-600 cursor-not-allowed'
                 }`}
                 title={!isPaidUser ? 'Upgrade to use file upload' : 'Upload a file'}
@@ -464,7 +464,7 @@ const Analyzer = () => {
                   inputType === 'url' 
                     ? 'bg-purple-600 text-white shadow-lg' 
                     : isPaidUser 
-                      ? 'text-gray-400 hover:text-white hover:bg-white/5'
+                      ? 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--accent)]'
                       : 'text-gray-600 cursor-not-allowed'
                 }`}
                 title={!isPaidUser ? 'Upgrade to use URL extraction' : 'Extract from URL'}
@@ -481,16 +481,16 @@ const Analyzer = () => {
             {/* Language Selector - Hidden on mobile to prevent overlap */}
             <div className="absolute top-6 right-6 z-10 hidden md:block">
               <div className="relative group">
-                <button className="flex items-center gap-2 px-3 py-1.5 bg-black/40 hover:bg-black/60 border border-white/10 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-colors">
+                <button className="flex items-center gap-2 px-3 py-1.5 bg-black/40 hover:bg-black/60 border border-[var(--border)] rounded-lg text-xs font-medium text-[var(--muted-foreground)] hover:text-white transition-colors">
                   <Globe className="w-3 h-3" />
                   <span>
                      {result?.language ? `Detected: ${result.language}` : 'Auto-Detect'}
                   </span>
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right p-1">
-                  <div className="px-3 py-2 text-[10px] text-gray-500 font-bold uppercase tracking-wider">Supported Languages</div>
+                <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-[var(--border)] rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right p-1">
+                  <div className="px-3 py-2 text-[10px] text-[var(--muted-foreground)] font-bold uppercase tracking-wider">Supported Languages</div>
                   {['English', 'Spanish', 'French', 'German', 'Hindi', 'Portuguese', 'Italian', 'Russian', 'Chinese', 'Japanese'].map(lang => (
-                    <div key={lang} className="px-3 py-1.5 text-xs text-gray-300 hover:bg-white/5 rounded-lg cursor-default flex items-center justify-between">
+                    <div key={lang} className="px-3 py-1.5 text-xs text-[var(--muted-foreground)] hover:bg-[var(--accent)] rounded-lg cursor-default flex items-center justify-between">
                       {lang}
                       {lang === 'English' && <CheckCircle className="w-3 h-3 text-purple-500" />}
                     </div>
@@ -506,12 +506,12 @@ const Analyzer = () => {
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="Paste your text here (min 10 words)..."
-                  className="w-full h-48 sm:h-64 bg-black/20 border border-white/10 rounded-xl p-3 sm:p-4 text-sm sm:text-base focus:outline-none focus:border-purple-500/50 transition-colors resize-none"
+                  className="w-full h-48 sm:h-64 bg-black/20 border border-[var(--border)] rounded-xl p-3 sm:p-4 text-sm sm:text-base focus:outline-none focus:border-purple-500/50 transition-colors resize-none"
                 />
                 {!text && (
                     <button 
                       onClick={() => setText("The quick brown fox jumps over the lazy dog is a pangram containing many of the letters of the English alphabet. Plagiarism is the practice of taking someone else's work or ideas and passing them off as one's own.")}
-                      className="absolute bottom-4 right-4 text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-gray-400 hover:text-white transition-colors"
+                      className="absolute bottom-4 right-4 text-xs bg-[var(--secondary)] hover:bg-white/20 px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-white transition-colors"
                     >
                       Load Sample Text
                     </button>
@@ -537,7 +537,7 @@ const Analyzer = () => {
                       <LinkIcon className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold">Analyze from URL</h3>
-                    <p className="text-gray-400 text-xs sm:text-sm">Paste a link to fetch text from any webpage</p>
+                    <p className="text-[var(--muted-foreground)] text-xs sm:text-sm">Paste a link to fetch text from any webpage</p>
                   </div>
                   <form onSubmit={handleUrlExtract} className="flex flex-col sm:flex-row gap-2">
                     <input
@@ -545,7 +545,7 @@ const Analyzer = () => {
                       placeholder="https://example.com/article"
                       value={urlInput}
                       onChange={(e) => setUrlInput(e.target.value)}
-                      className="flex-1 bg-black/20 border border-white/10 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base focus:outline-none focus:border-purple-500 transition-colors"
+                      className="flex-1 bg-black/20 border border-[var(--border)] rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base focus:outline-none focus:border-purple-500 transition-colors"
                       required
                     />
                     <button
@@ -593,7 +593,7 @@ const Analyzer = () => {
             >
 
               <div className="mb-6 sm:mb-8 md:mb-10">
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400 mb-2">Analysis Result</h3>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-[var(--muted-foreground)] mb-2">Analysis Result</h3>
                   <div className="h-0.5 sm:h-1 w-24 sm:w-32 bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-500 rounded-full"></div>
               </div>
 
@@ -612,13 +612,13 @@ const Analyzer = () => {
               <div className="mb-6 sm:mb-8">
                   {/* Desktop: Centered Tab Bar */}
                   <div className="hidden md:flex justify-center">
-                      <div className="inline-flex items-center gap-1.5 p-2 rounded-2xl bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-xl border border-white/20 shadow-2xl">
+                      <div className="inline-flex items-center gap-1.5 p-2 rounded-2xl bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] shadow-2xl">
                           <button
                             onClick={() => setViewMode('highlight')}
                             className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
                                 viewMode === 'highlight' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)] hover:scale-102'
                             }`}
                           >
                             <Zap className={`transition-all duration-300 ${viewMode === 'highlight' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
@@ -633,7 +633,7 @@ const Analyzer = () => {
                             className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
                                 viewMode === 'comparison' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)] hover:scale-102'
                             }`}
                           >
                             <Columns className={`transition-all duration-300 ${viewMode === 'comparison' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
@@ -648,7 +648,7 @@ const Analyzer = () => {
                             className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
                                 viewMode === 'grammar' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)] hover:scale-102'
                             }`}
                           >
                             <Wand2 className={`transition-all duration-300 ${viewMode === 'grammar' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
@@ -663,7 +663,7 @@ const Analyzer = () => {
                             className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
                                 viewMode === 'explainability' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)] hover:scale-102'
                             }`}
                           >
                             <Lightbulb className={`transition-all duration-300 ${viewMode === 'explainability' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
@@ -678,7 +678,7 @@ const Analyzer = () => {
                             className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
                                 viewMode === 'dictionary' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)] hover:scale-102'
                             }`}
                           >
                             <BookOpen className={`transition-all duration-300 ${viewMode === 'dictionary' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
@@ -693,7 +693,7 @@ const Analyzer = () => {
                             className={`group relative px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
                                 viewMode === 'novelty' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/50 scale-105' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10 hover:scale-102'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)] hover:scale-102'
                             }`}
                           >
                             <Sparkles className={`transition-all duration-300 ${viewMode === 'novelty' ? 'w-5 h-5' : 'w-4 h-4 group-hover:w-5 group-hover:h-5'}`} />
@@ -707,13 +707,13 @@ const Analyzer = () => {
 
                   {/* Mobile & Tablet: Horizontal Scrolling Tabs */}
                   <div className="md:hidden w-full overflow-x-auto scrollbar-hide -mx-2 px-2">
-                      <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-900/90 to-black/80 backdrop-blur-xl border border-white/20 shadow-xl min-w-max">
+                      <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] shadow-xl min-w-max">
                           <button
                             onClick={() => setViewMode('highlight')}
                             className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                                 viewMode === 'highlight' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)]'
                             }`}
                           >
                             <Zap className="w-4 h-4" />
@@ -725,7 +725,7 @@ const Analyzer = () => {
                             className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                                 viewMode === 'comparison' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)]'
                             }`}
                           >
                             <Columns className="w-4 h-4" />
@@ -737,7 +737,7 @@ const Analyzer = () => {
                             className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                                 viewMode === 'grammar' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)]'
                             }`}
                           >
                             <Wand2 className="w-4 h-4" />
@@ -749,7 +749,7 @@ const Analyzer = () => {
                             className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                                 viewMode === 'explainability' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)]'
                             }`}
                           >
                             <Lightbulb className="w-4 h-4" />
@@ -761,7 +761,7 @@ const Analyzer = () => {
                             className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                                 viewMode === 'dictionary' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)]'
                             }`}
                           >
                             <BookOpen className="w-4 h-4" />
@@ -773,7 +773,7 @@ const Analyzer = () => {
                             className={`group relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                                 viewMode === 'novelty' 
                                   ? 'text-white bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 shadow-lg shadow-purple-500/30' 
-                                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+                                  : 'text-[var(--muted-foreground)] hover:text-white hover:bg-[var(--secondary)]'
                             }`}
                           >
                             <Sparkles className="w-4 h-4" />
@@ -843,7 +843,7 @@ const Analyzer = () => {
             </div></>
 
           ) : (
-            <div className="h-full flex items-center justify-center p-8 border border-dashed border-gray-700 rounded-2xl text-gray-500 text-center">
+            <div className="h-full flex items-center justify-center p-8 border border-dashed border-gray-700 rounded-2xl text-[var(--muted-foreground)] text-center">
               Run an analysis to see detailed results here.
             </div>
           )}
@@ -862,7 +862,7 @@ const Analyzer = () => {
                      <span className="bg-blue-500 rounded p-1"><Zap className="h-3 w-3 text-white" /></span>
                      Browser Extension
                   </h3>
-                  <p className="text-sm text-gray-300 mb-3">
+                  <p className="text-sm text-[var(--muted-foreground)] mb-3">
                      Check plagiarism directly on any website without copying text.
                   </p>
                   <span className="text-blue-400 text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">

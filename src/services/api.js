@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // baseURL: 'https://plagzapbackend-production.up.railway.app/api',
-    baseURL: 'http://localhost:5001/api'
+    baseURL: 'https://plagzapbackend-production.up.railway.app/api',
+    // baseURL: 'http://localhost:5001/api'
 });
 
 // Add auth token to requests
