@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:5001/api';
+const API_BASE = 'https://plagzapbackend-production.up.railway.app/api';
 
 // Create axios instance with auth token
 const createAuthConfig = () => {
