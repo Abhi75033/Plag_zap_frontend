@@ -1,6 +1,6 @@
 import axios from 'axios';
+const API_URL = 'https://plagzapbackend-production.up.railway.app/api';
 
-const API_URL = 'http://localhost:5001/api';
 
 const getAuthHeader = () => {
     const token = localStorage.getItem('token');
