@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = import.meta.env.VITE_API_URL || 'https://plagzapbackend-production.up.railway.app/api';
+const API_URL = 'https://plagzapbackend-production.up.railway.app/api';
 
 
 // Get auth token
