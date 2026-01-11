@@ -127,35 +127,37 @@ const NotificationBell = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute right-0 mt-2 w-80 sm:w-96 bg-gray-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50"
+                        className="fixed sm:absolute right-2 sm:right-0 top-16 sm:top-auto sm:mt-2 w-[calc(100vw-1rem)] max-w-[380px] sm:w-96 bg-gray-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden z-[9999]"
+                        style={{ maxHeight: 'calc(100vh - 5rem)' }}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-white/10">
-                            <h3 className="font-bold text-white flex items-center gap-2">
-                                <Bell className="w-5 h-5 text-cyan-400" />
+                        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/10">
+                            <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                                <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
                                 Notifications
                             </h3>
                             {unreadCount > 0 && (
                                 <button
                                     onClick={handleMarkAllAsRead}
-                                    className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1"
+                                    className="text-[10px] sm:text-xs text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1"
                                 >
                                     <Check className="w-3 h-3" />
-                                    Mark all read
+                                    <span className="hidden sm:inline">Mark all read</span>
+                                    <span className="sm:hidden">Mark read</span>
                                 </button>
                             )}
                         </div>
 
                         {/* Notifications List */}
-                        <div className="max-h-96 overflow-y-auto">
+                        <div className="max-h-[60vh] sm:max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
                             {loading ? (
                                 <div className="p-8 text-center">
                                     <div className="animate-spin rounded-full h-8 w-8 border-2 border-cyan-500 border-t-transparent mx-auto"></div>
                                 </div>
                             ) : notifications.length === 0 ? (
-                                <div className="p-8 text-center text-gray-500">
-                                    <Bell className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                                    <p>No notifications</p>
+                                <div className="p-6 sm:p-8 text-center text-gray-500">
+                                    <Bell className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 opacity-50" />
+                                    <p className="text-sm">No notifications</p>
                                 </div>
                             ) : (
                                 <div>
@@ -164,21 +166,21 @@ const NotificationBell = () => {
                                             key={notif._id}
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            className={`p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer ${
+                                            className={`p-3 sm:p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer ${
                                                 !notif.read ? 'bg-cyan-500/5' : ''
                                             }`}
                                             onClick={() => handleMarkAsRead(notif._id, notif.link)}
                                         >
-                                            <div className="flex items-start gap-3">
+                                            <div className="flex items-start gap-2 sm:gap-3">
                                                 {/* Icon */}
-                                                <div className={`p-2 rounded-lg bg-gradient-to-br ${getTypeColor(notif.type)}`}>
+                                                <div className={`p-1.5 sm:p-2 rounded-lg bg-gradient-to-br ${getTypeColor(notif.type)} flex-shrink-0`}>
                                                     {getIcon(notif.icon)}
                                                 </div>
 
                                                 {/* Content */}
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-start justify-between gap-2">
-                                                        <h4 className="font-semibold text-white text-sm leading-snug">
+                                                        <h4 className="font-semibold text-white text-xs sm:text-sm leading-snug pr-1">
                                                             {notif.title}
                                                         </h4>
                                                         <button
@@ -188,10 +190,10 @@ const NotificationBell = () => {
                                                             <Trash2 className="w-3 h-3" />
                                                         </button>
                                                     </div>
-                                                    <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                                                    <p className="text-[11px] sm:text-xs text-gray-400 mt-1 line-clamp-2">
                                                         {notif.message}
                                                     </p>
-                                                    <p className="text-xs text-gray-600 mt-2">
+                                                    <p className="text-[10px] sm:text-xs text-gray-600 mt-1.5 sm:mt-2">
                                                         {new Date(notif.createdAt).toLocaleDateString('en-US', {
                                                             month: 'short',
                                                             day: 'numeric',
@@ -214,10 +216,10 @@ const NotificationBell = () => {
 
                         {/* Footer - doesn't show if no notifications */}
                         {notifications.length > 0 && (
-                            <div className="p-3 border-t border-white/10 text-center">
+                            <div className="p-2.5 sm:p-3 border-t border-white/10 text-center">
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="text-xs text-gray-500 hover:text-gray-400 transition-colors"
+                                    className="text-[11px] sm:text-xs text-gray-500 hover:text-gray-400 transition-colors"
                                 >
                                     Close
                                 </button>
