@@ -144,7 +144,7 @@ const Contact = () => {
             className="space-y-6"
           >
             {[
-              { icon: <Mail />, title: 'Email', info: 'support@plagzap.xyz', sub: 'We reply within 24 hours' },
+              { icon: <Mail />, title: 'Email', info: 'team@plagzap.xyz', sub: 'We reply within 24 hours' },
               { icon: <MapPin />, title: 'Office', info: 'Bangalore, India', sub: 'Tech Hub, Electronic City' },
               { icon: <Phone />, title: 'Phone', info: '+91 98765 43210', sub: 'Mon-Fri, 9am-6pm IST' },
               { icon: <Clock />, title: 'Support Hours', info: '24/7 Available', sub: 'For premium customers' },
@@ -166,7 +166,7 @@ const Contact = () => {
               <h3 className="font-bold text-white mb-2">Quick Support</h3>
               <p className="text-gray-400 text-sm mb-4">Need immediate help? Email our support team for quick assistance.</p>
               <a 
-                href="mailto:support@plagzap.xyz?subject=Quick Support Request&body=Hi, I need help with..."
+                href="mailto:team@plagzap.xyz?subject=Quick Support Request&body=Hi, I need help with..."
                 className="inline-block px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
               >
                 Email Support
