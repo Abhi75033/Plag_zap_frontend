@@ -7,4 +7,4 @@ Disallow: /login
 Disallow: /register
 Disallow: /reset-password
 
-Sitemap: https://plagzap.com/sitemap.xml
+Sitemap: https://plagzap.xyz/sitemap.xml
