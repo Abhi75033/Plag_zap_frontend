@@ -20,6 +20,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import DownloadApp from '../components/DownloadApp';
+import SEO from '../components/SEO';
 
 // --- Utility Components ---
 
@@ -667,8 +668,9 @@ const FAQ = () => {
 
 
 
-const CTA = () => (
-  
+const CTA = () => {
+  const navigate = useNavigate();
+  return (
   <section className="py-32 px-6 relative z-10 overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-900/10 to-transparent pointer-events-none" />
     <div className="max-w-4xl mx-auto text-center relative">
@@ -687,7 +689,7 @@ const CTA = () => (
       <p className="mt-6 text-sm text-gray-600">No credit card required • Cancel anytime</p>
     </div>
   </section>
-);
+)};
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -759,86 +761,40 @@ const Footer = () => {
   );
 };
 
-// --- Simple Analyzer View ---
-const AnalyzerView = ({ navigate }) => (
-    <div className="min-h-screen pt-24 px-6 flex flex-col items-center relative z-10">
-        <button onClick={() => navigate('/')} className="absolute top-24 left-6 text-gray-400 hover:text-white flex items-center gap-2">
-            <ArrowRight className="h-4 w-4 rotate-180" /> Back to Home
-        </button>
-        <div className="w-full max-w-4xl bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 min-h-[600px] flex flex-col">
-            <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-white">Content Analyzer</h2>
-                <div className="flex gap-2">
-                    <button className="px-4 py-2 bg-white/5 rounded-lg text-sm text-white hover:bg-white/10">Upload File</button>
-                    <button className="px-4 py-2 bg-violet-600 rounded-lg text-sm text-white font-bold hover:bg-violet-700">Check Text</button>
-                </div>
-            </div>
-            <textarea 
-                className="flex-1 bg-black/40 border border-white/10 rounded-xl p-6 text-gray-300 focus:outline-none focus:border-violet-500/50 resize-none font-mono text-sm leading-relaxed"
-                placeholder="Paste your text here to analyze for AI patterns..."
-            ></textarea>
-            <div className="mt-4 flex justify-between items-center text-xs text-gray-500">
-                <span>0 words</span>
-                <span>Ready to scan</span>
-            </div>
+// --- Main Home Component ---
+
+const Home = () => {
+    return (
+        <div className="min-h-screen bg-black text-gray-100 font-sans selection:bg-violet-500/30 selection:text-white">
+            <SEO 
+              title="PlagZap - #1 AI Plagiarism Checker & AI Detector"
+              description="PlagZap is the most accurate AI plagiarism checker and AI content detector. Detect ChatGPT, Claude, and Gemini text instantly. Trusted by 10,000+ creators."
+              schema={{
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "PlagZap",
+                "applicationCategory": "EducationalApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD"
+                }
+              }}
+            />
+            <AnimatedBackground />
+            <main className="relative">
+                <Hero />
+                <DownloadApp />
+                <Features />
+                <HowItWorks />
+                <Testimonials />
+                <FAQ />
+                <CTA />
+                <Footer />
+            </main>
         </div>
-    </div>
-);
-
-// --- Main App Component ---
-
-const App = () => {
-  const [currentPath, setCurrentPath] = useState('/');
-
-  // Simulate routing navigation
-  const navigate = (path) => {
-    setCurrentPath(path);
-  };
-
-  // Scroll to top when path changes
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [currentPath]);
-
-  return (
-    <div className="min-h-screen bg-black text-gray-100 font-sans selection:bg-violet-500/30 selection:text-white">
-      <AnimatedBackground />
-      {/* Navbar Removed */}
-      
-      <main className="relative">
-        <AnimatePresence mode="wait">
-          {currentPath === '/' ? (
-            <motion.div
-              key="home"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Hero navigate={navigate} />
-              <DownloadApp />
-              <Features />
-              <HowItWorks />
-              <Testimonials />
-              <FAQ />
-              <CTA navigate={navigate} />
-              <Footer />
-            </motion.div>
-          ) : currentPath === '/analyzer' ? (
-            <motion.div
-              key="analyzer"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <AnalyzerView navigate={navigate} />
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </main>
-    </div>
-  );
+    );
 };
 
-export default App;
+export default Home;

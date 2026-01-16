@@ -49,6 +49,8 @@ import VerifyEmail from './pages/VerifyEmail'; // Phase 3: Email verification
 import ForgotPassword from './pages/ForgotPassword'; // Forgot Password
 import ResetPassword from './pages/ResetPassword'; // Reset Password
 import MyApplications from './pages/MyApplications'; // Job applications tracking
+import LandingPage from './pages/LandingPage'; // Programmatic SEO Landing Page template
+
 
 function App() {
   return (
@@ -93,6 +95,104 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+            
+            <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+
+            {/* Programmatic SEO Components Logic */}
+            <Route path="/plagzap-for-youtubers" element={
+              <LandingPage 
+                title="PlagZap for YouTubers - Protect Your Scripts"
+                description="The best AI plagiarism checker for YouTubers. Ensure your video scripts are original and avoid copyright strikes."
+                heroTitle="Protect Your YouTube Channel from Copyright Strikes"
+                heroSubtitle="Ensure your video scripts are 100% original with PlagZap's AI-powered plagiarism detection."
+                targetAudience="YouTubers"
+                features={[
+                  { title: 'Script Analysis', description: 'Scan your video scripts against billions of web pages.' },
+                  { title: 'Copyright Safe', description: 'Avoid inadvertent copyright issues before filming.' },
+                  { title: 'AI Detection', description: 'Detect if your script writer used AI tools heavily.' }
+                ]}
+                faq={[
+                  { question: 'Does PlagZap check YouTube subtitles?', answer: 'Yes, you can paste your subtitles or script to verify originality.' },
+                  { question: 'Is it free for small channels?', answer: 'We offer a generous free tier for creators starting out.' }
+                ]}
+              />
+            } />
+
+            <Route path="/plagzap-for-bloggers" element={
+              <LandingPage 
+                title="PlagZap for Bloggers - Rank Higher on Google"
+                description="Ensure your blog posts are unique and SEO-friendly. PlagZap helps bloggers avoid duplicate content penalties."
+                heroTitle="Rank #1 with Original, SEO-Optimized Content"
+                heroSubtitle="Google penalizes duplicate content. Use PlagZap to ensure every blog post is unique and ready to rank."
+                targetAudience="Bloggers"
+                features={[
+                  { title: 'SEO Protection', description: 'Avoid duplicate content penalties from search engines.' },
+                  { title: 'Guest Post Check', description: 'Verify originality of guest contributions instantly.' },
+                  { title: 'Bulk Scanning', description: 'Check multiple articles at once for efficiency.' }
+                ]}
+                faq={[
+                  { question: 'Why does originality matter for SEO?', answer: 'Search engines de-rank duplicate content. Originality is key to ranking.' },
+                  { question: 'Can I check WordPress drafts?', answer: 'Yes, simply copy-paste your draft into PlagZap.' }
+                ]}
+              />
+            } />
+
+             <Route path="/plagzap-for-students" element={
+              <LandingPage 
+                title="PlagZap for Students - Cite with Confidence"
+                description="The most accurate plagiarism checker for students. Verify your essays and research papers before submission."
+                heroTitle="Submit Your Assignments with Total Confidence"
+                heroSubtitle="Avoid accidental plagiarism in your essays and research papers. accurate fast, and student-friendly."
+                targetAudience="Students"
+                features={[
+                  { title: 'Academic Dabatase', description: 'Checks against academic papers and journals.' },
+                  { title: 'Citation Helper', description: 'Helps identify missing citations in your work.' },
+                  { title: 'Private & Secure', description: 'Your work remains yours. We never sell your data.' }
+                ]}
+                faq={[
+                  { question: 'Is my paper stored in a database?', answer: 'No, PlagZap respects your privacy and ownership.' },
+                  { question: 'Does it work for multiple languages?', answer: 'Yes, PlagZap supports over 30 languages.' }
+                ]}
+              />
+            } />
+
+             <Route path="/plagzap-for-agencies" element={
+              <LandingPage 
+                title="PlagZap for Agencies - Scale Content Production"
+                description="Manage content quality at scale. PlagZap helps agencies verify freelance work and maintain high standards."
+                heroTitle="Scale Your Content Operations Without Risk"
+                heroSubtitle="Verify thousands of words daily. Ensure every piece of content you deliver to clients is 100% original."
+                targetAudience="Agencies"
+                features={[
+                  { title: 'Team Management', description: 'Add your writers and editors to a single dashboard.' },
+                  { title: 'White Label Reports', description: 'Generate branded PDF reports for your clients.' },
+                  { title: 'API Access', description: 'Integrate plagiarism checking into your CMS.' }
+                ]}
+                faq={[
+                  { question: 'Do you offer volume discounts?', answer: 'Yes, our agency plans are built for high volume.' },
+                  { question: 'Can I add team members?', answer: 'Absolutely. Team management is a core feature.' }
+                ]}
+              />
+            } />
+
+            <Route path="/plagzap-ai-plagiarism-checker" element={
+              <LandingPage 
+                title="Best AI Plagiarism Checker - accurate & Free"
+                description="PlagZap combines advanced AI detection with deep web search to provide the most accurate plagiarism checking available."
+                heroTitle="The Next Generation of Plagiarism Detection"
+                heroSubtitle="Powered by advanced AI to detect not just copy-paste, but paraphrased and AI-generated content."
+                targetAudience="Consicious Creators"
+                features={[
+                  { title: 'Deep Search', description: 'Scans billions of web pages and academic sources.' },
+                  { title: 'AI Writing Detection', description: 'Identifies content written by ChatGPT and other LLMs.' },
+                  { title: 'Smart Paraphrasing', description: 'Detects spun content that other checkers miss.' }
+                ]}
+                faq={[
+                   { question: 'How is this different from Turnitin?', answer: 'PlagZap is designed for speed and accessibility while maintaining high accuracy.' },
+                   { question: 'Is it really free?', answer: 'We offer a free version with daily limits. Premium unlocks unlimited power.' }
+                ]}
+              />
+            } />
             
             {/* Static pages */}
             <Route path="/about" element={<About />} />

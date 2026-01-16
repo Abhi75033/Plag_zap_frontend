@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /account/
+Disallow: /login
+Disallow: /register
+Disallow: /reset-password
+
+Sitemap: https://plagzap.com/sitemap.xml
