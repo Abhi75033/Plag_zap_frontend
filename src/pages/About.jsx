@@ -6,7 +6,7 @@ const About = () => {
   const team = [
     { name: 'Abhishek Kumar', role: 'Founder & CEO', avatar: 'https://res.cloudinary.com/abhisek-aur-backend/image/upload/v1769004781/WhatsApp_Image_2025-08-15_at_16.15.09_lz5giz.jpg' },
     { name: 'Aditya Raj', role: 'Co-Founder', avatar: 'https://res.cloudinary.com/abhisek-aur-backend/image/upload/v1762190709/WhatsApp_Image_2025-11-03_at_22.53.49_y17ccx.jpg' },
-    { name: 'Vandan', role: 'Head of Marketing', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul' },
+    { name: 'Vandan', role: 'Head of Marketing', avatar: 'https://res.cloudinary.com/abhisek-aur-backend/image/upload/v1769008884/BB3C60F3-EAB3-45AA-B76B-8869CC44783F_nqnhds.jpg' },
     { name: 'Ronak Rajeshbhai Bokehriya', role: 'Lead Designer', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anjali' },
   ];
 
