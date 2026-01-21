@@ -4,10 +4,10 @@ import { Shield, Zap, Users, Award, Target, Heart } from 'lucide-react';
 
 const About = () => {
   const team = [
-    { name: 'Abhishek Kumar', role: 'Founder & CEO', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Abhishek' },
-    { name: 'Aditya Raj', role: 'Co-Founder', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya' },
+    { name: 'Abhishek Kumar', role: 'Founder & CEO', avatar: 'https://asset.cloudinary.com/abhisek-aur-backend/a91286793de81c583c3832ed6807e8f7' },
+    { name: 'Aditya Raj', role: 'Co-Founder', avatar: 'https://asset.cloudinary.com/abhisek-aur-backend/2318c8689e8e1fffd778fb02018301bd' },
     { name: 'Vandan', role: 'Head of Marketing', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul' },
-    { name: 'Anjali Patel', role: 'Lead Designer', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anjali' },
+    { name: 'Ronak Rajeshbhai Bokehriya', role: 'Lead Designer', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anjali' },
   ];
 
   const values = [
