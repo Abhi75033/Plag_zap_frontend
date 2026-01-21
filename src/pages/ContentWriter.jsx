@@ -919,29 +919,28 @@ const ContentWriter = () => {
                                                 />
                                             )}
                                         </AnimatePresence>
+                                        {/* Content Angles */}
+                                        <AnimatePresence>
+                                            {intelligence.angles && (
+                                                <AngleSuggestions 
+                                                    angles={intelligence.angles}
+                                                    loading={intelligenceLoading.angles}
+                                                />
+                                            )}
+                                        </AnimatePresence>
+
+                                        <div>
+                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
+                                            <input
+                                                type="text"
+                                                value={keywords}
+                                                onChange={(e) => setKeywords(e.target.value)}
+                                                placeholder="AI, machine learning, technology..."
+                                                className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                            />
+                                        </div>
                                     </>
                                 )}
-
-                                {/* Content Angles */}
-                                <AnimatePresence>
-                                    {intelligence.angles && (
-                                        <AngleSuggestions 
-                                            angles={intelligence.angles}
-                                            loading={intelligenceLoading.angles}
-                                        />
-                                    )}
-                                </AnimatePresence>
-
-                                <div>
-                                    <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
-                                    <input
-                                        type="text"
-                                        value={keywords}
-                                        onChange={(e) => setKeywords(e.target.value)}
-                                        placeholder="AI, machine learning, technology..."
-                                        className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
-                                    />
-                                </div>
 
                                 {/* Research Builder (Research/Academic only) */}
                                 {(selectedMode.id === 'research' || selectedMode.id === 'academic') && topic.trim() && (
@@ -958,9 +957,9 @@ const ContentWriter = () => {
 
                                 <button
                                     onClick={handleGenerate}
-                                    disabled={loading || !topic.trim()}
+                                    disabled={loading || (selectedMode.id === 'cover_letter' ? (!jobRole.trim() || !company.trim()) : !topic.trim())}
                                     className={`w-full py-3 md:py-3.5 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-sm md:text-base ${
-                                        loading || !topic.trim()
+                                        loading || (selectedMode.id === 'cover_letter' ? (!jobRole.trim() || !company.trim()) : !topic.trim())
                                             ? 'bg-gray-700 text-[var(--muted-foreground)] cursor-not-allowed'
                                             : `bg-gradient-to-r ${selectedMode.color} hover:shadow-lg active:scale-95`
                                     }`}
