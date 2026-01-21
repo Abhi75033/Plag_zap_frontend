@@ -5,8 +5,8 @@ import { Shield, Zap, Users, Award, Target, Heart } from 'lucide-react';
 const About = () => {
   const team = [
     { name: 'Abhishek Kumar', role: 'Founder & CEO', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Abhishek' },
-    { name: 'Priya Sharma', role: 'CTO', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya' },
-    { name: 'Rahul Verma', role: 'Head of AI', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul' },
+    { name: 'Aditya Raj', role: 'Co-Founder', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya' },
+    { name: 'Vandan', role: 'Head of Marketing', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul' },
     { name: 'Anjali Patel', role: 'Lead Designer', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anjali' },
   ];
 
