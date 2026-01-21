@@ -28,7 +28,8 @@ const MODES = [
     { id: 'blog', label: 'Blog Writing', icon: FileText, description: 'SEO-friendly, conversational blog posts', color: 'from-purple-600 to-pink-600' },
     { id: 'research', label: 'Research Writing', icon: BookOpen, description: 'Formal, analytical research papers', color: 'from-blue-600 to-cyan-600' },
     { id: 'academic', label: 'Academic Writing', icon: Sparkles, description: 'Scholarly essays and assignments', color: 'from-green-600 to-emerald-600' },
-    { id: 'professional', label: 'Professional', icon: Briefcase, description: 'Business reports and documents', color: 'from-orange-600 to-amber-600' }
+    { id: 'professional', label: 'Professional', icon: Briefcase, description: 'Business reports and documents', color: 'from-orange-600 to-amber-600' },
+    { id: 'cover_letter', label: 'Cover Letter', icon: Target, description: 'ATS-optimized job application letters', color: 'from-pink-600 to-rose-600' }
 ];
 
 const TONES = ['Neutral', 'Formal', 'Conversational', 'Analytical', 'Persuasive'];
@@ -38,6 +39,11 @@ const ContentWriter = () => {
     const [selectedMode, setSelectedMode] = useState(MODES[0]);
     const [topic, setTopic] = useState('');
     const [keywords, setKeywords] = useState('');
+    // Cover Letter specific state
+    const [jobRole, setJobRole] = useState('');
+    const [company, setCompany] = useState('');
+    const [experience, setExperience] = useState('');
+    const [skills, setSkills] = useState('');
     const [tone, setTone] = useState('Neutral');
     const [length, setLength] = useState('Medium (500-1000)');
     const [generatedContent, setGeneratedContent] = useState('');
@@ -99,6 +105,16 @@ const ContentWriter = () => {
 
         return () => clearTimeout(timer);
     }, [topic, selectedMode.id]);
+
+    // Reset fields when mode changes
+    useEffect(() => {
+        setTopic('');
+        setKeywords('');
+        setJobRole('');
+        setCompany('');
+        setExperience('');
+        setSkills('');
+    }, [selectedMode]);
 
     const handleAnalyzeTopic = async () => {
         console.log('[INTELLIGENCE] handleAnalyzeTopic called');
@@ -247,7 +263,13 @@ const ContentWriter = () => {
     };
 
     const handleGenerate = async () => {
-        if (!topic.trim()) {
+        // Validation based on mode
+        if (selectedMode.id === 'cover_letter') {
+            if (!jobRole.trim() || !company.trim()) {
+                toast.error('Please enter Job Role and Company');
+                return;
+            }
+        } else if (!topic.trim()) {
             toast.error('Please enter a topic');
             return;
         }
@@ -260,8 +282,13 @@ const ContentWriter = () => {
         try {
             const { data } = await generateContent({
                 mode: selectedMode.id,
-                topic: topic.trim(),
+                topic: selectedMode.id === 'cover_letter' ? `${jobRole} at ${company}` : topic.trim(),
                 keywords: keywords.trim(),
+                // Pass extra fields for cover letter
+                jobRole: jobRole.trim(),
+                company: company.trim(),
+                experience: experience.trim(),
+                skills: skills.trim(),
                 tone,
                 length
             });
@@ -471,77 +498,124 @@ const ContentWriter = () => {
                                     )}
                                 </AnimatePresence>
 
-                                <div>
-                                    <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Topic *</label>
-                                    <input
-                                        type="text"
-                                        value={topic}
-                                        onChange={(e) => setTopic(e.target.value)}
-                                        placeholder="Enter your topic..."
-                                        className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-                                    />
-                                </div>
+                                {selectedMode.id === 'cover_letter' ? (
+                                    <div className="space-y-3">
+                                        <div>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Job Role *</label>
+                                            <input
+                                                type="text"
+                                                value={jobRole}
+                                                onChange={(e) => setJobRole(e.target.value)}
+                                                placeholder="e.g. Senior React Developer"
+                                                className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Company Name *</label>
+                                            <input
+                                                type="text"
+                                                value={company}
+                                                onChange={(e) => setCompany(e.target.value)}
+                                                placeholder="e.g. Google"
+                                                className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Years of Experience</label>
+                                            <input
+                                                type="text"
+                                                value={experience}
+                                                onChange={(e) => setExperience(e.target.value)}
+                                                placeholder="e.g. 5 years"
+                                                className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Key Skills</label>
+                                            <input
+                                                type="text"
+                                                value={skills}
+                                                onChange={(e) => setSkills(e.target.value)}
+                                                placeholder="e.g. React, Node.js, Team Leadership"
+                                                className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Topic *</label>
+                                            <input
+                                                type="text"
+                                                value={topic}
+                                                onChange={(e) => setTopic(e.target.value)}
+                                                placeholder="Enter your topic..."
+                                                className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                            />
+                                        </div>
 
-                                {/* Topic Intelligence - Auto-appears */}
-                                <AnimatePresence>
-                                    {intelligence.analysis && (
-                                        <TopicInsight 
-                                            analysis={intelligence.analysis}
-                                            loading={intelligenceLoading.analysis}
-                                        />
-                                    )}
-                                </AnimatePresence>
+                                        {/* Topic Intelligence - Auto-appears */}
+                                        <AnimatePresence>
+                                            {intelligence.analysis && (
+                                                <TopicInsight 
+                                                    analysis={intelligence.analysis}
+                                                    loading={intelligenceLoading.analysis}
+                                                />
+                                            )}
+                                        </AnimatePresence>
 
-                                {/* Suggested Titles */}
-                                <AnimatePresence>
-                                    {intelligence.titles.length > 0 && (
-                                        <SuggestedTitles 
-                                            titles={intelligence.titles}
-                                            onSelect={setTopic}
-                                            loading={intelligenceLoading.titles}
-                                        />
-                                    )}
-                                </AnimatePresence>
+                                        {/* Suggested Titles */}
+                                        <AnimatePresence>
+                                            {intelligence.titles.length > 0 && (
+                                                <SuggestedTitles 
+                                                    titles={intelligence.titles}
+                                                    onSelect={setTopic}
+                                                    loading={intelligenceLoading.titles}
+                                                />
+                                            )}
+                                        </AnimatePresence>
 
-                                {/* Content Angles */}
-                                <AnimatePresence>
-                                    {intelligence.angles && (
-                                        <AngleSuggestions 
-                                            angles={intelligence.angles}
-                                            loading={intelligenceLoading.angles}
-                                        />
-                                    )}
-                                </AnimatePresence>
+                                        {/* Content Angles */}
+                                        <AnimatePresence>
+                                            {intelligence.angles && (
+                                                <AngleSuggestions 
+                                                    angles={intelligence.angles}
+                                                    loading={intelligenceLoading.angles}
+                                                />
+                                            )}
+                                        </AnimatePresence>
 
-                                <div>
-                                    <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
-                                    <input
-                                        type="text"
-                                        value={keywords}
-                                        onChange={(e) => setKeywords(e.target.value)}
-                                        placeholder="AI, machine learning..."
-                                        className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-                                    />
-                                </div>
+                                        <div>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
+                                            <input
+                                                type="text"
+                                                value={keywords}
+                                                onChange={(e) => setKeywords(e.target.value)}
+                                                placeholder="AI, machine learning..."
+                                                className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                            />
+                                        </div>
 
-                                {/* Research Builder (Research/Academic only) */}
-                                {(selectedMode.id === 'research' || selectedMode.id === 'academic') && topic.trim() && (
-                                    <ResearchBuilder
-                                        topic={topic}
-                                        mode={selectedMode.id}
-                                        research={intelligence.research}
-                                        loading={intelligenceLoading.research}
-                                        onBuild={handleBuildResearch}
-                                        expanded={expandedSections.research}
-                                        onToggle={() => toggleSection('research')}
-                                    />
+                                        {/* Research Builder (Research/Academic only) */}
+                                        {(selectedMode.id === 'research' || selectedMode.id === 'academic') && topic.trim() && (
+                                            <ResearchBuilder
+                                                topic={topic}
+                                                mode={selectedMode.id}
+                                                research={intelligence.research}
+                                                loading={intelligenceLoading.research}
+                                                onBuild={handleBuildResearch}
+                                                expanded={expandedSections.research}
+                                                onToggle={() => toggleSection('research')}
+                                            />
+                                        )}
+                                    </>
                                 )}
 
                                 <button
                                     onClick={handleGenerate}
-                                    disabled={loading || !topic.trim()}
+                                    disabled={loading || (selectedMode.id === 'cover_letter' ? (!jobRole.trim() || !company.trim()) : !topic.trim())}
                                     className={`w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-sm ${
-                                        loading || !topic.trim()
+                                        loading || (selectedMode.id === 'cover_letter' ? (!jobRole.trim() || !company.trim()) : !topic.trim())
                                             ? 'bg-gray-700 text-[var(--muted-foreground)] cursor-not-allowed'
                                             : `bg-gradient-to-r ${selectedMode.color} active:scale-95`
                                     }`}
@@ -767,37 +841,86 @@ const ContentWriter = () => {
                                     )}
                                 </AnimatePresence>
 
-                                <div>
-                                    <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Topic *</label>
-                                    <input
-                                        type="text"
-                                        value={topic}
-                                        onChange={(e) => setTopic(e.target.value)}
-                                        placeholder="Enter your topic..."
-                                        className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
-                                    />
-                                </div>
+                                {selectedMode.id === 'cover_letter' ? (
+                                    <div className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Job Role *</label>
+                                                <input
+                                                    type="text"
+                                                    value={jobRole}
+                                                    onChange={(e) => setJobRole(e.target.value)}
+                                                    placeholder="e.g. Senior React Developer"
+                                                    className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Company Name *</label>
+                                                <input
+                                                    type="text"
+                                                    value={company}
+                                                    onChange={(e) => setCompany(e.target.value)}
+                                                    placeholder="e.g. Google"
+                                                    className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Years of Experience</label>
+                                            <input
+                                                type="text"
+                                                value={experience}
+                                                onChange={(e) => setExperience(e.target.value)}
+                                                placeholder="e.g. 5 years"
+                                                className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Key Skills</label>
+                                            <input
+                                                type="text"
+                                                value={skills}
+                                                onChange={(e) => setSkills(e.target.value)}
+                                                placeholder="e.g. React, Node.js, Team Leadership"
+                                                className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div>
+                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Topic *</label>
+                                            <input
+                                                type="text"
+                                                value={topic}
+                                                onChange={(e) => setTopic(e.target.value)}
+                                                placeholder="Enter your topic..."
+                                                className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
+                                            />
+                                        </div>
 
-                                {/* Topic Intelligence - Auto-appears */}
-                                <AnimatePresence>
-                                    {intelligence.analysis && (
-                                        <TopicInsight 
-                                            analysis={intelligence.analysis}
-                                            loading={intelligenceLoading.analysis}
-                                        />
-                                    )}
-                                </AnimatePresence>
+                                        {/* Topic Intelligence - Auto-appears */}
+                                        <AnimatePresence>
+                                            {intelligence.analysis && (
+                                                <TopicInsight 
+                                                    analysis={intelligence.analysis}
+                                                    loading={intelligenceLoading.analysis}
+                                                />
+                                            )}
+                                        </AnimatePresence>
 
-                                {/* Suggested Titles */}
-                                <AnimatePresence>
-                                    {intelligence.titles.length > 0 && (
-                                        <SuggestedTitles 
-                                            titles={intelligence.titles}
-                                            onSelect={setTopic}
-                                            loading={intelligenceLoading.titles}
-                                        />
-                                    )}
-                                </AnimatePresence>
+                                        {/* Suggested Titles */}
+                                        <AnimatePresence>
+                                            {intelligence.titles.length > 0 && (
+                                                <SuggestedTitles 
+                                                    titles={intelligence.titles}
+                                                    onSelect={setTopic}
+                                                    loading={intelligenceLoading.titles}
+                                                />
+                                            )}
+                                        </AnimatePresence>
+                                    </>
+                                )}
 
                                 {/* Content Angles */}
                                 <AnimatePresence>
