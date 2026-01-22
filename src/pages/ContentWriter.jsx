@@ -4,7 +4,7 @@ import {
     FileText, Sparkles, BookOpen, Briefcase, Wand2, 
     Copy, Download, Loader2, AlertCircle, CheckCircle,
     ChevronDown, ChevronUp, Lightbulb, Target, Beaker,
-    Zap, TrendingUp, ArrowRight, Award
+    Zap, TrendingUp, ArrowRight, Award, Library
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { 
@@ -29,7 +29,8 @@ const MODES = [
     { id: 'research', label: 'Research Writing', icon: BookOpen, description: 'Formal, analytical research papers', color: 'from-blue-600 to-cyan-600' },
     { id: 'academic', label: 'Academic Writing', icon: Sparkles, description: 'Scholarly essays and assignments', color: 'from-green-600 to-emerald-600' },
     { id: 'professional', label: 'Professional', icon: Briefcase, description: 'Business reports and documents', color: 'from-orange-600 to-amber-600' },
-    { id: 'cover_letter', label: 'Cover Letter', icon: Target, description: 'ATS-optimized job application letters', color: 'from-pink-600 to-rose-600' }
+    { id: 'cover_letter', label: 'Cover Letter', icon: Target, description: 'ATS-optimized job application letters', color: 'from-pink-600 to-rose-600' },
+    { id: 'journal_finder', label: 'Journal Finder', icon: Library, description: 'Find reputable journals for your research', color: 'from-cyan-600 to-blue-600' }
 ];
 
 const TONES = ['Neutral', 'Formal', 'Conversational', 'Analytical', 'Persuasive'];
@@ -543,13 +544,16 @@ const ContentWriter = () => {
                                     </div>
                                 ) : (
                                     <>
+
                                         <div>
-                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Topic *</label>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">
+                                                {selectedMode.id === 'journal_finder' ? 'Research Topic *' : 'Topic *'}
+                                            </label>
                                             <input
                                                 type="text"
                                                 value={topic}
                                                 onChange={(e) => setTopic(e.target.value)}
-                                                placeholder="Enter your topic..."
+                                                placeholder={selectedMode.id === 'journal_finder' ? "e.g. AI in Healthcare" : "Enter your topic..."}
                                                 className="w-full bg-black/30 border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                                             />
                                         </div>
@@ -586,7 +590,9 @@ const ContentWriter = () => {
                                         </AnimatePresence>
 
                                         <div>
-                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
+                                            <label className="text-xs text-[var(--muted-foreground)] mb-2 block">
+                                                {selectedMode.id === 'journal_finder' ? 'Niche / Specific Areas (optional)' : 'Keywords (optional)'}
+                                            </label>
                                             <input
                                                 type="text"
                                                 value={keywords}
@@ -889,12 +895,14 @@ const ContentWriter = () => {
                                 ) : (
                                     <>
                                         <div>
-                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Topic *</label>
+                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">
+                                                {selectedMode.id === 'journal_finder' ? 'Research Topic *' : 'Topic *'}
+                                            </label>
                                             <input
                                                 type="text"
                                                 value={topic}
                                                 onChange={(e) => setTopic(e.target.value)}
-                                                placeholder="Enter your topic..."
+                                                placeholder={selectedMode.id === 'journal_finder' ? "e.g. AI in Healthcare" : "Enter your topic..."}
                                                 className="w-full bg-black/20 border border-[var(--border)] rounded-lg px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base focus:outline-none focus:border-purple-500"
                                             />
                                         </div>
@@ -930,7 +938,9 @@ const ContentWriter = () => {
                                         </AnimatePresence>
 
                                         <div>
-                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">Keywords (optional)</label>
+                                            <label className="text-xs md:text-sm text-[var(--muted-foreground)] mb-2 block">
+                                                {selectedMode.id === 'journal_finder' ? 'Niche / Specific Areas (optional)' : 'Keywords (optional)'}
+                                            </label>
                                             <input
                                                 type="text"
                                                 value={keywords}
