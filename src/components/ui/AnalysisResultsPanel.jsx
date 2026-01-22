@@ -34,7 +34,8 @@ const AnalysisResultsPanel = ({ result, text, user, handleRewrite, setCitationSo
                 <StatsDonut 
                     plagiarized={plagiarizedCount} 
                     paraphrased={paraphrasedCount} 
-                    unique={uniqueCount} 
+                    unique={uniqueCount}
+                    aiScore={result.aiScore || 0}
                 />
             </div>
             

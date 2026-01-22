@@ -39,7 +39,7 @@ const ScoreGauge = ({ score }) => {
       </svg>
       <div className="absolute flex flex-col items-center">
         <span className="text-2xl font-bold text-foreground">{score}%</span>
-        <span className="text-xs text-[var(--muted-foreground)]">Plagiarism</span>
+        <span className="text-xs text-[var(--muted-foreground)]">Overall Risk</span>
       </div>
     </div>
   );

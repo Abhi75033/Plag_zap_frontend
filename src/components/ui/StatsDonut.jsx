@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const StatsDonut = ({ plagiarized, paraphrased, unique, size = 180, strokeWidth = 15 }) => {
+const StatsDonut = ({ plagiarized, paraphrased, unique, aiScore = 0, size = 180, strokeWidth = 15 }) => {
   const total = plagiarized + paraphrased + unique || 1; // Avoid divide by zero
   const center = size / 2;
   const radius = (size - strokeWidth) / 2;
@@ -131,10 +131,10 @@ const StatsDonut = ({ plagiarized, paraphrased, unique, size = 180, strokeWidth 
             className="text-center"
           >
               <div className="text-3xl font-black text-foreground">
-                  {Math.round((plagiarizedPercent + paraphrasedPercent) * 100)}%
+                  {Math.round(aiScore)}%
               </div>
               <div className="text-[10px] uppercase tracking-widest text-[var(--muted-foreground)] font-bold">
-                  AI Probability
+                  AI Detection
               </div>
           </motion.div>
       </div>
