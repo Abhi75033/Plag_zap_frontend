@@ -4,7 +4,7 @@ import {
     FileText, Sparkles, BookOpen, Briefcase, Wand2, 
     Copy, Download, Loader2, AlertCircle, CheckCircle,
     ChevronDown, ChevronUp, Lightbulb, Target, Beaker,
-    Zap, TrendingUp, ArrowRight, Award, Library
+    Zap, TrendingUp, ArrowRight, Award, Library, Globe, ExternalLink
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { 
@@ -990,7 +990,7 @@ const ContentWriter = () => {
                         </div>
 
                         {/* Refinement Actions */}
-                        {generatedContent && (
+                        {generatedContent && selectedMode.id !== 'journal_finder' && (
                             <RefinementActions 
                                 onRefine={handleRefineContent}
                                 loading={loading}
@@ -1024,7 +1024,7 @@ const ContentWriter = () => {
                                         >
                                             <Download className="w-4 h-4" />
                                         </button>
-                                        {comparisonData.original && comparisonData.refined && (
+                                        {selectedMode.id !== 'journal_finder' && comparisonData.original && comparisonData.refined && (
                                             <button
                                                 onClick={() => setShowComparison(true)}
                                                 className="p-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-lg transition-all flex items-center gap-1 px-3"
@@ -1034,27 +1034,33 @@ const ContentWriter = () => {
                                                 <span className="text-xs font-semibold">Compare</span>
                                             </button>
                                         )}
-                                        <button
-                                            onClick={handleGetSupervisorFeedback}
-                                            disabled={supervisorLoading}
-                                            className="p-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg transition-all flex items-center gap-1 px-3 disabled:opacity-50"
-                                            title="Get Supervisor Feedback"
-                                        >
-                                            <Award className="w-4 h-4" />
-                                            <span className="text-xs font-semibold">
-                                                {supervisorLoading ? 'Loading...' : 'Supervisor'}
-                                            </span>
-                                        </button>
+                                        {selectedMode.id !== 'journal_finder' && (
+                                            <button
+                                                onClick={handleGetSupervisorFeedback}
+                                                disabled={supervisorLoading}
+                                                className="p-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg transition-all flex items-center gap-1 px-3 disabled:opacity-50"
+                                                title="Get Supervisor Feedback"
+                                            >
+                                                <Award className="w-4 h-4" />
+                                                <span className="text-xs font-semibold">
+                                                    {supervisorLoading ? 'Loading...' : 'Supervisor'}
+                                                </span>
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="bg-black/20 border border-[var(--border)] rounded-xl p-4 md:p-6 max-h-[400px] md:max-h-[600px] overflow-y-auto">
-                                    <div className="prose prose-invert max-w-none text-sm md:text-base">
-                                        {generatedContent.split('\n').map((paragraph, idx) => (
-                                            <p key={idx} className="mb-3 md:mb-4 leading-relaxed">
-                                                {paragraph}
-                                            </p>
-                                        ))}
-                                    </div>
+                                    {selectedMode.id === 'journal_finder' ? (
+                                        <JournalList content={generatedContent} />
+                                    ) : (
+                                        <div className="prose prose-invert max-w-none text-sm md:text-base">
+                                            {generatedContent.split('\n').map((paragraph, idx) => (
+                                                <p key={idx} className="mb-3 md:mb-4 leading-relaxed">
+                                                    {paragraph}
+                                                </p>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </motion.div>
                         )}
@@ -1340,6 +1346,159 @@ const MetricBar = ({ label, value, max, invert }) => {
                 />
             </div>
         </div>
+    );
+};
+
+
+const JournalList = ({ content }) => {
+    let journals = [];
+    try {
+        // Try parsing assuming it's pure JSON
+        journals = JSON.parse(content);
+    } catch (e) {
+        console.error("Failed to parse journal JSON:", e);
+        // Fallback: If it's a string or markdown wrapping, try to extract JSON
+        const match = content.match(/\[.*\]/s);
+        if (match) {
+            try {
+                journals = JSON.parse(match[0]);
+            } catch (e2) {
+                return (
+                    <div className="text-red-400 p-4 border border-red-500/20 rounded-lg bg-red-500/10">
+                        <p className="mb-2 font-semibold">Could not parse structured data.</p>
+                        <pre className="whitespace-pre-wrap text-xs font-mono opacity-70">{content}</pre>
+                    </div>
+                );
+            }
+        } else {
+            // Ultimate fallback: Render as text
+            return (
+                <div className="prose prose-invert max-w-none text-sm md:text-base">
+                    {content.split('\n').map((paragraph, idx) => (
+                        <p key={idx} className="mb-3 md:mb-4 leading-relaxed">
+                            {paragraph}
+                        </p>
+                    ))}
+                </div>
+            );
+        }
+    }
+
+    if (!Array.isArray(journals)) return null;
+
+    return (
+        <div className="space-y-4">
+            <h4 className="text-sm font-medium text-[var(--muted-foreground)] uppercase tracking-wider mb-4">
+                Recommended Journals
+            </h4>
+            <div className="space-y-3">
+                {journals.map((journal, idx) => (
+                    <JournalItem key={idx} journal={journal} delay={idx * 0.1} />
+                ))}
+            </div>
+            
+            <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg flex gap-3 text-xs md:text-sm text-yellow-200/80">
+                <AlertCircle className="w-5 h-5 flex-shrink-0 text-yellow-500" />
+                <p>
+                    <strong>Disclaimer:</strong> Information regarding APCs, acceptance rates, and timelines are estimates generated by AI. 
+                    Please strictly verify all details on the official journal websites before submission.
+                </p>
+            </div>
+        </div>
+    );
+};
+
+const JournalItem = ({ journal, delay }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Color code tiers
+    const getTierColor = (tier) => {
+        if (!tier) return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+        const t = tier.toUpperCase();
+        if (t.includes('Q1')) return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+        if (t.includes('Q2')) return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+        if (t.includes('Q3')) return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30';
+        return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay, duration: 0.3 }}
+            className="border border-[var(--border)] rounded-xl overflow-hidden bg-[var(--accent)]/50 hover:bg-[var(--accent)] transition-colors"
+        >
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full px-4 py-3 flex items-center justify-between text-left"
+            >
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
+                        <BookOpen className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <h5 className="font-semibold text-white/90 leading-tight">{journal.name}</h5>
+                        <div className="flex items-center gap-2 mt-1">
+                            {journal.tier && (
+                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${getTierColor(journal.tier)}`}>
+                                    {journal.tier}
+                                </span>
+                            )}
+                            <span className="text-xs text-[var(--muted-foreground)]">{journal.publisher}</span>
+                        </div>
+                    </div>
+                </div>
+                {isOpen ? <ChevronUp className="w-5 h-5 text-[var(--muted-foreground)]" /> : <ChevronDown className="w-5 h-5 text-[var(--muted-foreground)]" />}
+            </button>
+
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                    >
+                        <div className="px-4 pb-4 pt-1 border-t border-[var(--border)] space-y-3 text-sm">
+                            <div className="p-3 bg-black/20 rounded-lg text-[var(--muted-foreground)] text-xs md:text-sm italic">
+                                "{journal.reason}"
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <span className="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Subject Area</span>
+                                    <span className="text-white">{journal.subjectArea}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Indexing</span>
+                                    <span className="text-white">{journal.indexing}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Est. Cost (APC)</span>
+                                    <span className="text-white">{journal.apc}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Review Time</span>
+                                    <span className="text-white">{journal.reviewTimeline}</span>
+                                </div>
+                            </div>
+                            
+                            {journal.website && (
+                                <div className="pt-2">
+                                    <a 
+                                        href={journal.website.startsWith('http') ? journal.website : `https://${journal.website}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium text-sm"
+                                    >
+                                        Visit Journal Website <ExternalLink className="w-4 h-4" />
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     );
 };
 
