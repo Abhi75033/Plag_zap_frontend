@@ -14,6 +14,9 @@ const AnalysisResultsPanel = ({ result, text, user, handleRewrite, setCitationSo
   const paraphrasedCount = result.highlights.filter(h => h.type === 'paraphrased').length;
   const uniqueCount = result.highlights.filter(h => h.type === 'safe').length;
 
+  // Debug: Log the AI score
+  console.log('📊 AnalysisResultsPanel - AI Score:', result.aiScore);
+
   return (
     <motion.div
         initial={{ opacity: 0, x: 20 }}
