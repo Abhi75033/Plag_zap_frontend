@@ -31,8 +31,8 @@ const RepublicDayBanner = () => {
                   Honoring our Constitution and Democracy
                 </span>
               </p>
-              <p className="text-xs md:text-sm text-gray-900 font-bold mt-1 bg-gradient-to-r from-yellow-400 to-orange-400 px-3 py-1 rounded-full inline-block shadow-md">
-                🎁 2 days free access to all premium features! 
+              <p className="text-xs md:text-base text-white font-extrabold mt-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 px-4 py-2 rounded-full inline-block shadow-lg animate-pulse border-2 border-yellow-300">
+                🎁 2 DAYS FREE ACCESS TO ALL PREMIUM FEATURES! 
               </p>
             </div>
           </div>
