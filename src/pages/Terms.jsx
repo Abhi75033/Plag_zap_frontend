@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText } from 'lucide-react';
+import Footer from '../components/Footer';
 
 const Terms = () => {
   const sections = [
@@ -94,6 +95,7 @@ const Terms = () => {
           ))}
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 };

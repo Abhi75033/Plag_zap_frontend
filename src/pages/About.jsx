@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Zap, Users, Award, Target, Heart } from 'lucide-react';
+import Footer from '../components/Footer';
 
 const About = () => {
   const team = [
@@ -111,6 +112,7 @@ const About = () => {
           </div>
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 };

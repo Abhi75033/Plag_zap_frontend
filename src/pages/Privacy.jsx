@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield } from 'lucide-react';
+import Footer from '../components/Footer';
 
 const Privacy = () => {
   const sections = [
@@ -97,6 +98,7 @@ const Privacy = () => {
           ))}
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 };

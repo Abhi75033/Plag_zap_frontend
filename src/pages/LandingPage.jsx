@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
 import { Shield, CheckCircle, Zap, Users, ArrowRight } from 'lucide-react';
+import Footer from '../components/Footer';
 
 const LandingPage = ({ 
   title, 
@@ -134,6 +135,7 @@ const LandingPage = ({
             </Link>
           </div>
         </section>
+        <Footer />
       </div>
     </>
   );

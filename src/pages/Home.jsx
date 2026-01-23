@@ -22,6 +22,7 @@ import {
 import DownloadApp from '../components/DownloadApp';
 import SEO from '../components/SEO';
 import { useAppContext } from '../context/AppContext';
+import Footer from '../components/Footer';
 
 // --- Utility Components ---
 
@@ -791,75 +792,7 @@ const CTA = () => {
   </section>
 )};
 
-const Footer = () => {
-  const navigate = useNavigate();
-  
-  const footerLinks = {
-    Product: [
-      { name: 'Features', path: '/features' },
-      { name: 'Integrations', path: '/integrations' },
-      { name: 'Pricing', path: '/pricing' },
-      { name: 'Changelog', path: '/changelog' },
-    ],
-    Company: [
-      { name: 'About', path: '/about' },
-      { name: 'Blog', path: '/blog' },
-      { name: 'News', path: '/news' },
-      { name: 'Careers', path: '/careers' },
-      { name: 'Contact', path: '/contact' },
-    ],
-    Legal: [
-      { name: 'Privacy', path: '/privacy' },
-      { name: 'Terms', path: '/terms' },
-      { name: 'Refunds', path: '/refunds' },
-      { name: 'Shipping', path: '/shipping' },
-    ],
-  };
-
-  return (
-    <footer className="border-t border-white/5 bg-black/40 pt-20 pb-10 px-6 relative z-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
-        <div className="col-span-2 md:col-span-1">
-          <div className="flex items-center gap-2 mb-6">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center">
-              <Scan className="text-white h-4 w-4" />
-            </div>
-            <span className="text-xl font-bold text-white">PlagZap</span>
-          </div>
-          <p className="text-gray-500 text-sm">
-            Ensuring originality in the age of artificial intelligence.
-          </p>
-        </div>
-        
-        {Object.entries(footerLinks).map(([title, links]) => (
-          <div key={title}>
-            <h4 className="text-white font-bold mb-6">{title}</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
-              {links.map(link => (
-                <li key={link.name}>
-                  <button 
-                    onClick={() => navigate(link.path)} 
-                    className="hover:text-violet-400 transition-colors"
-                  >
-                    {link.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600">
-        <p>© 2024 PlagZap Inc. All rights reserved.</p>
-        <div className="flex gap-6">
-           <span className="hover:text-white cursor-pointer transition-colors">Twitter</span>
-           <span className="hover:text-white cursor-pointer transition-colors">LinkedIn</span>
-           <span className="hover:text-white cursor-pointer transition-colors">GitHub</span>
-        </div>
-      </div>
-    </footer>
-  );
-};
+// Footer component has been moved to ../components/Footer.jsx
 
 // --- Main Home Component ---
 

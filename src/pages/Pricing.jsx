@@ -11,6 +11,7 @@ import {
 } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import PromoBanner from "../components/ui/PromoBanner";
+import Footer from "../components/Footer";
 
 const Pricing = () => {
   const [plans, setPlans] = useState([]);
@@ -405,6 +406,7 @@ const Pricing = () => {
         </motion.div>
 
       </div>
+      <Footer />
     </div>
   );
 };

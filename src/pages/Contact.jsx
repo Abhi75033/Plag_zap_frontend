@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone, Send, MessageSquare, Clock, CheckCircle } from 'lucide-react';
 import { submitContact } from '../services/contactAPI';
+import Footer from '../components/Footer';
 import toast from 'react-hot-toast';
 
 const Contact = () => {
@@ -175,6 +176,7 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
