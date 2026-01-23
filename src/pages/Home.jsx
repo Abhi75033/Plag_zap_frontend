@@ -405,16 +405,26 @@ const HowItWorks = () => {
                                     We also need to look at how these new tech tools really affect our digital lives. It's not just about speed; it's about connection.
                                 </p>
                             </div>
-                            <div className="w-full bg-gray-800 h-1 rounded-full overflow-hidden">
-                                <motion.div 
-                                    className={`h-full ${
-                                        isRepublicDay 
-                                            ? 'bg-gradient-to-r from-[#FF9933] via-white to-[#138808]' 
-                                            : 'bg-gradient-to-r from-violet-500 to-indigo-500'
-                                    }`}
-                                    animate={{ width: ["0%", "100%"] }}
-                                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", repeatDelay: 1 }}
-                                />
+                            <div className="w-full bg-gray-800 h-1 rounded-full overflow-hidden relative">
+                                {isRepublicDay ? (
+                                    <>
+                                        {/* Fixed Tricolor Background */}
+                                        <div className="absolute inset-0 bg-gradient-to-r from-[#FF9933] via-white to-[#138808]" />
+                                        
+                                        {/* Sliding Gray Mask to Reveal Gradient */}
+                                        <motion.div 
+                                            className="absolute inset-0 bg-gray-800"
+                                            animate={{ x: ["0%", "100%"] }}
+                                            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", repeatDelay: 1 }}
+                                        />
+                                    </>
+                                ) : (
+                                    <motion.div 
+                                        className="h-full bg-gradient-to-r from-violet-500 to-indigo-500"
+                                        animate={{ width: ["0%", "100%"] }}
+                                        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", repeatDelay: 1 }}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
