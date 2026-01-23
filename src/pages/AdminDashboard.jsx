@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAdminStats, getAdminUsers, deleteUser, getAllFeedbacks, updateFeedbackStatus, deleteFeedback, grantUserSubscription, updateUserSubscriptionStatus, revokeUserSubscription } from '../services/api';
-import { Users, DollarSign, Crown, Trash2, ArrowLeft, ArrowRight, MessageSquare, Check, Pause, X, Star, Gift, Play, Ban, XCircle, Ticket, Mail, FileText, Newspaper, Bell, Briefcase } from 'lucide-react';
+import { Users, DollarSign, Crown, Trash2, ArrowLeft, ArrowRight, MessageSquare, Check, Pause, X, Star, Gift, Play, Ban, XCircle, Ticket, Mail, FileText, Newspaper, Bell, Briefcase, Settings } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import CouponManager from '../components/admin/CouponManager';
@@ -12,6 +12,7 @@ import NewsManager from '../components/admin/NewsManager';
 import NotificationManager from '../components/admin/NotificationManager';
 import JobsManager from '../components/admin/JobsManager';
 import ContactManager from '../components/admin/ContactManager';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
     <div className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
@@ -377,6 +378,15 @@ const AdminDashboard = () => {
                     <Mail className="w-4 h-4" />
                     Contact Us
                 </button>
+                <button
+                    onClick={() => setActiveTab('settings')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
+                        activeTab === 'settings' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                >
+                    <Settings className="w-4 h-4" />
+                    Settings
+                </button>
             </div>
 
             {activeTab === 'users' ? (
@@ -641,6 +651,25 @@ const AdminDashboard = () => {
 
             {/* Contact Us Management Tab */}
             {activeTab === 'contact' && <ContactManager />}
+
+            {/* Settings Tab */}
+            {activeTab === 'settings' && (
+                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm">
+                    <div className="p-6 border-b border-white/10">
+                        <h2 className="text-xl font-bold">Theme Settings</h2>
+                        <p className="text-sm text-gray-400 mt-1">Manage application themes and special event themes</p>
+                    </div>
+                    <div className="p-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h3 className="font-semibold text-white mb-1">Theme Selector</h3>
+                                <p className="text-sm text-gray-400">Switch between light, dark, and special event themes</p>
+                            </div>
+                            <ThemeToggle />
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Grant Subscription Modal  */}
             <AnimatePresence>

@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { Sparkles, LayoutDashboard, History, Menu, X, LogOut, Key, Shield, Users, User, Home, CreditCard, BarChart3, Gift } from 'lucide-react';
 import NotificationBell from '../NotificationBell';
-import ThemeToggle from './ThemeToggle';
 
 const NavLink = ({ to, children, onClick }) => (
   <Link
@@ -116,9 +115,6 @@ const Navbar = () => {
                 {/* Notification Bell - Show for logged-in users */}
                 {user && <NotificationBell />}
 
-                {/* Theme Toggle - Always visible, responsive sizing */}
-                <ThemeToggle />
-
                 {/* Mobile Menu Button - Visible on mobile/tablet, hidden on desktop */}
                 <button
                   onClick={() => setIsMobileMenuOpen(true)}
@@ -218,13 +214,6 @@ const Navbar = () => {
             </MobileNavLink>
           </div>
 
-          {/* Divider */}
-          <div className="my-3 sm:my-4 border-t border-[var(--menu-border)]" />
-
-          {/* Theme Settings in Mobile Menu */}
-          <div className="px-1">
-            <ThemeToggle />
-          </div>
         </div>
 
         {/* Mobile Menu Footer */}

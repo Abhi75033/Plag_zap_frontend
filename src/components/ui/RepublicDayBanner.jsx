@@ -31,8 +31,8 @@ const RepublicDayBanner = () => {
                   Honoring our Constitution and Democracy
                 </span>
               </p>
-              <p className="text-xs text-gray-700 hidden md:block">
-                Special theme active • Jai Hind! 🙏
+              <p className="text-xs md:text-sm text-gray-900 font-bold mt-1 bg-gradient-to-r from-yellow-400 to-orange-400 px-3 py-1 rounded-full inline-block shadow-md">
+                🎁 2 days free access to all premium features! 
               </p>
             </div>
           </div>
