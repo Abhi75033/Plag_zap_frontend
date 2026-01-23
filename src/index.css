@@ -133,6 +133,50 @@
     --navy-blue: #000080;
     --chakra-blue: #000080;
   }
+
+  /* Republic Day Full Page Styling */
+  .republic-day section {
+    border-color: rgba(255, 153, 51, 0.2);
+  }
+
+  /* Cards with tricolor glow */
+  .republic-day .bg-gray-900\/50,
+  .republic-day .bg-gray-900\/30,
+  .republic-day .bg-gray-900\/80,
+  .republic-day .bg-black\/40,
+  .republic-day .bg-white\/5,
+  .republic-day .bg-background\/50 {
+    background: linear-gradient(135deg, rgba(255, 153, 51, 0.1) 0%, rgba(0, 0, 128, 0.08) 100%) !important;
+    border-color: rgba(255, 153, 51, 0.3) !important;
+  }
+
+  /* Gradient buttons */
+  .republic-day .bg-gradient-to-r,
+  .republic-day .from-violet-600,
+  .republic-day .from-blue-600 {
+    background: linear-gradient(to right, #FF9933, #138808) !important;
+  }
+
+  /* Headings with tricolor gradient */
+  .republic-day h2:not(.no-gradient) {
+    background: linear-gradient(90deg, #FF9933 0%, #fff 50%, #138808 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Decorative backgrounds */
+  .republic-day .bg-purple-600\/20,
+  .republic-day .bg-blue-600\/20,
+  .republic-day .bg-violet-600\/20 {
+    background: radial-gradient(circle, rgba(255, 153, 51, 0.15) 0%, rgba(19, 136, 8, 0.1) 100%) !important;
+  }
+
+  /* Border accents */
+  .republic-day .border-white\/10,
+  .republic-day .border-white\/5 {
+    border-color: rgba(255, 153, 51, 0.2) !important;
+  }
 }
 
 
