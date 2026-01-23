@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import DownloadApp from '../components/DownloadApp';
 import SEO from '../components/SEO';
+import { useAppContext } from '../context/AppContext';
 
 // --- Utility Components ---
 
@@ -72,6 +73,11 @@ const AnimatedBackground = () => {
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { specialTheme } = useAppContext();
+  
+  // Check if Republic Day theme is active
+  const isRepublicDay = specialTheme === 'republicDay';
+  
   return (
     <section className="relative min-h-screen flex items-center pt-10 pb-20 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full z-10">
@@ -83,18 +89,48 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-medium mb-6">
-              <Sparkles className="h-3 w-3" />
-              <span>Powered by Gemini 1.5 Pro</span>
-            </div>
+            {isRepublicDay ? (
+              // Republic Day Specific Badge
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-[var(--primary)] text-xs font-medium mb-6">
+                <span className="text-base">🇮🇳</span>
+                <span>Celebrating 77th Republic Day</span>
+              </div>
+            ) : (
+              // Default Badge
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-medium mb-6">
+                <Sparkles className="h-3 w-3" />
+                <span>Powered by Gemini 1.5 Pro</span>
+              </div>
+            )}
+            
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-              Authenticity <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-white">
-                Redefined.
-              </span>
+              {isRepublicDay ? (
+                // Republic Day Heading
+                <>
+                  Integrity & Truth <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] via-white to-[var(--secondary)]">
+                    Our Foundation.
+                  </span>
+                </>
+              ) : (
+                // Default Heading
+                <>
+                  Authenticity <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-white">
+                    Redefined.
+                  </span>
+                </>
+              )}
             </h1>
+            
             <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              The only AI detector that understands context. Detect plagiarism, humanize AI text, and polish your content in one seamless workflow.
+              {isRepublicDay ? (
+                // Republic Day Description
+                "Honoring India's commitment to truth and originality. Detect plagiarism, humanize AI text, and uphold integrity in every word."
+              ) : (
+                // Default Description
+                "The only AI detector that understands context. Detect plagiarism, humanize AI text, and polish your content in one seamless workflow."
+              )}
             </p>
           </motion.div>
 
@@ -106,7 +142,11 @@ const Hero = () => {
           >
             <button 
               onClick={() => navigate('/analyzer')}
-              className="px-8 py-4 rounded-xl bg-white text-black font-bold text-lg hover:bg-gray-100 transition-all flex items-center justify-center gap-2 shadow-xl shadow-white/10 hover:scale-105"
+              className={`px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-xl hover:scale-105 ${
+                isRepublicDay 
+                  ? 'bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90 shadow-[var(--primary)]/20'
+                  : 'bg-white text-black hover:bg-gray-100 shadow-white/10'
+              }`}
             >
               <Zap className="h-5 w-5" />
               Get Started
@@ -114,9 +154,13 @@ const Hero = () => {
             <a 
               href="/plagzap-extension.zip"
               download="plagzap-extension.zip"
-              className="px-8 py-4 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-200 font-bold text-lg hover:bg-blue-600/30 transition-all backdrop-blur-sm flex items-center justify-center gap-2"
+              className={`px-8 py-4 rounded-xl border font-bold text-lg transition-all backdrop-blur-sm flex items-center justify-center gap-2 ${
+                isRepublicDay
+                  ? 'bg-[var(--secondary)]/20 border-[var(--secondary)]/30 text-[var(--secondary)] hover:bg-[var(--secondary)]/30'
+                  : 'bg-blue-600/20 border-blue-500/30 text-blue-200 hover:bg-blue-600/30'
+              }`}
             >
-              <Zap className="h-5 w-5 text-blue-400" />
+              <Zap className={`h-5 w-5 ${isRepublicDay ? 'text-[var(--secondary)]' : 'text-blue-400'}`} />
               Download Extension
             </a>
           </motion.div>
@@ -134,7 +178,12 @@ const Hero = () => {
                  </div>
                ))}
             </div>
-            <p>Trusted by 10,000+ writers</p>
+            <p>
+              {isRepublicDay 
+                ? "Trusted by 10,000+ Indian writers & students"
+                : "Trusted by 10,000+ writers"
+              }
+            </p>
           </motion.div>
         </div>
 
@@ -146,7 +195,11 @@ const Hero = () => {
           className="relative perspective-1000 hidden lg:block"
         >
             {/* Abstract Decorative Elements behind */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-violet-500/30 to-blue-500/30 rounded-full blur-[100px] -z-10" />
+            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[100px] -z-10 ${
+              isRepublicDay
+                ? 'bg-gradient-to-tr from-[var(--primary)]/30 to-[var(--secondary)]/30'
+                : 'bg-gradient-to-tr from-violet-500/30 to-blue-500/30'
+            }`} />
 
             {/* The Main "App" Interface Card */}
             <div className="relative w-full max-w-lg mx-auto bg-gray-900/80 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden transform rotate-y-12 hover:rotate-y-0 transition-transform duration-500">
@@ -176,7 +229,11 @@ const Hero = () => {
                             <h4 className="text-white font-semibold text-sm">AI Content Detected</h4>
                             <p className="text-gray-400 text-xs mt-1">Probability: <span className="text-red-400 font-mono">98.4%</span></p>
                         </div>
-                        <button className="ml-auto px-3 py-1.5 bg-red-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-red-500/20 hover:bg-red-600 transition-colors">
+                        <button className={`ml-auto px-3 py-1.5 text-white text-xs font-bold rounded-lg shadow-lg transition-colors ${
+                          isRepublicDay
+                            ? 'bg-[var(--primary)] hover:bg-[var(--primary)]/90 shadow-[var(--primary)]/20'
+                            : 'bg-red-500 hover:bg-red-600 shadow-red-500/20'
+                        }`}>
                             Humanize
                         </button>
                     </div>
@@ -194,7 +251,11 @@ const Hero = () => {
                 transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                 className="absolute -right-8 top-20 bg-black/60 backdrop-blur-md border border-white/10 p-4 rounded-xl shadow-xl flex items-center gap-3"
             >
-                <div className="h-10 w-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                  isRepublicDay
+                    ? 'bg-[var(--secondary)]/20 text-[var(--secondary)]'
+                    : 'bg-green-500/20 text-green-400'
+                }`}>
                     <CheckCircle className="h-5 w-5" />
                 </div>
                 <div>

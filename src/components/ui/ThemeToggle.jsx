@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import { getAvailableThemes, THEME_TYPES } from '../../config/themeConfig';
-import { Sun, Moon, Palette, X, Check } from 'lucide-react';
+import { Sun, Moon, Palette, X, Check, Shield } from 'lucide-react';
 
 const ThemeToggle = () => {
-  const { theme, toggleTheme, specialTheme, setSpecialTheme, clearSpecialTheme } = useAppContext();
+  const { theme, toggleTheme, specialTheme, setSpecialTheme, clearSpecialTheme, user } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Only show theme toggle for admin users
+  if (!user || user.role !== 'admin') {
+    return null;
+  }
   
   const availableThemes = getAvailableThemes();
 
@@ -23,9 +28,9 @@ const ThemeToggle = () => {
       {/* Theme Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors relative"
-        aria-label="Toggle theme"
-        title="Theme settings"
+        className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors relative group"
+        aria-label="Toggle theme (Admin)"
+        title="Theme settings (Admin only)"
       >
         {specialTheme === THEME_TYPES.REPUBLIC_DAY ? (
           <span className="text-xl">🇮🇳</span>
@@ -34,6 +39,8 @@ const ThemeToggle = () => {
         ) : (
           <Sun size={20} className="text-foreground" />
         )}
+        {/* Admin badge */}
+        <Shield size={10} className="absolute -top-1 -right-1 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
       </button>
 
       {/* Theme Selector Modal */}

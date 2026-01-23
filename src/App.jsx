@@ -50,6 +50,7 @@ import ForgotPassword from './pages/ForgotPassword'; // Forgot Password
 import ResetPassword from './pages/ResetPassword'; // Reset Password
 import MyApplications from './pages/MyApplications'; // Job applications tracking
 import LandingPage from './pages/LandingPage'; // Programmatic SEO Landing Page template
+import RepublicDayBanner from './components/ui/RepublicDayBanner'; // Special theme banner
 
 
 function App() {
@@ -84,6 +85,7 @@ function App() {
         />
         <div className="min-h-screen bg-background text-foreground">
           <Navbar />
+          <RepublicDayBanner />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
