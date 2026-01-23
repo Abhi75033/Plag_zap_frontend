@@ -141,8 +141,8 @@
     right: 0;
     bottom: 0;
     background:
-      radial-gradient(circle at 15% 50%, rgba(255, 153, 51, 0.08) 0%, transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(19, 136, 8, 0.08) 0%, transparent 25%);
+      radial-gradient(circle at 15% 50%, rgba(255, 153, 51, 0.05) 0%, transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(19, 136, 8, 0.05) 0%, transparent 25%);
     pointer-events: none;
     z-index: -1;
   }
@@ -159,33 +159,39 @@
   .republic-day .bg-black\/40,
   .republic-day .bg-white\/5,
   .republic-day .bg-background\/50 {
-    background: linear-gradient(145deg, rgba(255, 153, 51, 0.03) 0%, rgba(19, 136, 8, 0.02) 100%) !important;
+    background: linear-gradient(145deg, rgba(255, 153, 51, 0.05) 0%, rgba(19, 136, 8, 0.03) 100%) !important;
     border: 1px solid rgba(255, 255, 255, 0.05) !important;
     border-top: 1px solid rgba(255, 153, 51, 0.2) !important;
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
   }
 
-  /* Gradient buttons */
-  .republic-day .bg-gradient-to-r,
-  .republic-day .from-violet-600,
-  .republic-day .from-blue-600 {
-    background: linear-gradient(to right, #FF9933, #e65100) !important;
-    /* Saffron dominance */
+  /* Gradient buttons - USE BACKGROUND-IMAGE to prevent clipping issues */
+  .republic-day .bg-gradient-to-r:not(.bg-clip-text),
+  .republic-day .from-violet-600:not(.bg-clip-text),
+  .republic-day .from-blue-600:not(.bg-clip-text) {
+    background-image: linear-gradient(to right, #FF9933, #e65100) !important;
+  }
+
+  /* Force background-clip: border-box for buttons to ensure they have background */
+  .republic-day button {
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
   }
 
   .republic-day button:hover {
     box-shadow: 0 0 15px rgba(255, 153, 51, 0.3);
   }
 
-  /* Headings with tricolor gradient - TARGETED CAREFULLY */
-  /* Only apply to H1/H2 if they don't have nested spans that handles gradients themselves 
-     OR apply to specific text classes. 
-     Better approach: Override the .text-transparent on headings in this theme 
-  */
-
-  .republic-day h2 span.bg-clip-text {
-    /* Force spans to use the tricolor gradient if they are meant to be gradient text */
+  /* Headings with tricolor gradient - ONLY if they act as gradient text */
+  .republic-day .bg-clip-text,
+  .republic-day .text-transparent,
+  .republic-day h2 span.bg-clip-text,
+  .republic-day h1 span.bg-clip-text {
     background-image: linear-gradient(90deg, #FF9933, #ffffff, #138808) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
   }
 
   .republic-day .text-violet-400,
