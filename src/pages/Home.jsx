@@ -223,17 +223,33 @@ const Hero = () => {
                     </div>
                     
                     {/* Simulated Detection Result */}
-                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-4">
-                        <div className="p-2 bg-red-500/20 rounded-lg text-red-400">
+                    {/* Simulated Detection Result */}
+                    <div className={`p-4 rounded-xl flex items-start gap-4 transition-all duration-300 relative overflow-hidden group/card ${
+                      isRepublicDay
+                        ? 'bg-gradient-to-br from-[#FF9933]/10 via-white/5 to-[#138808]/10 border border-[#FF9933]/30 shadow-[0_0_15px_rgba(255,153,51,0.1)]'
+                        : 'bg-red-500/10 border border-red-500/20'
+                    }`}>
+                        {/* Decorative background for Republic Day */}
+                        {isRepublicDay && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#FF9933]/5 via-transparent to-[#138808]/5 opacity-50" />
+                        )}
+                        
+                        <div className={`p-2 rounded-lg relative z-10 ${
+                          isRepublicDay
+                            ? 'bg-[#FF9933]/20 text-[#FF9933]'
+                            : 'bg-red-500/20 text-red-400'
+                        }`}>
                             <Fingerprint className="h-5 w-5" />
                         </div>
-                        <div>
+                        <div className="relative z-10">
                             <h4 className="text-white font-semibold text-sm">AI Content Detected</h4>
-                            <p className="text-gray-400 text-xs mt-1">Probability: <span className="text-red-400 font-mono">98.4%</span></p>
+                            <p className="text-gray-400 text-xs mt-1">
+                              Probability: <span className={`font-mono font-bold ${isRepublicDay ? 'text-[#FF9933]' : 'text-red-400'}`}>98.4%</span>
+                            </p>
                         </div>
-                        <button className={`ml-auto px-3 py-1.5 text-white text-xs font-bold rounded-lg shadow-lg transition-colors ${
+                        <button className={`relative z-10 ml-auto px-3 py-1.5 text-white text-xs font-bold rounded-lg shadow-lg transition-transform hover:scale-105 active:scale-95 ${
                           isRepublicDay
-                            ? 'bg-[var(--primary)] hover:bg-[var(--primary)]/90 shadow-[var(--primary)]/20'
+                            ? 'bg-gradient-to-r from-[#FF9933] to-[#e65100] shadow-[#FF9933]/20 hover:shadow-[#FF9933]/40'
                             : 'bg-red-500 hover:bg-red-600 shadow-red-500/20'
                         }`}>
                             Humanize
