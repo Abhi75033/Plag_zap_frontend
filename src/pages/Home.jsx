@@ -81,7 +81,7 @@ const Hero = () => {
   const isBannerVisible = isRepublicDay && !localStorage.getItem('republicDayBannerDismissed');
   
   return (
-    <section className={`relative min-h-screen flex items-center pb-20 px-6 overflow-hidden ${isBannerVisible ? 'pt-[120px]' : 'pt-10'}`}>
+    <section className={`relative min-h-screen flex items-center pb-20 px-6 overflow-hidden ${isBannerVisible ? 'pt-[140px]' : 'pt-24'}`}>
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full z-10">
         
         {/* Left Content */}

@@ -99,15 +99,15 @@
     /* Base colors with tricolor palette */
     --background: linear-gradient(135deg, rgba(255, 153, 51, 0.03) 0%, rgba(255, 255, 255, 1) 50%, rgba(19, 136, 8, 0.03) 100%);
     --foreground: #1a1a1a;
-    
+
     /* Primary accent - Saffron */
     --primary: #FF9933;
     --primary-foreground: #ffffff;
-    
+
     /* Secondary accent - India Green */
     --secondary: #138808;
     --secondary-foreground: #ffffff;
-    
+
     /* Tertiary accent - Navy Blue (Ashoka Chakra) */
     --accent: #000080;
     --accent-foreground: #ffffff;
@@ -117,8 +117,11 @@
     --border: rgba(255, 153, 51, 0.2);
     --card: #ffffff;
     --card-foreground: #1a1a1a;
-    --nav-link: #000080;
+
+    /* Nav links - White/Light for visibility on dark navbar */
+    --nav-link: #ffffff;
     --nav-link-hover: #FF9933;
+
     --menu-bg: #ffffff;
     --menu-border: rgba(255, 153, 51, 0.3);
     --warning-text: #d97706;

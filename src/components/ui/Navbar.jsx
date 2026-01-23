@@ -27,12 +27,9 @@ const MobileNavLink = ({ to, children, icon: Icon, onClick }) => (
 );
 
 const Navbar = () => {
-  const { user, logout, specialTheme } = useAppContext();
+  const { user, logout } = useAppContext();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-  
-  // Check if banner is showing (Republic Day theme active and not dismissed)
-  const isBannerVisible = specialTheme === 'republicDay' && !localStorage.getItem('republicDayBannerDismissed');
   
   // Close mobile menu on route change
   useEffect(() => {
@@ -55,7 +52,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`fixed left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-[var(--border)] ${isBannerVisible ? 'top-[60px]' : 'top-0'}`}>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-[var(--border)]">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-4 xl:px-8">
           <div className="flex justify-between items-center h-14 sm:h-16">
             {/* Logo - Responsive sizing */}
