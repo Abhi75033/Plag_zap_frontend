@@ -77,8 +77,8 @@ const Hero = () => {
   
   // Check if Republic Day theme is active
   const isRepublicDay = specialTheme === 'republicDay';
-  // Check if banner is visible
-  const isBannerVisible = isRepublicDay && !localStorage.getItem('republicDayBannerDismissed');
+  // Banner checking removed - always show proper spacing
+  const isBannerVisible = isRepublicDay;
   
   return (
     <section className={`relative min-h-screen flex items-center pb-20 px-6 overflow-hidden ${isBannerVisible ? 'pt-[140px]' : 'pt-24'}`}>
@@ -827,8 +827,11 @@ const Footer = () => {
 // --- Main Home Component ---
 
 const Home = () => {
+    const { specialTheme } = useAppContext();
+    const isRepublicDay = specialTheme === 'republicDay';
+    
     return (
-        <div className="min-h-screen bg-black text-gray-100 font-sans selection:bg-violet-500/30 selection:text-white">
+        <div className={`min-h-screen bg-black text-gray-100 font-sans selection:bg-violet-500/30 selection:text-white ${isRepublicDay ? 'republic-day' : ''}`}>
             <SEO 
               title="PlagZap - #1 AI Plagiarism Checker & AI Detector"
               description="PlagZap is the most accurate AI plagiarism checker and AI content detector. Detect ChatGPT, Claude, and Gemini text instantly. Trusted by 10,000+ creators."

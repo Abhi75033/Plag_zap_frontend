@@ -93,17 +93,10 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('baseTheme', theme);
   }, [theme]);
 
-  // Apply special theme
+  // NOTE: Special themes are NOT applied globally anymore
+  // They are applied locally in specific page components (e.g., Home.jsx)
   useEffect(() => {
-    // Remove all special theme classes first
-    document.documentElement.classList.remove('republic-day');
-    
-    // Apply special theme class if active
-    if (specialTheme === THEME_TYPES.REPUBLIC_DAY) {
-      document.documentElement.classList.add('republic-day');
-    }
-    
-    // Persist to localStorage
+    // Persist special theme to localStorage
     localStorage.setItem('specialTheme', specialTheme || 'null');
   }, [specialTheme]);
 
