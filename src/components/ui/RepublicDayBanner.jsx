@@ -34,7 +34,7 @@ const RepublicDayBanner = () => {
   }
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-[#FF9933] via-white to-[#138808] border-b-2 border-[#000080]">
+    <div className="fixed top-0 left-0 right-0 z-[60] overflow-hidden bg-gradient-to-r from-[#FF9933] via-white to-[#138808] border-b-2 border-[#000080]">
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Banner Content */}
