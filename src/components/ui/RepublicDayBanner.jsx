@@ -64,7 +64,6 @@ const RepublicDayBanner = () => {
             </div>
 
           </div>
-        </div>
 
         {/* Bottom Accent Line */}
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#000080]/30 to-transparent"></div>
