@@ -352,6 +352,9 @@ const Features = () => {
 };
 
 const HowItWorks = () => {
+    const { specialTheme } = useAppContext();
+    const isRepublicDay = specialTheme === 'republicDay';
+
     return (
         <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-black/20">
             <div className="max-w-7xl mx-auto">
@@ -380,7 +383,9 @@ const HowItWorks = () => {
                         </div>
                     </div>
                     <div className="lg:w-1/2 relative">
-                        <div className="absolute inset-0 bg-violet-600/20 blur-[80px] rounded-full" />
+                        <div className={`absolute inset-0 blur-[80px] rounded-full ${
+                            isRepublicDay ? 'bg-orange-500/10' : 'bg-violet-600/20'
+                        }`} />
                         <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10">
                             <div className="font-mono text-xs text-gray-500 mb-4 flex justify-between">
                                 <span>input.txt</span>
@@ -390,7 +395,9 @@ const HowItWorks = () => {
                                 <p className="text-gray-300 text-sm opacity-50 line-through decoration-red-500 decoration-2">
                                     Furthermore, it is important to consider the various implications of the aforementioned technological advancements in the digital sphere.
                                 </p>
-                                <div className="flex items-center gap-2 text-violet-400 text-xs font-bold py-2">
+                                <div className={`flex items-center gap-2 text-xs font-bold py-2 ${
+                                    isRepublicDay ? 'text-[#FF9933]' : 'text-violet-400'
+                                }`}>
                                     <ArrowRight className="h-3 w-3" />
                                     <span>HUMANIZING...</span>
                                 </div>
@@ -400,7 +407,11 @@ const HowItWorks = () => {
                             </div>
                             <div className="w-full bg-gray-800 h-1 rounded-full overflow-hidden">
                                 <motion.div 
-                                    className="h-full bg-gradient-to-r from-violet-500 to-indigo-500"
+                                    className={`h-full ${
+                                        isRepublicDay 
+                                            ? 'bg-gradient-to-r from-[#FF9933] via-white to-[#138808]' 
+                                            : 'bg-gradient-to-r from-violet-500 to-indigo-500'
+                                    }`}
                                     animate={{ width: ["0%", "100%"] }}
                                     transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", repeatDelay: 1 }}
                                 />
