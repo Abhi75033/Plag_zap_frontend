@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
-import { Sparkles, LayoutDashboard, History, Menu, X, LogOut, Key, Shield, Users, User, Moon, Sun, Home, CreditCard, BarChart3, Gift } from 'lucide-react';
+import { Sparkles, LayoutDashboard, History, Menu, X, LogOut, Key, Shield, Users, User, Home, CreditCard, BarChart3, Gift } from 'lucide-react';
 import NotificationBell from '../NotificationBell';
+import ThemeToggle from './ThemeToggle';
 
 const NavLink = ({ to, children, onClick }) => (
   <Link
@@ -26,7 +27,7 @@ const MobileNavLink = ({ to, children, icon: Icon, onClick }) => (
 );
 
 const Navbar = () => {
-  const { theme, toggleTheme, user, logout } = useAppContext();
+  const { user, logout } = useAppContext();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   
@@ -116,17 +117,7 @@ const Navbar = () => {
                 {user && <NotificationBell />}
 
                 {/* Theme Toggle - Always visible, responsive sizing */}
-                <button
-                  onClick={toggleTheme}
-                  className="p-1.5 sm:p-2 rounded-lg bg-background/50 border border-[var(--border)] hover:bg-background transition-colors flex-shrink-0"
-                  aria-label="Toggle theme"
-                >
-                  {theme === 'dark' ? (
-                    <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
-                  ) : (
-                    <Moon className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
-                  )}
-                </button>
+                <ThemeToggle />
 
                 {/* Mobile Menu Button - Visible on mobile/tablet, hidden on desktop */}
                 <button
@@ -230,25 +221,10 @@ const Navbar = () => {
           {/* Divider */}
           <div className="my-3 sm:my-4 border-t border-[var(--menu-border)]" />
 
-          {/* Theme Toggle in Mobile Menu */}
-          <button
-            onClick={() => {
-              toggleTheme();
-            }}
-            className="flex items-center gap-3 w-full px-3 sm:px-4 py-3 text-[var(--nav-link)] hover:text-[var(--nav-link-hover)] hover:bg-[var(--accent)] rounded-lg transition-all touch-manipulation"
-          >
-            {theme === 'dark' ? (
-              <>
-                <Sun className="h-5 w-5 text-[var(--muted-foreground)]" />
-                <span className="font-medium">Light Mode</span>
-              </>
-            ) : (
-              <>
-                <Moon className="h-5 w-5 text-[var(--muted-foreground)]" />
-                <span className="font-medium">Dark Mode</span>
-              </>
-            )}
-          </button>
+          {/* Theme Settings in Mobile Menu */}
+          <div className="px-1">
+            <ThemeToggle />
+          </div>
         </div>
 
         {/* Mobile Menu Footer */}
