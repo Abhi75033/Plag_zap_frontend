@@ -654,7 +654,7 @@ const AdminDashboard = () => {
 
             {/* Settings Tab */}
             {activeTab === 'settings' && (
-                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm">
+                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-visible backdrop-blur-sm">
                     <div className="p-6 border-b border-white/10">
                         <h2 className="text-xl font-bold">Theme Settings</h2>
                         <p className="text-sm text-gray-400 mt-1">Manage application themes and special event themes</p>
