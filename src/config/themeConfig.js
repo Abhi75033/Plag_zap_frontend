@@ -34,11 +34,11 @@ export const themeConfig = {
             navy: '#000080',
         },
 
-        // Auto-activation configuration (optional)
+        // Auto-activation configuration
         autoActivation: {
-            enabled: false, // Set to true to enable auto-activation
-            startDate: '2026-01-25', // Start date (YYYY-MM-DD)
-            endDate: '2026-01-27',   // End date (YYYY-MM-DD)
+            enabled: true, // ENABLED: Theme auto-shows for everyone
+            startDate: '2026-01-23', // Start from today
+            endDate: '2026-01-27',   // Through Jan 27
         },
 
         // Metadata
