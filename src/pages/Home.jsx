@@ -807,15 +807,49 @@ const Home = () => {
               description="PlagZap is the most accurate AI plagiarism checker and AI content detector. Detect ChatGPT, Claude, and Gemini text instantly. Trusted by 10,000+ creators."
               schema={{
                 "@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "PlagZap",
-                "applicationCategory": "EducationalApplication",
-                "operatingSystem": "Web",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "USD"
-                }
+                "@graph": [
+                  {
+                    "@type": "SoftwareApplication",
+                    "name": "PlagZap",
+                    "applicationCategory": "EducationalApplication",
+                    "operatingSystem": "Web",
+                    "offers": {
+                      "@type": "Offer",
+                      "price": "0",
+                      "priceCurrency": "USD"
+                    }
+                  },
+                  {
+                    "@type": "Organization",
+                    "name": "PlagZap",
+                    "url": "https://plagzap.com",
+                    "logo": "https://plagzap.com/plagzap-logo.png",
+                    "founder": {
+                      "@type": "Person",
+                      "name": "Abhishek Kumar",
+                      "url": "https://www.linkedin.com/in/abhishekkumar-webdev/",
+                      "sameAs": [
+                        "https://www.linkedin.com/in/abhishekkumar-webdev/"
+                      ]
+                    },
+                    "sameAs": [
+                      "https://www.linkedin.com/in/abhishekkumar-webdev/"
+                    ]
+                  },
+                  {
+                    "@type": "Person",
+                    "name": "Abhishek Kumar",
+                    "url": "https://www.linkedin.com/in/abhishekkumar-webdev/",
+                    "jobTitle": "Founder",
+                    "worksFor": {
+                      "@type": "Organization",
+                      "name": "PlagZap"
+                    },
+                    "sameAs": [
+                      "https://www.linkedin.com/in/abhishekkumar-webdev/"
+                    ]
+                  }
+                ]
               }}
             />
             <AnimatedBackground />
