@@ -51,7 +51,7 @@ export const AppProvider = ({ children }) => {
       // Check if Republic Day theme should auto-activate
       if (shouldAutoActivateTheme(THEME_TYPES.REPUBLIC_DAY)) {
         const currentSpecialTheme = localStorage.getItem('specialTheme');
-        if (!currentSpecialTheme || currentSpecialTheme === 'null') {
+        if (!currentSpecialTheme) {
           console.log('[AppContext] Auto-activating Republic Day theme');
           setSpecialTheme(THEME_TYPES.REPUBLIC_DAY);
         }
