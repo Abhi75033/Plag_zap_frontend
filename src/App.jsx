@@ -60,6 +60,8 @@ import AIPlagiarismChecker from './pages/AIPlagiarismChecker';
 import PlagiarismCheckerAPI from './pages/PlagiarismCheckerAPI';
 import HowToAvoidPlagiarism from './pages/HowToAvoidPlagiarism';
 import HowToReadPlagiarismReport from './pages/HowToReadPlagiarismReport';
+import CaseStudies from './pages/CaseStudies';
+import GrammarlyAlternative from './pages/GrammarlyAlternative';
 
 
 function App() {
@@ -213,6 +215,8 @@ function App() {
             <Route path="/plagiarism-checker-api" element={<PlagiarismCheckerAPI />} />
             <Route path="/how-to-avoid-plagiarism" element={<HowToAvoidPlagiarism />} />
             <Route path="/how-to-read-plagiarism-report" element={<HowToReadPlagiarismReport />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/grammarly-alternative" element={<GrammarlyAlternative />} />
             
             {/* Static pages */}
             <Route path="/about" element={<About />} />
