@@ -121,6 +121,8 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row items-center gap-4 text-xs text-gray-500">
                 <p>© 2024 PlagZap Inc. All rights reserved.</p>
                 <div className="hidden md:block w-1 h-1 rounded-full bg-gray-700" />
+                <p>Founded by Abhishek Kumar</p>
+                <div className="hidden md:block w-1 h-1 rounded-full bg-gray-700" />
                 <p className="flex items-center gap-1">
                     Made with <Heart className="w-3 h-3 text-red-500 fill-current" /> in India
                 </p>
