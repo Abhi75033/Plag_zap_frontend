@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Zap, Users, Award, Target, Heart } from 'lucide-react';
+import { Shield, Zap, Users, Award, Target, Heart, Linkedin } from 'lucide-react';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 
 const About = () => {
   const team = [
@@ -20,6 +21,31 @@ const About = () => {
 
   return (
     <div className="min-h-screen pt-24 px-4 pb-16">
+      <SEO 
+        title="About PlagZap - Founded by Abhishek Kumar"
+        description="Learn about PlagZap, the leading AI plagiarism detection platform founded by Abhishek Kumar. Our mission is to ensure authenticity in the age of AI."
+        keywords="plagzap founder, abhishek kumar, about plagzap, plagiarism detection, ai content detection"
+        canonical="/about"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          "mainEntity": {
+            "@type": "Organization",
+            "name": "PlagZap",
+            "url": "https://plagzap.xyz",
+            "description": "Leading AI plagiarism detection and content originality platform",
+            "founder": {
+              "@type": "Person",
+              "name": "Abhishek Kumar",
+              "url": "https://www.linkedin.com/in/abhishek-kumar-9b840b183/",
+              "jobTitle": "Founder & CEO",
+              "sameAs": [
+                "https://www.linkedin.com/in/abhishek-kumar-9b840b183/"
+              ]
+            }
+          }
+        }}
+      />
       <div className="max-w-6xl mx-auto">
         {/* Hero */}
         <motion.div
@@ -33,6 +59,17 @@ const About = () => {
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
             We're on a mission to ensure authenticity in the age of AI. Our advanced plagiarism detection 
             and humanization tools help creators, students, and professionals maintain originality.
+          </p>
+          <p className="text-lg text-gray-500 mt-4">
+            Founded by <a 
+              href="https://www.linkedin.com/in/abhishek-kumar-9b840b183/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 font-semibold inline-flex items-center gap-1"
+            >
+              Abhishek Kumar
+              <Linkedin className="h-4 w-4" />
+            </a>
           </p>
         </motion.div>
 

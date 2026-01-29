@@ -7,10 +7,12 @@ const SEO = ({
   canonical, 
   type = 'website',
   name = 'PlagZap',
-  image = 'https://plagzap.com/og-image.png', // Replace with actual default OG image
-  schema
+  image = 'https://plagzap.xyz/plagzap-logo.png',
+  schema,
+  keywords,
+  author = 'Abhishek Kumar'
 }) => {
-  const siteUrl = 'https://plagzap.com'; // Replace with actual domain
+  const siteUrl = 'https://plagzap.xyz';
   const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl;
 
   return (
@@ -18,6 +20,8 @@ const SEO = ({
       {/* Standard Metadata */}
       <title>{title ? `${title} | PlagZap` : 'PlagZap - AI Plagiarism Detection & Content Originality'}</title>
       <meta name="description" content={description || 'PlagZap is the leading AI plagiarism checker and content originality tool for creators, students, and agencies. Ensure your content is 100% authentic.'} />
+      {keywords && <meta name="keywords" content={keywords} />}
+      <meta name="author" content={author} />
       <link rel="canonical" href={fullCanonical} />
 
       {/* Open Graph / Facebook */}

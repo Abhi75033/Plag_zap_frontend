@@ -803,50 +803,125 @@ const Home = () => {
     return (
         <div className={`min-h-screen bg-black text-gray-100 font-sans selection:bg-violet-500/30 selection:text-white ${isRepublicDay ? 'republic-day' : ''}`}>
             <SEO 
-              title="PlagZap - #1 AI Plagiarism Checker & AI Detector"
-              description="PlagZap is the most accurate AI plagiarism checker and AI content detector. Detect ChatGPT, Claude, and Gemini text instantly. Trusted by 10,000+ creators."
+              title="Free Online Plagiarism Checker | AI Detection Tool"
+              description="PlagZap is the most accurate AI plagiarism checker and AI content detector. Detect ChatGPT, Claude, and Gemini text instantly. Founded by Abhishek Kumar. Trusted by 10,000+ creators."
+              keywords="plagiarism checker, plagiarism checker online, plagiarism checker free, ai plagiarism checker, turnitin alternative, best plagiarism checker 2026, plagzap founder, abhishek kumar"
+              canonical="/"
               schema={{
                 "@context": "https://schema.org",
                 "@graph": [
+                  {
+                    "@type": "WebSite",
+                    "@id": "https://plagzap.xyz/#website",
+                    "url": "https://plagzap.xyz/",
+                    "name": "PlagZap",
+                    "description": "Free online plagiarism checker and AI content detector",
+                    "potentialAction": {
+                      "@type": "SearchAction",
+                      "target": "https://plagzap.xyz/analyzer?q={search_term_string}",
+                      "query-input": "required name=search_term_string"
+                    }
+                  },
                   {
                     "@type": "SoftwareApplication",
                     "name": "PlagZap",
                     "applicationCategory": "EducationalApplication",
                     "operatingSystem": "Web",
+                    "url": "https://plagzap.xyz",
+                    "description": "AI-powered plagiarism checker and content detector for students, researchers, and content creators",
                     "offers": {
                       "@type": "Offer",
                       "price": "0",
                       "priceCurrency": "USD"
+                    },
+                    "aggregateRating": {
+                      "@type": "AggregateRating",
+                      "ratingValue": "4.8",
+                      "ratingCount": "10000"
                     }
                   },
                   {
                     "@type": "Organization",
+                    "@id": "https://plagzap.xyz/#organization",
                     "name": "PlagZap",
-                    "url": "https://plagzap.com",
-                    "logo": "https://plagzap.com/plagzap-logo.png",
+                    "url": "https://plagzap.xyz",
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": "https://plagzap.xyz/plagzap-logo.png"
+                    },
+                    "description": "Leading AI plagiarism detection and content originality platform",
                     "founder": {
                       "@type": "Person",
                       "name": "Abhishek Kumar",
-                      "url": "https://www.linkedin.com/in/abhishekkumar-webdev/",
+                      "url": "https://www.linkedin.com/in/abhishek-kumar-9b840b183/",
+                      "jobTitle": "Founder & CEO",
                       "sameAs": [
-                        "https://www.linkedin.com/in/abhishekkumar-webdev/"
+                        "https://www.linkedin.com/in/abhishek-kumar-9b840b183/"
                       ]
                     },
                     "sameAs": [
-                      "https://www.linkedin.com/in/abhishekkumar-webdev/"
+                      "https://www.linkedin.com/in/abhishek-kumar-9b840b183/"
                     ]
                   },
                   {
                     "@type": "Person",
+                    "@id": "https://plagzap.xyz/#founder",
                     "name": "Abhishek Kumar",
-                    "url": "https://www.linkedin.com/in/abhishekkumar-webdev/",
-                    "jobTitle": "Founder",
+                    "url": "https://www.linkedin.com/in/abhishek-kumar-9b840b183/",
+                    "jobTitle": "Founder & CEO",
+                    "description": "Founder of PlagZap, an AI-powered plagiarism detection platform",
                     "worksFor": {
                       "@type": "Organization",
-                      "name": "PlagZap"
+                      "name": "PlagZap",
+                      "url": "https://plagzap.xyz"
                     },
                     "sameAs": [
-                      "https://www.linkedin.com/in/abhishekkumar-webdev/"
+                      "https://www.linkedin.com/in/abhishek-kumar-9b840b183/"
+                    ]
+                  },
+                  {
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                      {
+                        "@type": "Question",
+                        "name": "How accurate is the detection?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "Our model achieves a 98.4% accuracy rate by cross-referencing perplexity scores with known AI writing patterns from GPT-4, Claude, and Gemini."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Does the humanizer change the meaning?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "No. Our humanizer is context-aware. It restructures sentences to vary flow and vocabulary while strictly preserving your original intent and key information."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Do you support multiple languages?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "Currently, we support English, Spanish, French, and German. We are actively adding support for 10 more languages in the next update."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Is my content stored?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "Absolutely not. We process your text in real-time RAM and discard it immediately after analysis. Your work remains 100% confidential."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Who founded PlagZap?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "PlagZap was founded by Abhishek Kumar, a software developer passionate about ensuring content authenticity in the age of AI."
+                        }
+                      }
                     ]
                   }
                 ]

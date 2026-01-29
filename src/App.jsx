@@ -52,6 +52,15 @@ import MyApplications from './pages/MyApplications'; // Job applications trackin
 import LandingPage from './pages/LandingPage'; // Programmatic SEO Landing Page template
 import RepublicDayBanner from './components/ui/RepublicDayBanner'; // Special theme banner
 
+// SEO-Optimized Landing Pages
+import PlagiarismCheckerOnline from './pages/PlagiarismCheckerOnline';
+import FreePlagiarismChecker from './pages/FreePlagiarismChecker';
+import TurnitinAlternative from './pages/TurnitinAlternative';
+import AIPlagiarismChecker from './pages/AIPlagiarismChecker';
+import PlagiarismCheckerAPI from './pages/PlagiarismCheckerAPI';
+import HowToAvoidPlagiarism from './pages/HowToAvoidPlagiarism';
+import HowToReadPlagiarismReport from './pages/HowToReadPlagiarismReport';
+
 
 function App() {
   return (
@@ -195,6 +204,15 @@ function App() {
                 ]}
               />
             } />
+            
+            {/* New SEO-Optimized Landing Pages */}
+            <Route path="/plagiarism-checker-online" element={<PlagiarismCheckerOnline />} />
+            <Route path="/free-plagiarism-checker" element={<FreePlagiarismChecker />} />
+            <Route path="/turnitin-alternative" element={<TurnitinAlternative />} />
+            <Route path="/ai-plagiarism-checker" element={<AIPlagiarismChecker />} />
+            <Route path="/plagiarism-checker-api" element={<PlagiarismCheckerAPI />} />
+            <Route path="/how-to-avoid-plagiarism" element={<HowToAvoidPlagiarism />} />
+            <Route path="/how-to-read-plagiarism-report" element={<HowToReadPlagiarismReport />} />
             
             {/* Static pages */}
             <Route path="/about" element={<About />} />
